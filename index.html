@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Destinos publicitarios</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    section {
+      margin-bottom: 32px;
+      border: 2px solid #ddd;
+      padding: 16px;
+      border-radius: 8px;
+    }
+    section h2 {
+      margin-top: 0;
+      text-transform: capitalize;
+    }
+    .item {
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #ccc;
+    }
+    img, iframe {
+      display: block;
+      max-width: 100%;
+      margin-top: 6px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Destinos publicitarios</h1>
+  <div id="contenedor"></div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbx-s0cXfwItPln6QMmtHLtRMmtGiUSjc0fx9SLM6kfNC8en_HTZnl0GdIwuDn3Eb6C_yQ/exec";
+
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(data => {
+        const contenedor = document.getElementById("contenedor");
+        const agrupado = {};
+
+        // 1️⃣ Agrupar por columna (ignorando celdas vacías)
+        data.forEach(fila => {
+          Object.entries(fila).forEach(([columna, valor]) => {
+            if (!valor || String(valor).trim() === "") return;
+
+            if (!agrupado[columna]) {
+              agrupado[columna] = [];
+            }
+            agrupado[columna].push(valor);
+          });
+        });
+
+        // 2️⃣ Renderizar
+        Object.entries(agrupado).forEach(([columna, valores]) => {
+          if (valores.length === 0) return;
+
+          const section = document.createElement("section");
+
+          const h2 = document.createElement("h2");
+          h2.textContent = columna;
+          section.appendChild(h2);
+
+          valores.forEach(valor => {
+            const div = document.createElement("div");
+            div.className = "item";
+
+            // YouTube
+            if (typeof valor === "string" && valor.includes("youtube.com")) {
+              const iframe = document.createElement("iframe");
+              iframe.src = valor.replace("watch?v=", "embed/");
+              iframe.width = "560";
+              iframe.height = "315";
+              iframe.allowFullscreen = true;
+              div.appendChild(iframe);
+
+            // Google Drive imagen
+            } else if (typeof valor === "string" && valor.includes("drive.google.com")) {
+              const img = document.createElement("img");
+              img.src = driveToImage(valor);
+              img.loading = "lazy";
+              div.appendChild(img);
+
+            // Texto normal
+            } else {
+              div.textContent = valor;
+            }
+
+            section.appendChild(div);
+          });
+
+          contenedor.appendChild(section);
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Error cargando datos");
+      });
+
+    function driveToImage(url) {
+      const match = url.match(/\/d\/([^/]+)/);
+      return match
+        ? `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`
+        : url;
+    }
+  </script>
+
+</body>
+</html>
