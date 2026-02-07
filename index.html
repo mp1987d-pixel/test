@@ -123,16 +123,23 @@ body {
   z-index: 1000;
   inset: 0;
   background: rgba(0,0,0,0.8);
+
+  /* 🔑 CLAVE: scroll del modal */
+  overflow-y: auto;
 }
 
 .modal-content {
   background: #fff;
-  margin: 50px auto;
+  margin: 40px auto;
   padding: 20px;
   border-radius: 12px;
   max-width: 800px;
   width: 90%;
   text-align: center;
+
+  /* 🔑 CLAVE: que no se pase de pantalla */
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
 }
 
 .modal-content img {
@@ -144,12 +151,12 @@ body {
 }
 
 .close {
-  position: absolute;
-  top: 15px;
-  right: 25px;
+  position: sticky;
+  top: 0;
+  float: right;
   font-size: 28px;
   font-weight: bold;
-  color: #fff;
+  color: #333;
   cursor: pointer;
 }
 
@@ -161,6 +168,7 @@ body {
   text-decoration: none;
   border-radius: 8px;
   font-weight: bold;
+  margin-top: 15px;
 }
 
 /* ================= FOOTER ================= */
@@ -217,7 +225,7 @@ fetch(API_URL)
 
       const modalId = `modal_${index}`;
 
-      /* CARD */
+      // CARD
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -228,7 +236,7 @@ fetch(API_URL)
       `;
       cards.appendChild(card);
 
-      /* MODAL */
+      // MODAL
       const modal = document.createElement("div");
       modal.className = "modal";
       modal.id = modalId;
@@ -239,7 +247,6 @@ fetch(API_URL)
           <h2>${fila.titulo}</h2>
           <p>${fila.descripcion || ""}</p>
           ${fila.video ? `<iframe src="${fila.video}" width="100%" height="315" allowfullscreen></iframe>` : ""}
-          <br><br>
           <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
             Contactar por WhatsApp
           </a>
@@ -249,23 +256,29 @@ fetch(API_URL)
     });
 
     activarModales();
-  })
-  .catch(err => console.error("Error cargando datos", err));
+  });
 
 function activarModales() {
   document.querySelectorAll(".open-modal").forEach(btn => {
-    btn.onclick = () =>
+    btn.onclick = () => {
       document.getElementById(btn.dataset.modal).style.display = "block";
+      document.body.style.overflow = "hidden";
+    };
   });
 
   document.querySelectorAll(".close").forEach(btn => {
-    btn.onclick = () =>
+    btn.onclick = () => {
       btn.closest(".modal").style.display = "none";
+      document.body.style.overflow = "";
+    };
   });
 
   window.onclick = e => {
     document.querySelectorAll(".modal").forEach(m => {
-      if (e.target === m) m.style.display = "none";
+      if (e.target === m) {
+        m.style.display = "none";
+        document.body.style.overflow = "";
+      }
     });
   };
 }
