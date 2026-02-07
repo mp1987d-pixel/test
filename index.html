@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-/* ================= RESET ================= */
 * { box-sizing: border-box; }
 
 body {
@@ -30,13 +29,6 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.socials a {
-  margin-left: 15px;
-  text-decoration: none;
-  color: #333;
-  font-size: 0.9rem;
 }
 
 /* ================= HERO ================= */
@@ -159,10 +151,6 @@ body {
 <header class="main-header">
   <div class="header-container">
     <h2>ArgentinaGo</h2>
-    <div class="socials">
-      <a href="#">Instagram</a>
-      <a href="#">Facebook</a>
-    </div>
   </div>
 </header>
 
@@ -192,27 +180,38 @@ fetch(API_URL)
   .then(data => {
     const cards = document.getElementById("cards");
     const modals = document.getElementById("modals");
-    const columnas = {};
+    const cols = {};
 
-    // Agrupar por columna
+    // Agrupar por nombre de columna
     data.forEach(fila => {
-      Object.entries(fila).forEach(([col, val]) => {
-        if (!val) return;
-        columnas[col] = columnas[col] || [];
-        columnas[col].push(val);
+      Object.entries(fila).forEach(([k, v]) => {
+        if (!v) return;
+        cols[k] = cols[k] || [];
+        cols[k].push(v);
       });
     });
 
-    Object.entries(columnas).forEach(([nombre, valores], i) => {
+    const destino   = cols["Destino"] || [];
+    const corta     = cols["Descripcion corta"] || [];
+    const larga     = cols["Descripcion larga"] || [];
+    const imagen    = cols["Imagen"] || [];
+    const video     = cols["Video"] || [];
+    const whatsapp  = cols["WhatsApp"] || [];
+
+    destino.forEach((_, i) => {
       const modalId = "modal_" + i;
+
+      const img = imagen[i] || "img/default.jpg";
+      const vid = video[i] || "";
+      const wa  = whatsapp[i] || "#";
 
       // CARD
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <img src="${driveToImage(valores[3])}">
-        <h3>${valores[0]}</h3>
-        <p>${valores[1]}</p>
+        <img src="${img}">
+        <h3>${destino[i]}</h3>
+        <p>${corta[i]}</p>
         <button class="open-modal" data-modal="${modalId}">Ver más</button>
       `;
       cards.appendChild(card);
@@ -224,11 +223,18 @@ fetch(API_URL)
       modal.innerHTML = `
         <div class="modal-content">
           <span class="close">&times;</span>
-          <img src="${driveToImage(valores[3])}">
-          <h2>${valores[0]}</h2>
-          <p>${valores[2]}</p>
-          ${valores[4] ? `<iframe src="${valores[4]}" width="100%" height="315" allowfullscreen></iframe>` : ""}
-          <a href="${valores[5]}" target="_blank" class="whatsapp-btn">Contactar por WhatsApp</a>
+          <img src="${img}">
+          <h2>${destino[i]}</h2>
+          <p>${larga[i]}</p>
+          ${
+            vid
+              ? `<iframe src="${vid.replace("watch?v=", "embed/")}"
+                  width="100%" height="315" allowfullscreen></iframe>`
+              : ""
+          }
+          <a href="${wa}" target="_blank" class="whatsapp-btn">
+            Contactar por WhatsApp
+          </a>
         </div>
       `;
       modals.appendChild(modal);
@@ -238,29 +244,20 @@ fetch(API_URL)
   });
 
 function activarModales() {
-  document.querySelectorAll(".open-modal").forEach(btn => {
-    btn.onclick = () =>
-      document.getElementById(btn.dataset.modal).style.display = "block";
-  });
+  document.querySelectorAll(".open-modal").forEach(b =>
+    b.onclick = () =>
+      document.getElementById(b.dataset.modal).style.display = "block"
+  );
 
-  document.querySelectorAll(".close").forEach(btn => {
-    btn.onclick = () => btn.closest(".modal").style.display = "none";
-  });
+  document.querySelectorAll(".close").forEach(b =>
+    b.onclick = () => b.closest(".modal").style.display = "none"
+  );
 
-  window.onclick = e => {
+  window.onclick = e =>
     document.querySelectorAll(".modal").forEach(m => {
       if (e.target === m) m.style.display = "none";
     });
-  };
 }
-
- function driveToImage(url) {
-      const match = url.match(/\/d\/([^/]+)/);
-      return match
-        ? `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`
-        : url;
-    }
-
 </script>
 
 </body>
