@@ -185,6 +185,14 @@ body::before {
   text-align: center;
   padding: 20px;
 }
+
+    @media (max-width: 768px) {
+  body {
+    background-attachment: scroll; /* clave */
+    background-size: cover;        /* se recorta, no se estira */
+    background-position: center center;
+  }
+}
   </style>
 </head>
 
