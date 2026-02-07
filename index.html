@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
+/* ================= RESET ================= */
 * { box-sizing: border-box; }
 
 body {
@@ -29,6 +30,13 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.socials a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
 }
 
 /* ================= HERO ================= */
@@ -60,6 +68,11 @@ body {
   border-radius: 12px;
 }
 
+.section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -80,6 +93,15 @@ body {
   object-fit: cover;
 }
 
+.card h3 {
+  margin: 15px 0 10px;
+}
+
+.card p {
+  padding: 0 15px;
+  font-size: 0.95rem;
+}
+
 .card button {
   margin: 15px 0 20px;
   padding: 10px 20px;
@@ -88,6 +110,10 @@ body {
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
+}
+
+.card button:hover {
+  background: #005fa3;
 }
 
 /* ================= MODAL ================= */
@@ -114,6 +140,7 @@ body {
   max-height: 400px;
   object-fit: cover;
   border-radius: 8px;
+  margin-bottom: 15px;
 }
 
 .close {
@@ -151,6 +178,10 @@ body {
 <header class="main-header">
   <div class="header-container">
     <h2>ArgentinaGo</h2>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+    </div>
   </div>
 </header>
 
@@ -176,54 +207,50 @@ body {
 const API_URL = "https://script.google.com/macros/s/AKfycbx-s0cXfwItPln6QMmtHLtRMmtGiUSjc0fx9SLM6kfNC8en_HTZnl0GdIwuDn3Eb6C_yQ/exec";
 
 fetch(API_URL)
-  .then(r => r.json())
+  .then(res => res.json())
   .then(data => {
     const cards = document.getElementById("cards");
     const modals = document.getElementById("modals");
-    const columnas = {};
 
-    // Agrupar por columna
-    data.forEach(fila => {
-      Object.entries(fila).forEach(([col, val]) => {
-        if (!val) return;
-        columnas[col] = columnas[col] || [];
-        columnas[col].push(val);
-      });
-    });
+    data.forEach((fila, index) => {
+      if (!fila.titulo || !fila.imagen) return;
 
-    Object.entries(columnas).forEach(([_, valores], i) => {
-      const modalId = "modal_" + i;
+      const modalId = `modal_${index}`;
 
-      // CARD
+      /* CARD */
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <img src="${valores[3]}" loading="lazy">
-        <h3>${valores[1]}</h3>
-        <p>${valores[2]}</p>
+        <img src="${fila.imagen}" alt="${fila.titulo}">
+        <h3>${fila.titulo}</h3>
+        <p>${fila.descripcion || ""}</p>
         <button class="open-modal" data-modal="${modalId}">Ver más</button>
       `;
       cards.appendChild(card);
 
-      // MODAL
+      /* MODAL */
       const modal = document.createElement("div");
       modal.className = "modal";
       modal.id = modalId;
       modal.innerHTML = `
         <div class="modal-content">
           <span class="close">&times;</span>
-          <img src="${valores[3]}" loading="lazy">
-          <h2>${valores[1]}</h2>
-          <p>${valores[2]}</p>
-          ${valores[4] ? `<iframe src="${valores[4]}" width="100%" height="315" allowfullscreen></iframe>` : ""}
-          ${valores[5] ? `<a href="${valores[5]}" target="_blank" class="whatsapp-btn">Contactar por WhatsApp</a>` : ""}
+          <img src="${fila.imagen}" alt="${fila.titulo}">
+          <h2>${fila.titulo}</h2>
+          <p>${fila.descripcion || ""}</p>
+          ${fila.video ? `<iframe src="${fila.video}" width="100%" height="315" allowfullscreen></iframe>` : ""}
+          <br><br>
+          <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
+            Contactar por WhatsApp
+          </a>
         </div>
       `;
       modals.appendChild(modal);
     });
 
     activarModales();
-  });
+  })
+  .catch(err => console.error("Error cargando datos", err));
 
 function activarModales() {
   document.querySelectorAll(".open-modal").forEach(btn => {
@@ -232,7 +259,8 @@ function activarModales() {
   });
 
   document.querySelectorAll(".close").forEach(btn => {
-    btn.onclick = () => btn.closest(".modal").style.display = "none";
+    btn.onclick = () =>
+      btn.closest(".modal").style.display = "none";
   });
 
   window.onclick = e => {
