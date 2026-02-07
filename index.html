@@ -1,116 +1,265 @@
 <!DOCTYPE html>
-<!-- pagina GitHub Pages inicial -->
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Destinos publicitarios</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ArgentinaGo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    section {
-      margin-bottom: 32px;
-      border: 2px solid #ddd;
-      padding: 16px;
-      border-radius: 8px;
-    }
-    section h2 {
-      margin-top: 0;
-      text-transform: capitalize;
-    }
-    .item {
-      margin-bottom: 12px;
-      padding-bottom: 12px;
-      border-bottom: 1px dashed #ccc;
-    }
-    img, iframe {
-      display: block;
-      max-width: 100%;
-      margin-top: 6px;
-      border-radius: 4px;
-    }
+/* ================= RESET ================= */
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-image: url("img/fondo.jpeg");
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+/* ================= HEADER ================= */
+.main-header {
+  background: #ffffff;
+  padding: 15px 30px;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.socials a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+/* ================= HERO ================= */
+.hero {
+  width: 100%;
+  height: 70vh;
+  background-image: url("img/frente.jpg");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  background: rgba(0,0,0,0.45);
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+/* ================= SECTION ================= */
+.section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 12px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+}
+
+.card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card button {
+  margin: 15px 0 20px;
+  padding: 10px 20px;
+  border: none;
+  background: #0077cc;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ================= MODAL ================= */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  background: #fff;
+  margin: 50px auto;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  text-align: center;
+}
+
+.modal-content img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  cursor: pointer;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background: #25D366;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+/* ================= FOOTER ================= */
+.main-footer {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
   </style>
 </head>
+
 <body>
 
-  <h1>Destinos publicitarios</h1>
-  <div id="contenedor"></div>
+<header class="main-header">
+  <div class="header-container">
+    <h2>ArgentinaGo</h2>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+    </div>
+  </div>
+</header>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbx-s0cXfwItPln6QMmtHLtRMmtGiUSjc0fx9SLM6kfNC8en_HTZnl0GdIwuDn3Eb6C_yQ/exec";
+<section class="hero">
+  <div class="hero-content">
+    <h1>Descubrí Argentina</h1>
+    <p>Experiencias únicas pensadas para turistas europeos</p>
+  </div>
+</section>
 
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => {
-        const contenedor = document.getElementById("contenedor");
-        const agrupado = {};
+<section class="section">
+  <h2>Destinos destacados</h2>
+  <div class="cards" id="cards"></div>
+</section>
 
-        // 1️⃣ Agrupar por columna (ignorando celdas vacías)
-        data.forEach(fila => {
-          Object.entries(fila).forEach(([columna, valor]) => {
-            if (!valor || String(valor).trim() === "") return;
+<div id="modals"></div>
 
-            if (!agrupado[columna]) {
-              agrupado[columna] = [];
-            }
-            agrupado[columna].push(valor);
-          });
-        });
+<footer class="main-footer">
+  <p>© 2026 Viajes Argentina · Turismo receptivo</p>
+</footer>
 
-        // 2️⃣ Renderizar
-        Object.entries(agrupado).forEach(([columna, valores]) => {
-          if (valores.length === 0) return;
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbx-s0cXfwItPln6QMmtHLtRMmtGiUSjc0fx9SLM6kfNC8en_HTZnl0GdIwuDn3Eb6C_yQ/exec";
 
-          const section = document.createElement("section");
+fetch(API_URL)
+  .then(r => r.json())
+  .then(data => {
+    const cards = document.getElementById("cards");
+    const modals = document.getElementById("modals");
+    const columnas = {};
 
-          const h2 = document.createElement("h2");
-          h2.textContent = columna;
-          section.appendChild(h2);
-
-          valores.forEach(valor => {
-            const div = document.createElement("div");
-            div.className = "item";
-
-            // YouTube
-            if (typeof valor === "string" && valor.includes("youtube.com")) {
-              const iframe = document.createElement("iframe");
-              iframe.src = valor.replace("watch?v=", "embed/");
-              iframe.width = "560";
-              iframe.height = "315";
-              iframe.allowFullscreen = true;
-              div.appendChild(iframe);
-
-            // Google Drive imagen
-            } else if (typeof valor === "string" && valor.includes("drive.google.com")) {
-              const img = document.createElement("img");
-              img.src = driveToImage(valor);
-              img.loading = "lazy";
-              div.appendChild(img);
-
-            // Texto normal
-            } else {
-              div.textContent = valor;
-            }
-
-            section.appendChild(div);
-          });
-
-          contenedor.appendChild(section);
-        });
-      })
-      .catch(err => {
-        console.error(err);
-        alert("Error cargando datos");
+    // Agrupar por columna
+    data.forEach(fila => {
+      Object.entries(fila).forEach(([col, val]) => {
+        if (!val) return;
+        columnas[col] = columnas[col] || [];
+        columnas[col].push(val);
       });
+    });
 
-    function driveToImage(url) {
-      const match = url.match(/\/d\/([^/]+)/);
-      return match
-        ? `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`
-        : url;
-    }
-  </script>
+    Object.entries(columnas).forEach(([nombre, valores], i) => {
+      const modalId = "modal_" + i;
+
+      // CARD
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${driveToImage(valores[3])}">
+        <h3>${valores[0]}</h3>
+        <p>${valores[1]}</p>
+        <button class="open-modal" data-modal="${modalId}">Ver más</button>
+      `;
+      cards.appendChild(card);
+
+      // MODAL
+      const modal = document.createElement("div");
+      modal.className = "modal";
+      modal.id = modalId;
+      modal.innerHTML = `
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <img src="${driveToImage(valores[3])}">
+          <h2>${valores[0]}</h2>
+          <p>${valores[2]}</p>
+          ${valores[4] ? `<iframe src="${valores[4]}" width="100%" height="315" allowfullscreen></iframe>` : ""}
+          <a href="${valores[5]}" target="_blank" class="whatsapp-btn">Contactar por WhatsApp</a>
+        </div>
+      `;
+      modals.appendChild(modal);
+    });
+
+    activarModales();
+  });
+
+function activarModales() {
+  document.querySelectorAll(".open-modal").forEach(btn => {
+    btn.onclick = () =>
+      document.getElementById(btn.dataset.modal).style.display = "block";
+  });
+
+  document.querySelectorAll(".close").forEach(btn => {
+    btn.onclick = () => btn.closest(".modal").style.display = "none";
+  });
+
+  window.onclick = e => {
+    document.querySelectorAll(".modal").forEach(m => {
+      if (e.target === m) m.style.display = "none";
+    });
+  };
+}
+
+function driveToImage(url) {
+  if (!url) return "";
+  const m = url.match(/\/d\/([^/]+)/);
+  return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1200` : url;
+}
+</script>
 
 </body>
 </html>
