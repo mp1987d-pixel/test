@@ -13,22 +13,23 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
 
-  /* Color base tipo lago tropical */
-  background-color: #64c5f6;
+  /* Color base: azul noche elegante */
+  background-color: #0b1d3a;
 
-  /* Ondas como oleaje usando gradientes */
+  /* Ondas/reflejos estilo noche estrellada */
   background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255,255,255,0.15) 0%, transparent 25%),
-    radial-gradient(circle at 80% 40%, rgba(255,255,255,0.15) 0%, transparent 25%),
-    radial-gradient(circle at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 25%);
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, transparent 30%),
+    radial-gradient(circle at 70% 50%, rgba(255,255,255,0.06) 0%, transparent 30%),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.07) 0%, transparent 30%);
 
-  background-size: 200px 200px, 300px 300px, 250px 250px;
+  background-size: 250px 250px, 300px 300px, 200px 200px;
   background-repeat: repeat;
   background-attachment: scroll;
 
-  /* Suaviza las transiciones y mezcla de capas */
+  /* Mezcla para efecto más natural */
   background-blend-mode: overlay;
 }
+
 /* ================= HEADER ================= */
 .main-header {
   background: #ffffff;
