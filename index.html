@@ -14,22 +14,19 @@ body {
   font-family: Arial, sans-serif;
 
   /* Color base tipo lago tropical */
-  background-color: #4dd2c9; /* azul claro elegante */
+  background-color: #64c5f6;
 
-  /* Textura sutil tipo agua */
+  /* Ondas como oleaje usando gradientes */
   background-image: 
-    radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
-    linear-gradient(135deg, rgba(255,255,255,0.02) 25%, transparent 25%,
-                    transparent 50%, rgba(255,255,255,0.02) 50%,
-                    rgba(255,255,255,0.02) 75%, transparent 75%, transparent);
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,0.15) 0%, transparent 25%),
+    radial-gradient(circle at 80% 40%, rgba(255,255,255,0.15) 0%, transparent 25%),
+    radial-gradient(circle at 50% 80%, rgba(255,255,255,0.15) 0%, transparent 25%);
 
-  background-size: 20px 20px, 40px 40px;
-
-  /* Repetir textura y sin scroll raro */
+  background-size: 200px 200px, 300px 300px, 250px 250px;
   background-repeat: repeat;
   background-attachment: scroll;
 
-  /* Mezcla suave de colores para más elegancia */
+  /* Suaviza las transiciones y mezcla de capas */
   background-blend-mode: overlay;
 }
 /* ================= HEADER ================= */
