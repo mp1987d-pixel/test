@@ -12,17 +12,10 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: none;
-}
-
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
   background-image: url("img/fondo.jpeg");
   background-size: cover;
   background-position: center;
-  z-index: -1;
+  background-attachment: fixed;
 }
 
 /* ================= HEADER ================= */
@@ -188,15 +181,29 @@ body::before {
 
     @media (max-width: 768px) {
   body {
-    background-attachment: scroll; /* clave */
-    background-size: cover;        /* se recorta, no se estira */
-    background-position: center center;
+    background: none; /* 🔴 clave */
+  }
+
+  .bg-mobile {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+
+    background-image: url("img/fondo.jpeg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    transform: translateZ(0); /* fuerza capa GPU */
+    will-change: transform;
   }
 }
+
   </style>
 </head>
 
 <body>
+<div class="bg-mobile"></div>
 
 <header class="main-header">
   <div class="header-container">
