@@ -180,38 +180,27 @@ fetch(API_URL)
   .then(data => {
     const cards = document.getElementById("cards");
     const modals = document.getElementById("modals");
-    const cols = {};
+    const columnas = {};
 
-    // Agrupar por nombre de columna
+    // Agrupar por columna
     data.forEach(fila => {
-      Object.entries(fila).forEach(([k, v]) => {
-        if (!v) return;
-        cols[k] = cols[k] || [];
-        cols[k].push(v);
+      Object.entries(fila).forEach(([col, val]) => {
+        if (!val) return;
+        columnas[col] = columnas[col] || [];
+        columnas[col].push(val);
       });
     });
 
-    const destino   = cols["Destino"] || [];
-    const corta     = cols["Descripcion corta"] || [];
-    const larga     = cols["Descripcion larga"] || [];
-    const imagen    = cols["Imagen"] || [];
-    const video     = cols["Video"] || [];
-    const whatsapp  = cols["WhatsApp"] || [];
-
-    destino.forEach((_, i) => {
+    Object.entries(columnas).forEach(([_, valores], i) => {
       const modalId = "modal_" + i;
-
-      const img = imagen[i] || "img/default.jpg";
-      const vid = video[i] || "";
-      const wa  = whatsapp[i] || "#";
 
       // CARD
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <img src="${img}">
-        <h3>${destino[i]}</h3>
-        <p>${corta[i]}</p>
+        <img src="${valores[3]}" loading="lazy">
+        <h3>${valores[0]}</h3>
+        <p>${valores[1]}</p>
         <button class="open-modal" data-modal="${modalId}">Ver más</button>
       `;
       cards.appendChild(card);
@@ -223,18 +212,11 @@ fetch(API_URL)
       modal.innerHTML = `
         <div class="modal-content">
           <span class="close">&times;</span>
-          <img src="${img}">
-          <h2>${destino[i]}</h2>
-          <p>${larga[i]}</p>
-          ${
-            vid
-              ? `<iframe src="${vid.replace("watch?v=", "embed/")}"
-                  width="100%" height="315" allowfullscreen></iframe>`
-              : ""
-          }
-          <a href="${wa}" target="_blank" class="whatsapp-btn">
-            Contactar por WhatsApp
-          </a>
+          <img src="${valores[3]}" loading="lazy">
+          <h2>${valores[0]}</h2>
+          <p>${valores[2]}</p>
+          ${valores[4] ? `<iframe src="${valores[4]}" width="100%" height="315" allowfullscreen></iframe>` : ""}
+          ${valores[5] ? `<a href="${valores[5]}" target="_blank" class="whatsapp-btn">Contactar por WhatsApp</a>` : ""}
         </div>
       `;
       modals.appendChild(modal);
@@ -244,19 +226,20 @@ fetch(API_URL)
   });
 
 function activarModales() {
-  document.querySelectorAll(".open-modal").forEach(b =>
-    b.onclick = () =>
-      document.getElementById(b.dataset.modal).style.display = "block"
-  );
+  document.querySelectorAll(".open-modal").forEach(btn => {
+    btn.onclick = () =>
+      document.getElementById(btn.dataset.modal).style.display = "block";
+  });
 
-  document.querySelectorAll(".close").forEach(b =>
-    b.onclick = () => b.closest(".modal").style.display = "none"
-  );
+  document.querySelectorAll(".close").forEach(btn => {
+    btn.onclick = () => btn.closest(".modal").style.display = "none";
+  });
 
-  window.onclick = e =>
+  window.onclick = e => {
     document.querySelectorAll(".modal").forEach(m => {
       if (e.target === m) m.style.display = "none";
     });
+  };
 }
 </script>
 
