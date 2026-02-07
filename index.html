@@ -12,10 +12,10 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-image: url("img/fondo.jpeg");
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
+  background-color: #f5f1ea;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
+  background-size: 6px 6px;
 }
 
 /* ================= HEADER ================= */
@@ -179,31 +179,12 @@ body {
   padding: 20px;
 }
 
-    @media (max-width: 768px) {
-  body {
-    background: none; /* 🔴 clave */
-  }
-
-  .bg-mobile {
-    position: fixed;
-    inset: 0;
-    z-index: -1;
-
-    background-image: url("img/fondo.jpeg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    transform: translateZ(0); /* fuerza capa GPU */
-    will-change: transform;
-  }
-}
+    
 
   </style>
 </head>
 
 <body>
-<div class="bg-mobile"></div>
 
 <header class="main-header">
   <div class="header-container">
