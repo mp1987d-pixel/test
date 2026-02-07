@@ -12,10 +12,17 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background: none;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
   background-image: url("img/fondo.jpeg");
   background-size: cover;
-  background-attachment: scroll;
   background-position: center;
+  z-index: -1;
 }
 
 /* ================= HEADER ================= */
