@@ -255,9 +255,10 @@ function activarModales() {
 }
 
 function driveToImage(url) {
-  if (!url) return "";
   const m = url.match(/\/d\/([^/]+)/);
-  return m ? `https://drive.google.com/thumbnail?id=${m[1]}&sz=w1200` : url;
+  return m
+    ? `https://drive.google.com/uc?export=view&id=${m[1]}`
+    : url;
 }
 </script>
 
