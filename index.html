@@ -254,23 +254,13 @@ function activarModales() {
   };
 }
 
-function driveToImage(url) {
-  if (!url || typeof url !== "string") return "";
+ function driveToImage(url) {
+      const match = url.match(/\/d\/([^/]+)/);
+      return match
+        ? `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`
+        : url;
+    }
 
-  // Caso 1: link tipo /file/d/ID/view
-  let match = url.match(/\/d\/([^/]+)/);
-  if (match) {
-    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`;
-  }
-
-  // Caso 2: link tipo ?id=ID
-  match = url.match(/[?&]id=([^&]+)/);
-  if (match) {
-    return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w1200`;
-  }
-
-  return url;
-}
 </script>
 
 </body>
