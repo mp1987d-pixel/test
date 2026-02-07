@@ -12,10 +12,25 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f5f1ea;
-  background-image:
-    radial-gradient(rgba(0,0,0,0.03) 1px, transparent 1px);
-  background-size: 6px 6px;
+
+  /* Color base majenta */
+  background-color: #b3478f;
+
+  /* Textura sutil tipo agua */
+  background-image: 
+    radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(135deg, rgba(255,255,255,0.02) 25%, transparent 25%,
+                    transparent 50%, rgba(255,255,255,0.02) 50%,
+                    rgba(255,255,255,0.02) 75%, transparent 75%, transparent);
+
+  background-size: 20px 20px, 40px 40px;
+
+  /* Siempre cubrir todo y sin scroll molesto */
+  background-repeat: repeat;
+  background-attachment: scroll;
+
+  /* Opcional: suaviza el color */
+  background-blend-mode: overlay;
 }
 
 /* ================= HEADER ================= */
