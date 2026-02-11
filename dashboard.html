@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Prueba PIN</title>
+<title>Dashboard</title>
 <style>
   body { font-family: Arial; }
 
@@ -29,6 +28,33 @@
     border-radius: 8px;
     text-align: center;
   }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 15px;
+    background: white;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background: #eee;
+  }
+
+  button {
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+
+  .nuevo-btn {
+    margin-bottom: 15px;
+  }
+
 </style>
 </head>
 <body>
@@ -44,12 +70,25 @@
 </div>
 
 <div id="contenido">
-  <h1>Dashboard desbloqueado</h1>
-  <p>Si estás viendo esto, el PIN fue correcto.</p>
+  <h1>Dashboard</h1>
+
+  <h2>Destinos</h2>
+  <button class="nuevo-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfLOQEkERoS7b55LIoju9FyDpUI7uDwj-Kym3A3Yr5sLosYLQ/viewform?usp=header','_blank')">
+    Nuevo destino
+  </button>
+  <div id="tabla-destinos"></div>
+
+  <h2>Tasa de cambio</h2>
+  <div id="tabla-cambio"></div>
+
 </div>
 
 <script>
+
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzheF1cpMWiw5adHj_lrXYHfrmaL9OMixADOatCoT3-ZC0Xd-L-nF29RQdO2lVmNkKQ/exec";
+
+const URL_DESTINOS = "https://script.google.com/macros/s/AKfycbzeesMBcTTx-iawcu6-144oaAmHje-4fGDzw4GPtQkTqePlVNSc0ch5KJIOySfAnmY/exec";
+const URL_CAMBIO = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
 
 function validar() {
   const pin = document.getElementById("pin").value;
@@ -63,6 +102,7 @@ function validar() {
     if (data.ok) {
       document.getElementById("modal").style.display = "none";
       document.getElementById("contenido").style.display = "block";
+      cargarDatos();
     } else {
       document.getElementById("error").innerText = "PIN incorrecto";
     }
@@ -71,6 +111,60 @@ function validar() {
     document.getElementById("error").innerText = "Error de conexión";
   });
 }
+
+function cargarDatos() {
+  cargarTabla(URL_DESTINOS, "tabla-destinos");
+  cargarTabla(URL_CAMBIO, "tabla-cambio");
+}
+
+function cargarTabla(url, contenedorId) {
+  fetch(url)
+    .then(r => r.json())
+    .then(data => {
+      if (!Array.isArray(data) || data.length === 0) {
+        document.getElementById(contenedorId).innerHTML = "Sin datos";
+        return;
+      }
+
+      const columnas = Object.keys(data[0]);
+
+      let html = "<table><thead><tr>";
+
+      columnas.forEach(col => {
+        if (col !== "editar") {
+          html += `<th>${col}</th>`;
+        }
+      });
+
+      html += "<th>Acción</th></tr></thead><tbody>";
+
+      data.forEach(fila => {
+        html += "<tr>";
+
+        columnas.forEach(col => {
+          if (col !== "editar") {
+            html += `<td>${fila[col]}</td>`;
+          }
+        });
+
+        if (fila.editar) {
+          html += `<td><button onclick="window.open('${fila.editar}','_blank')">Editar</button></td>`;
+        } else {
+          html += `<td>-</td>`;
+        }
+
+        html += "</tr>";
+      });
+
+      html += "</tbody></table>";
+
+      document.getElementById(contenedorId).innerHTML = html;
+    })
+    .catch(() => {
+      document.getElementById(contenedorId).innerHTML = "Error al cargar datos";
+    });
+}
+
 </script>
 
 </body>
