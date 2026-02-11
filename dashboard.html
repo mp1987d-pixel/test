@@ -4,57 +4,15 @@
 <meta charset="UTF-8">
 <title>Dashboard</title>
 <style>
-  body { font-family: Arial; }
-
-  #contenido {
-    display: none;
-    margin-top: 30px;
-    padding: 20px;
-    background: #f0f0f0;
-  }
-
-  #modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  #modal-box {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    margin-top: 15px;
-    background: white;
-  }
-
-  th, td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
-  }
-
-  th {
-    background: #eee;
-  }
-
-  button {
-    padding: 6px 10px;
-    cursor: pointer;
-  }
-
-  .nuevo-btn {
-    margin-bottom: 15px;
-  }
-
+body { font-family: Arial; }
+#contenido { display:none; margin-top:30px; padding:20px; background:#f0f0f0; }
+#modal { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; align-items:center; justify-content:center; }
+#modal-box { background:white; padding:20px; border-radius:8px; text-align:center; }
+table { border-collapse: collapse; width:100%; margin-top:15px; background:white; }
+th, td { border:1px solid #ccc; padding:8px; text-align:left; }
+th { background:#eee; }
+button { padding:6px 10px; cursor:pointer; }
+.nuevo-btn { margin-bottom:15px; }
 </style>
 </head>
 <body>
@@ -80,33 +38,17 @@
 
   <h2>Tasa de cambio</h2>
   <div id="tabla-cambio"></div>
-
 </div>
 
 <script>
+const URL_SCRIPT = "TU_WEB_APP_URL"; // URL del Apps Script
+const URL_DESTINOS = "URL_JSON_DESTINOS";
+const URL_CAMBIO = "URL_JSON_CAMBIO";
 
-const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzheF1cpMWiw5adHj_lrXYHfrmaL9OMixADOatCoT3-ZC0Xd-L-nF29RQdO2lVmNkKQ/exec";
-const URL_DESTINOS = "https://script.google.com/macros/s/AKfycbzeesMBcTTx-iawcu6-144oaAmHje-4fGDzw4GPtQkTqePlVNSc0ch5KJIOySfAnmY/exec";
-const URL_CAMBIO = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
-
-// caches para detectar cambios
-let destinosCache = "";
-let cambioCache = "";
-
-// Al cargar la página, chequeamos localStorage
-window.onload = () => {
-  const pinGuardado = localStorage.getItem("pinDashboard");
-  if(pinGuardado){
-    verificarPin(pinGuardado);
-  }
-}
-
+// Validar PIN y guardar en localStorage
 function validar() {
   const pin = document.getElementById("pin").value;
-  verificarPin(pin);
-}
 
-function verificarPin(pin){
   fetch(URL_SCRIPT, {
     method: "POST",
     body: new URLSearchParams({ pin: pin })
@@ -114,71 +56,99 @@ function verificarPin(pin){
   .then(r => r.json())
   .then(data => {
     if (data.ok) {
-      localStorage.setItem("pinDashboard", pin); // guardamos en localStorage
+      localStorage.setItem("dashboardPin", pin);
       document.getElementById("modal").style.display = "none";
       document.getElementById("contenido").style.display = "block";
       cargarDatos();
-      // iniciar auto refresco
-      setInterval(cargarDatos, 30000);
+      setInterval(checkUpdates, 30000); // chequea cambios cada 30s
     } else {
       document.getElementById("error").innerText = "PIN incorrecto";
-      localStorage.removeItem("pinDashboard");
     }
   })
-  .catch(() => {
-    document.getElementById("error").innerText = "Error de conexión";
+  .catch(()=>document.getElementById("error").innerText = "Error de conexión");
+}
+
+// Si ya hay PIN en localStorage
+window.onload = () => {
+  const storedPin = localStorage.getItem("dashboardPin");
+  if (storedPin) {
+    document.getElementById("modal").style.display = "none";
+    document.getElementById("contenido").style.display = "block";
+    cargarDatos();
+    setInterval(checkUpdates, 30000);
+  }
+};
+
+let cacheDestinos = [];
+let cacheCambio = [];
+let pendingEdit = null; // {id, editUrl}
+
+function cargarDatos() {
+  cargarTabla(URL_DESTINOS, "tabla-destinos", true);
+  cargarTabla(URL_CAMBIO, "tabla-cambio", false);
+}
+
+function cargarTabla(url, contenedorId, esDestinos) {
+  fetch(url).then(r=>r.json()).then(data=>{
+    if (!Array.isArray(data) || data.length===0) {
+      document.getElementById(contenedorId).innerHTML = "Sin datos";
+      return;
+    }
+
+    if(esDestinos) cacheDestinos = JSON.stringify(data);
+    else cacheCambio = JSON.stringify(data);
+
+    const columnas = Object.keys(data[0]);
+    let html = "<table><thead><tr>";
+    columnas.forEach(col=>{ if(col!=="editar") html+=`<th>${col}</th>`; });
+    html+="<th>Acción</th></tr></thead><tbody>";
+
+    data.forEach(fila=>{
+      html+="<tr>";
+      columnas.forEach(col=>{ if(col!=="editar") html+=`<td>${fila[col]}</td>`; });
+
+      if(fila.editar) {
+        html+=`<td><button onclick="editarFila('${fila.id}','${fila.editar}')">Editar</button></td>`;
+      } else {
+        html+=`<td>-</td>`;
+      }
+
+      html+="</tr>";
+    });
+
+    html+="</tbody></table>";
+    document.getElementById(contenedorId).innerHTML = html;
   });
 }
 
-function cargarDatos() {
-  cargarTabla(URL_DESTINOS, "tabla-destinos", "destinos");
-  cargarTabla(URL_CAMBIO, "tabla-cambio", "cambio");
+// Guardar URL de edición en cache y abrir Form
+function editarFila(id, editUrl) {
+  pendingEdit = {id, editUrl};
+  window.open(editUrl, "_blank");
 }
 
-function cargarTabla(url, contenedorId, tipo) {
-  fetch(url)
-    .then(r => r.json())
-    .then(data => {
+// Chequea cambios y si hay pendingEdit envía URL al Apps Script
+function checkUpdates() {
+  fetch(URL_DESTINOS).then(r=>r.json()).then(data=>{
+    if(JSON.stringify(data)!==cacheDestinos) {
+      cargarTabla(URL_DESTINOS,"tabla-destinos",true);
+    }
+  });
+  fetch(URL_CAMBIO).then(r=>r.json()).then(data=>{
+    if(JSON.stringify(data)!==cacheCambio) {
+      cargarTabla(URL_CAMBIO,"tabla-cambio",false);
+    }
+  });
 
-      const dataString = JSON.stringify(data);
-      if(tipo === "destinos" && dataString === destinosCache) return;
-      if(tipo === "cambio" && dataString === cambioCache) return;
-
-      if(tipo === "destinos") destinosCache = dataString;
-      if(tipo === "cambio") cambioCache = dataString;
-
-      if (!Array.isArray(data) || data.length === 0) {
-        document.getElementById(contenedorId).innerHTML = "Sin datos";
-        return;
-      }
-
-      const columnas = Object.keys(data[0]);
-      let html = "<table><thead><tr>";
-
-      columnas.forEach(col => {
-        if(col !== "editar") html += `<th>${col}</th>`;
-      });
-      html += "<th>Acción</th></tr></thead><tbody>";
-
-      data.forEach(fila => {
-        html += "<tr>";
-        columnas.forEach(col => {
-          if(col !== "editar") html += `<td>${fila[col]}</td>`;
-        });
-        if(fila.editar) html += `<td><button onclick=\"window.open('${fila.editar}','_blank')\">Editar</button></td>`;
-        else html += "<td>-</td>";
-        html += "</tr>";
-      });
-
-      html += "</tbody></table>";
-      document.getElementById(contenedorId).innerHTML = html;
-
-    })
-    .catch(() => {
-      document.getElementById(contenedorId).innerHTML = "Error al cargar datos";
-    });
+  // Si hay una edición pendiente, enviar URL + ID al Apps Script
+  if(pendingEdit) {
+    setTimeout(()=>{
+      const params = new URLSearchParams({id: pendingEdit.id, editUrl: pendingEdit.editUrl});
+      fetch(URL_SCRIPT, {method:"POST", body:params})
+        .then(r=>r.json()).then(()=>{ pendingEdit=null; cargarDatos(); });
+    }, 5000); // espera 5s para que la Sheet registre la edición
+  }
 }
-
 </script>
 
 </body>
