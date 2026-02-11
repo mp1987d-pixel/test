@@ -86,13 +86,27 @@
 <script>
 
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzheF1cpMWiw5adHj_lrXYHfrmaL9OMixADOatCoT3-ZC0Xd-L-nF29RQdO2lVmNkKQ/exec";
-
 const URL_DESTINOS = "https://script.google.com/macros/s/AKfycbzeesMBcTTx-iawcu6-144oaAmHje-4fGDzw4GPtQkTqePlVNSc0ch5KJIOySfAnmY/exec";
 const URL_CAMBIO = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
 
+// caches para detectar cambios
+let destinosCache = "";
+let cambioCache = "";
+
+// Al cargar la página, chequeamos localStorage
+window.onload = () => {
+  const pinGuardado = localStorage.getItem("pinDashboard");
+  if(pinGuardado){
+    verificarPin(pinGuardado);
+  }
+}
+
 function validar() {
   const pin = document.getElementById("pin").value;
+  verificarPin(pin);
+}
 
+function verificarPin(pin){
   fetch(URL_SCRIPT, {
     method: "POST",
     body: new URLSearchParams({ pin: pin })
@@ -100,11 +114,15 @@ function validar() {
   .then(r => r.json())
   .then(data => {
     if (data.ok) {
+      localStorage.setItem("pinDashboard", pin); // guardamos en localStorage
       document.getElementById("modal").style.display = "none";
       document.getElementById("contenido").style.display = "block";
       cargarDatos();
+      // iniciar auto refresco
+      setInterval(cargarDatos, 30000);
     } else {
       document.getElementById("error").innerText = "PIN incorrecto";
+      localStorage.removeItem("pinDashboard");
     }
   })
   .catch(() => {
@@ -113,52 +131,48 @@ function validar() {
 }
 
 function cargarDatos() {
-  cargarTabla(URL_DESTINOS, "tabla-destinos");
-  cargarTabla(URL_CAMBIO, "tabla-cambio");
+  cargarTabla(URL_DESTINOS, "tabla-destinos", "destinos");
+  cargarTabla(URL_CAMBIO, "tabla-cambio", "cambio");
 }
 
-function cargarTabla(url, contenedorId) {
+function cargarTabla(url, contenedorId, tipo) {
   fetch(url)
     .then(r => r.json())
     .then(data => {
+
+      const dataString = JSON.stringify(data);
+      if(tipo === "destinos" && dataString === destinosCache) return;
+      if(tipo === "cambio" && dataString === cambioCache) return;
+
+      if(tipo === "destinos") destinosCache = dataString;
+      if(tipo === "cambio") cambioCache = dataString;
+
       if (!Array.isArray(data) || data.length === 0) {
         document.getElementById(contenedorId).innerHTML = "Sin datos";
         return;
       }
 
       const columnas = Object.keys(data[0]);
-
       let html = "<table><thead><tr>";
 
       columnas.forEach(col => {
-        if (col !== "editar") {
-          html += `<th>${col}</th>`;
-        }
+        if(col !== "editar") html += `<th>${col}</th>`;
       });
-
       html += "<th>Acción</th></tr></thead><tbody>";
 
       data.forEach(fila => {
         html += "<tr>";
-
         columnas.forEach(col => {
-          if (col !== "editar") {
-            html += `<td>${fila[col]}</td>`;
-          }
+          if(col !== "editar") html += `<td>${fila[col]}</td>`;
         });
-
-        if (fila.editar) {
-          html += `<td><button onclick="window.open('${fila.editar}','_blank')">Editar</button></td>`;
-        } else {
-          html += `<td>-</td>`;
-        }
-
+        if(fila.editar) html += `<td><button onclick=\"window.open('${fila.editar}','_blank')\">Editar</button></td>`;
+        else html += "<td>-</td>";
         html += "</tr>";
       });
 
       html += "</tbody></table>";
-
       document.getElementById(contenedorId).innerHTML = html;
+
     })
     .catch(() => {
       document.getElementById(contenedorId).innerHTML = "Error al cargar datos";
