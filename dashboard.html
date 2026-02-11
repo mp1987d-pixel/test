@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Prueba PIN</title>
+<style>
+  body { font-family: Arial; }
+
+  #contenido {
+    display: none;
+    margin-top: 30px;
+    padding: 20px;
+    background: #f0f0f0;
+  }
+
+  #modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #modal-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div id="modal">
+  <div id="modal-box">
+    <h3>Ingresar PIN</h3>
+    <input type="password" id="pin" />
+    <br><br>
+    <button onclick="validar()">Entrar</button>
+    <p id="error" style="color:red;"></p>
+  </div>
+</div>
+
+<div id="contenido">
+  <h1>Dashboard desbloqueado</h1>
+  <p>Si estás viendo esto, el PIN fue correcto.</p>
+</div>
+
+<script>
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzheF1cpMWiw5adHj_lrXYHfrmaL9OMixADOatCoT3-ZC0Xd-L-nF29RQdO2lVmNkKQ/exec";
+
+function validar() {
+  const pin = document.getElementById("pin").value;
+
+  fetch(URL_SCRIPT, {
+    method: "POST",
+    body: new URLSearchParams({ pin: pin })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok) {
+      document.getElementById("modal").style.display = "none";
+      document.getElementById("contenido").style.display = "block";
+    } else {
+      document.getElementById("error").innerText = "PIN incorrecto";
+    }
+  })
+  .catch(() => {
+    document.getElementById("error").innerText = "Error de conexión";
+  });
+}
+</script>
+
+</body>
+</html>
