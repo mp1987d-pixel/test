@@ -4,17 +4,17 @@
 <meta charset="UTF-8">
 <title>Dashboard</title>
 <style>
-  body { font-family: Arial; }
-  #contenido { display: none; margin-top: 30px; padding: 20px; background: #f0f0f0; }
-  #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; }
-  #modal-box { background: white; padding: 20px; border-radius: 8px; text-align: center; }
-  table { border-collapse: collapse; width: 100%; margin-top: 15px; background: white; }
-  th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-  th { background: #eee; }
-  button { padding: 6px 10px; cursor: pointer; margin-right: 5px; }
-  .nuevo-btn { margin-bottom: 15px; }
-  .filtros { margin-bottom: 10px; }
-  .paginacion { margin-top: 10px; }
+body { font-family: Arial; }
+#contenido { display: none; margin-top: 30px; padding: 20px; background: #f0f0f0; }
+#modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; }
+#modal-box { background: white; padding: 20px; border-radius: 8px; text-align: center; }
+table { border-collapse: collapse; width: 100%; margin-top: 15px; background: white; }
+th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+th { background: #eee; }
+button { padding: 6px 10px; cursor: pointer; margin-right: 5px; }
+.nuevo-btn { margin-bottom: 15px; }
+.filtros { margin-bottom: 10px; }
+.paginacion { margin-top: 10px; }
 </style>
 </head>
 <body>
@@ -30,172 +30,98 @@
 </div>
 
 <div id="contenido">
-  <h1>Dashboard</h1>
+<h1>Dashboard</h1>
 
-  <h2>Destinos</h2>
-  <button class="nuevo-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfLOQEkERoS7b55LIoju9FyDpUI7uDwj-Kym3A3Yr5sLosYLQ/viewform?usp=header','_blank')">Nuevo destino</button>
+<h2>Destinos</h2>
+<button class="nuevo-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfLOQEkERoS7b55LIoju9FyDpUI7uDwj-Kym3A3Yr5sLosYLQ/viewform?usp=header','_blank')">Nuevo destino</button>
 
-  <div class="filtros">
-    <button id="btnActivos" onclick="toggleActivos()">Mostrar Activos</button>
-    <input type="text" id="inputBusqueda" placeholder="Buscar por nombre" />
-    <button onclick="aplicarBusqueda()">Buscar</button>
-  </div>
+<div class="filtros">
+<button onclick="cargarDestinos(true)">Activos</button>
+<button onclick="cargarDestinos(false)">Inactivos</button>
+<input type="text" id="busquedaTitulo" placeholder="Buscar por Título" />
+<button onclick="buscarTitulo()">Buscar</button>
+</div>
 
-  <div id="tabla-destinos"></div>
-  <div id="paginacion-destinos" class="paginacion"></div>
+<div id="tabla-destinos"></div>
+<div id="paginacion-destinos" class="paginacion"></div>
 
-  <h2>Tasa de cambio</h2>
-  <div id="tabla-cambio"></div>
+<h2>Tasa de cambio</h2>
+<div id="tabla-cambio"></div>
 
 </div>
 
 <script>
-const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzheF1cpMWiw5adHj_lrXYHfrmaL9OMixADOatCoT3-ZC0Xd-L-nF29RQdO2lVmNkKQ/exec";
 const URL_DESTINOS = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
-const URL_CAMBIO = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
-
-// caches
-let destinosCache = "";
-let cambioCache = "";
-
-// variables de filtrado y paginación
-let mostrarActivos = null; // null = todos, true/false = filtrados
-let busquedaNombre = "";
-let paginaActual = 1;
 const registrosPorPagina = 5;
+let paginaActual = 1;
+let destinosFiltrados = [];
 
-// Al cargar la página
-window.onload = () => {
-  const pinGuardado = localStorage.getItem("pinDashboard");
-  if(pinGuardado) verificarPin(pinGuardado);
-};
-
-function validar() {
-  const pin = document.getElementById("pin").value;
-  verificarPin(pin);
-}
-
-function verificarPin(pin){
-  fetch(URL_SCRIPT, { method:"POST", body:new URLSearchParams({ pin }) })
-    .then(r => r.json())
-    .then(data => {
-      if(data.ok){
-        localStorage.setItem("pinDashboard", pin);
-        document.getElementById("modal").style.display = "none";
-        document.getElementById("contenido").style.display = "block";
-        cargarDatos();
-        setInterval(cargarDatos, 30000);
-      } else {
-        document.getElementById("error").innerText = "PIN incorrecto";
-        localStorage.removeItem("pinDashboard");
-      }
-    })
-    .catch(()=>{document.getElementById("error").innerText="Error de conexión";});
-}
-
-function cargarDatos(){
-  cargarTablaDestinos();
-  cargarTabla(URL_CAMBIO, "tabla-cambio", false);
-}
-
-function toggleActivos(){
-  if(mostrarActivos === null){ mostrarActivos = true; document.getElementById("btnActivos").innerText="Mostrar Inactivos"; }
-  else if(mostrarActivos === true){ mostrarActivos = false; document.getElementById("btnActivos").innerText="Mostrar Todos"; }
-  else{ mostrarActivos = null; document.getElementById("btnActivos").innerText="Mostrar Activos"; }
-  paginaActual = 1;
-  cargarTablaDestinos();
-}
-
-function aplicarBusqueda(){
-  busquedaNombre = document.getElementById("inputBusqueda").value.trim();
-  paginaActual = 1;
-  cargarTablaDestinos();
-}
-
-function cargarTablaDestinos(){
+function cargarDestinos(activo=null){
   fetch(URL_DESTINOS)
     .then(r=>r.json())
     .then(data=>{
-      const dataString = JSON.stringify(data);
-      if(dataString === destinosCache) return;
-      destinosCache = dataString;
-
-      // filtrado
-      let filtrados = data.filter(fila => {
-        let pasaActivo = mostrarActivos===null || fila.activo===mostrarActivos;
-        let pasaBusqueda = !busquedaNombre || fila.nombre.toLowerCase().includes(busquedaNombre.toLowerCase());
-        return pasaActivo && pasaBusqueda;
-      });
-
-      // paginación
-      const totalPaginas = Math.ceil(filtrados.length/registrosPorPagina);
-      const inicio = (paginaActual-1)*registrosPorPagina;
-      const fin = inicio+registrosPorPagina;
-      const paginados = filtrados.slice(inicio, fin);
-
-      if(paginados.length===0){ document.getElementById("tabla-destinos").innerHTML="Sin datos"; document.getElementById("paginacion-destinos").innerHTML=""; return; }
-
-      const columnas = Object.keys(paginados[0]);
-      let html = "<table><thead><tr>";
-      columnas.forEach(col=>{ if(col!=="editar") html+=`<th>${col}</th>`; });
-      html+="<th>Acción</th></tr></thead><tbody>";
-
-      paginados.forEach(fila=>{
-        html+="<tr>";
-        columnas.forEach(col=>{ if(col!=="editar") html+=`<td>${fila[col]}</td>`; });
-        if(fila.editar){
-          const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
-          html+=`<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
-        } else html+="<td>-</td>";
-        html+="</tr>";
-      });
-
-      html+="</tbody></table>";
-      document.getElementById("tabla-destinos").innerHTML = html;
-
-      // paginación
-      let pagHtml = "";
-      for(let i=1;i<=totalPaginas;i++){
-        if(i===paginaActual) pagHtml+=`<b>${i}</b> `;
-        else pagHtml+=`<button onclick="paginaActual=${i};cargarTablaDestinos()">${i}</button> `;
+      if(activo!==null){
+        destinosFiltrados = data.filter(f=>f.Activo===activo);
+      } else {
+        destinosFiltrados = data;
       }
-      document.getElementById("paginacion-destinos").innerHTML = pagHtml;
-
+      paginaActual=1;
+      imprimirTablaDestinos();
     })
-    .catch(()=>{ document.getElementById("tabla-destinos").innerHTML="Error al cargar datos"; });
+    .catch(()=>document.getElementById("tabla-destinos").innerHTML="Error al cargar datos");
 }
 
-function cargarTabla(url, contenedorId, prellenar){
-  fetch(url)
+function buscarTitulo(){
+  const titulo = document.getElementById("busquedaTitulo").value.trim().toLowerCase();
+  fetch(URL_DESTINOS)
     .then(r=>r.json())
     .then(data=>{
-      const dataString = JSON.stringify(data);
-      if(prellenar && dataString===cambioCache) return;
-      if(prellenar) cambioCache=dataString;
-
-      if(!Array.isArray(data)||data.length===0){ document.getElementById(contenedorId).innerHTML="Sin datos"; return; }
-
-      const columnas = Object.keys(data[0]);
-      let html="<table><thead><tr>";
-      columnas.forEach(col=>{ if(col!=="editar") html+=`<th>${col}</th>`; });
-      html+="<th>Acción</th></tr></thead><tbody>";
-
-      data.forEach(fila=>{
-        html+="<tr>";
-        columnas.forEach(col=>{ if(col!=="editar") html+=`<td>${fila[col]}</td>`; });
-        if(fila.editar){
-          const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
-          html+=`<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
-        } else html+="<td>-</td>";
-        html+="</tr>";
-      });
-
-      html+="</tbody></table>";
-      document.getElementById(contenedorId).innerHTML = html;
-
+      destinosFiltrados = data.filter(f=>f.Título.toLowerCase().includes(titulo));
+      paginaActual=1;
+      imprimirTablaDestinos();
     })
-    .catch(()=>{ document.getElementById(contenedorId).innerHTML="Error al cargar datos"; });
+    .catch(()=>document.getElementById("tabla-destinos").innerHTML="Error al cargar datos");
 }
+
+function imprimirTablaDestinos(){
+  if(destinosFiltrados.length===0){
+    document.getElementById("tabla-destinos").innerHTML="Sin datos";
+    document.getElementById("paginacion-destinos").innerHTML="";
+    return;
+  }
+  const inicio = (paginaActual-1)*registrosPorPagina;
+  const fin = inicio+registrosPorPagina;
+  const paginados = destinosFiltrados.slice(inicio, fin);
+
+  const columnas = Object.keys(paginados[0]);
+  let html="<table><thead><tr>";
+  columnas.forEach(c=>{if(c!=="editar") html+=`<th>${c}</th>`;});
+  html+="<th>Acción</th></tr></thead><tbody>";
+
+  paginados.forEach(fila=>{
+    html+="<tr>";
+    columnas.forEach(c=>{ if(c!=="editar") html+=`<td>${fila[c]}</td>`; });
+    if(fila.editar){
+      const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
+      html+=`<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
+    } else html+="<td>-</td>";
+    html+="</tr>";
+  });
+  html+="</tbody></table>";
+  document.getElementById("tabla-destinos").innerHTML = html;
+
+  // paginación
+  const totalPaginas = Math.ceil(destinosFiltrados.length/registrosPorPagina);
+  let pagHtml="";
+  for(let i=1;i<=totalPaginas;i++){
+    if(i===paginaActual) pagHtml+=`<b>${i}</b> `;
+    else pagHtml+=`<button onclick="paginaActual=${i};imprimirTablaDestinos()">${i}</button> `;
+  }
+  document.getElementById("paginacion-destinos").innerHTML=pagHtml;
+}
+
+// Inicialmente cargo todos los destinos
+cargarDestinos();
 
 </script>
 </body>
