@@ -60,6 +60,10 @@
     margin-bottom: 10px;
   }
 
+  #paginacion {
+    margin-top: 10px;
+  }
+
 </style>
 </head>
 <body>
@@ -82,7 +86,6 @@
     Nuevo destino
   </button>
 
-  <!-- Botones de filtros y refresco -->
   <div id="filtros">
     <button onclick="cargarTablaActivos()">Activos</button>
     <button onclick="cargarTablaInactivos()">Inactivos</button>
@@ -92,6 +95,7 @@
   </div>
 
   <div id="tabla-destinos"></div>
+  <div id="paginacion"></div>
 
   <h2>Tasa de cambio</h2>
   <div id="tabla-cambio"></div>
@@ -99,15 +103,16 @@
 </div>
 
 <script>
-
 const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzheF1cpMWiw5adHj_lrXYHfrmaL9OMixADOatCoT3-ZC0Xd-L-nF29RQdO2lVmNkKQ/exec";
 const URL_DESTINOS = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
 const URL_CAMBIO = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
 
 let destinosData = [];
 let cambioData = [];
+let currentPage = 1;
+const rowsPerPage = 5;
+let filteredData = [];
 
-// Al cargar la página, chequeamos localStorage
 window.onload = () => {
   const pinGuardado = localStorage.getItem("pinDashboard");
   if(pinGuardado){
@@ -142,11 +147,13 @@ function verificarPin(pin){
   });
 }
 
-// Función que refresca todo desde el JSON
+// Refrescar toda la tabla desde JSON
 function refrescarTabla() {
   fetch(URL_DESTINOS).then(r => r.json()).then(data => {
     destinosData = data;
-    imprimirTabla(destinosData);
+    filteredData = [...destinosData];
+    currentPage = 1;
+    imprimirTablaPaginada();
   });
   fetch(URL_CAMBIO).then(r => r.json()).then(data => {
     cambioData = data;
@@ -154,59 +161,77 @@ function refrescarTabla() {
   });
 }
 
-// Filtros y búsqueda
+// Filtrar Activos
 function cargarTablaActivos() {
-  const activos = destinosData.filter(f => f.Activo === "true" || f.Activo === true);
-  imprimirTabla(activos);
+  filteredData = destinosData.filter(f => f.Activo === "true" || f.Activo === true);
+  currentPage = 1;
+  imprimirTablaPaginada();
 }
 
+// Filtrar Inactivos
 function cargarTablaInactivos() {
-  const inactivos = destinosData.filter(f => f.Activo === "false" || f.Activo === false);
-  imprimirTabla(inactivos);
+  filteredData = destinosData.filter(f => f.Activo === "false" || f.Activo === false);
+  currentPage = 1;
+  imprimirTablaPaginada();
 }
 
+// Buscar por nombre
 function buscarTabla() {
   const val = document.getElementById("buscarInput").value.toLowerCase();
-  const filtrados = destinosData.filter(f => f.Título.toLowerCase().includes(val));
-  imprimirTabla(filtrados);
+  filteredData = destinosData.filter(f => f.Título.toLowerCase().includes(val));
+  currentPage = 1;
+  imprimirTablaPaginada();
 }
 
-// Función para imprimir tabla destinos
-function imprimirTabla(data) {
-  if (!Array.isArray(data) || data.length === 0) {
+// Imprimir tabla con paginación
+function imprimirTablaPaginada() {
+  if (!Array.isArray(filteredData) || filteredData.length === 0) {
     document.getElementById("tabla-destinos").innerHTML = "Sin datos";
+    document.getElementById("paginacion").innerHTML = "";
     return;
   }
 
-  const columnas = Object.keys(data[0]);
-  let html = "<table><thead><tr>";
+  const columnas = Object.keys(filteredData[0]);
+  const start = (currentPage - 1) * rowsPerPage;
+  const end = start + rowsPerPage;
+  const pageData = filteredData.slice(start, end);
 
-  columnas.forEach(col => {
-    if(col !== "editar") html += `<th>${col}</th>`;
-  });
+  let html = "<table><thead><tr>";
+  columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
   html += "<th>Acción</th></tr></thead><tbody>";
 
-  data.forEach(fila => {
+  pageData.forEach(fila => {
     html += "<tr>";
-    columnas.forEach(col => {
-      if(col !== "editar") html += `<td>${fila[col]}</td>`;
-    });
-
+    columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
     if(fila.editar) {
       const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
       html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
     } else {
       html += "<td>-</td>";
     }
-
     html += "</tr>";
   });
 
   html += "</tbody></table>";
   document.getElementById("tabla-destinos").innerHTML = html;
+
+  // Paginación
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  let pagHtml = "";
+  for(let i=1;i<=totalPages;i++){
+    if(i===currentPage) pagHtml += `<strong>${i}</strong> `;
+    else pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button> `;
+  }
+  document.getElementById("paginacion").innerHTML = pagHtml;
 }
 
-// Función para imprimir tabla cambio
+// Cambiar página
+function cambiarPagina(page) {
+  currentPage = page;
+  imprimirTablaPaginada();
+}
+
+// Imprimir tabla de cambio
 function imprimirTablaCambio(data) {
   if (!Array.isArray(data) || data.length === 0) {
     document.getElementById("tabla-cambio").innerHTML = "Sin datos";
@@ -215,31 +240,24 @@ function imprimirTablaCambio(data) {
 
   const columnas = Object.keys(data[0]);
   let html = "<table><thead><tr>";
-  columnas.forEach(col => {
-    if(col !== "editar") html += `<th>${col}</th>`;
-  });
+  columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
   html += "<th>Acción</th></tr></thead><tbody>";
 
   data.forEach(fila => {
     html += "<tr>";
-    columnas.forEach(col => {
-      if(col !== "editar") html += `<td>${fila[col]}</td>`;
-    });
-
+    columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
     if(fila.editar) {
       const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
       html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
     } else {
       html += "<td>-</td>";
     }
-
     html += "</tr>";
   });
 
   html += "</tbody></table>";
   document.getElementById("tabla-cambio").innerHTML = html;
 }
-
 </script>
 
 </body>
