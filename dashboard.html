@@ -4,17 +4,57 @@
 <meta charset="UTF-8">
 <title>Dashboard</title>
 <style>
-body { font-family: Arial; }
-#contenido { display: none; margin-top: 30px; padding: 20px; background: #f0f0f0; }
-#modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; }
-#modal-box { background: white; padding: 20px; border-radius: 8px; text-align: center; }
-table { border-collapse: collapse; width: 100%; margin-top: 15px; background: white; }
-th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-th { background: #eee; }
-button { padding: 6px 10px; cursor: pointer; margin-right: 5px; }
-.nuevo-btn { margin-bottom: 15px; }
-.filtros { margin-bottom: 10px; }
-.paginacion { margin-top: 10px; }
+  body { font-family: Arial; }
+
+  #contenido {
+    display: none;
+    margin-top: 30px;
+    padding: 20px;
+    background: #f0f0f0;
+  }
+
+  #modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #modal-box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 15px;
+    background: white;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background: #eee;
+  }
+
+  button {
+    padding: 6px 10px;
+    cursor: pointer;
+  }
+
+  .nuevo-btn {
+    margin-bottom: 15px;
+  }
+
 </style>
 </head>
 <body>
@@ -30,99 +70,123 @@ button { padding: 6px 10px; cursor: pointer; margin-right: 5px; }
 </div>
 
 <div id="contenido">
-<h1>Dashboard</h1>
+  <h1>Dashboard</h1>
 
-<h2>Destinos</h2>
-<button class="nuevo-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfLOQEkERoS7b55LIoju9FyDpUI7uDwj-Kym3A3Yr5sLosYLQ/viewform?usp=header','_blank')">Nuevo destino</button>
+  <h2>Destinos</h2>
+  <button class="nuevo-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfLOQEkERoS7b55LIoju9FyDpUI7uDwj-Kym3A3Yr5sLosYLQ/viewform?usp=header','_blank')">
+    Nuevo destino
+  </button>
+  <div id="tabla-destinos"></div>
 
-<div class="filtros">
-<button onclick="cargarDestinos(true)">Activos</button>
-<button onclick="cargarDestinos(false)">Inactivos</button>
-<input type="text" id="busquedaTitulo" placeholder="Buscar por Título" />
-<button onclick="buscarTitulo()">Buscar</button>
-</div>
-
-<div id="tabla-destinos"></div>
-<div id="paginacion-destinos" class="paginacion"></div>
-
-<h2>Tasa de cambio</h2>
-<div id="tabla-cambio"></div>
+  <h2>Tasa de cambio</h2>
+  <div id="tabla-cambio"></div>
 
 </div>
 
 <script>
+
+const URL_SCRIPT = "https://script.google.com/macros/s/AKfycbzheF1cpMWiw5adHj_lrXYHfrmaL9OMixADOatCoT3-ZC0Xd-L-nF29RQdO2lVmNkKQ/exec";
 const URL_DESTINOS = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
-const registrosPorPagina = 5;
-let paginaActual = 1;
-let destinosFiltrados = [];
+const URL_CAMBIO = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
 
-function cargarDestinos(activo=null){
-  fetch(URL_DESTINOS)
-    .then(r=>r.json())
-    .then(data=>{
-      if(activo!==null){
-        destinosFiltrados = data.filter(f=>f.Activo===activo);
-      } else {
-        destinosFiltrados = data;
-      }
-      paginaActual=1;
-      imprimirTablaDestinos();
-    })
-    .catch(()=>document.getElementById("tabla-destinos").innerHTML="Error al cargar datos");
-}
+// caches para detectar cambios
+let destinosCache = "";
+let cambioCache = "";
 
-function buscarTitulo(){
-  const titulo = document.getElementById("busquedaTitulo").value.trim().toLowerCase();
-  fetch(URL_DESTINOS)
-    .then(r=>r.json())
-    .then(data=>{
-      destinosFiltrados = data.filter(f=>f.Título.toLowerCase().includes(titulo));
-      paginaActual=1;
-      imprimirTablaDestinos();
-    })
-    .catch(()=>document.getElementById("tabla-destinos").innerHTML="Error al cargar datos");
-}
-
-function imprimirTablaDestinos(){
-  if(destinosFiltrados.length===0){
-    document.getElementById("tabla-destinos").innerHTML="Sin datos";
-    document.getElementById("paginacion-destinos").innerHTML="";
-    return;
+// Al cargar la página, chequeamos localStorage
+window.onload = () => {
+  const pinGuardado = localStorage.getItem("pinDashboard");
+  if(pinGuardado){
+    verificarPin(pinGuardado);
   }
-  const inicio = (paginaActual-1)*registrosPorPagina;
-  const fin = inicio+registrosPorPagina;
-  const paginados = destinosFiltrados.slice(inicio, fin);
+}
 
-  const columnas = Object.keys(paginados[0]);
-  let html="<table><thead><tr>";
-  columnas.forEach(c=>{if(c!=="editar") html+=`<th>${c}</th>`;});
-  html+="<th>Acción</th></tr></thead><tbody>";
+function validar() {
+  const pin = document.getElementById("pin").value;
+  verificarPin(pin);
+}
 
-  paginados.forEach(fila=>{
-    html+="<tr>";
-    columnas.forEach(c=>{ if(c!=="editar") html+=`<td>${fila[c]}</td>`; });
-    if(fila.editar){
-      const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
-      html+=`<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
-    } else html+="<td>-</td>";
-    html+="</tr>";
+function verificarPin(pin){
+  fetch(URL_SCRIPT, {
+    method: "POST",
+    body: new URLSearchParams({ pin: pin })
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok) {
+      localStorage.setItem("pinDashboard", pin); // guardamos en localStorage
+      document.getElementById("modal").style.display = "none";
+      document.getElementById("contenido").style.display = "block";
+      cargarDatos();
+      // iniciar auto refresco
+      setInterval(cargarDatos, 30000);
+    } else {
+      document.getElementById("error").innerText = "PIN incorrecto";
+      localStorage.removeItem("pinDashboard");
+    }
+  })
+  .catch(() => {
+    document.getElementById("error").innerText = "Error de conexión";
   });
-  html+="</tbody></table>";
-  document.getElementById("tabla-destinos").innerHTML = html;
-
-  // paginación
-  const totalPaginas = Math.ceil(destinosFiltrados.length/registrosPorPagina);
-  let pagHtml="";
-  for(let i=1;i<=totalPaginas;i++){
-    if(i===paginaActual) pagHtml+=`<b>${i}</b> `;
-    else pagHtml+=`<button onclick="paginaActual=${i};imprimirTablaDestinos()">${i}</button> `;
-  }
-  document.getElementById("paginacion-destinos").innerHTML=pagHtml;
 }
 
-// Inicialmente cargo todos los destinos
-cargarDestinos();
+function cargarDatos() {
+  cargarTabla(URL_DESTINOS, "tabla-destinos", "destinos");
+  cargarTabla(URL_CAMBIO, "tabla-cambio", "cambio");
+}
+
+function cargarTabla(url, contenedorId, tipo) {
+  fetch(url)
+    .then(r => r.json())
+    .then(data => {
+
+      const dataString = JSON.stringify(data);
+      if(tipo === "destinos" && dataString === destinosCache) return;
+      if(tipo === "cambio" && dataString === cambioCache) return;
+
+      if(tipo === "destinos") destinosCache = dataString;
+      if(tipo === "cambio") cambioCache = dataString;
+
+      if (!Array.isArray(data) || data.length === 0) {
+        document.getElementById(contenedorId).innerHTML = "Sin datos";
+        return;
+      }
+
+      const columnas = Object.keys(data[0]);
+      let html = "<table><thead><tr>";
+
+      columnas.forEach(col => {
+        if(col !== "editar") html += `<th>${col}</th>`;
+      });
+      html += "<th>Acción</th></tr></thead><tbody>";
+
+      data.forEach(fila => {
+        html += "<tr>";
+        columnas.forEach(col => {
+          if(col !== "editar") html += `<td>${fila[col]}</td>`;
+        });
+
+        if(fila.editar) {
+          // modificamos el botón de edición para agregar &entry.1060124700=URL_EDICION
+          const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
+          html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
+        } else {
+          html += "<td>-</td>";
+        }
+
+        html += "</tr>";
+      });
+
+      html += "</tbody></table>";
+      document.getElementById(contenedorId).innerHTML = html;
+
+    })
+    .catch(() => {
+      document.getElementById(contenedorId).innerHTML = "Error al cargar datos";
+    });
+}
 
 </script>
+
 </body>
 </html>
