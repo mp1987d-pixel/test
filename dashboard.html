@@ -67,6 +67,15 @@
   #tabla-destinos {
   min-height: 450px;
 }
+  #tabla-container {
+  background: #f0f0f0; /* mismo gris que el contenedor */
+  padding: 10px;
+  min-height: 460px; /* altura total fija */
+}
+
+#paginacion {
+  margin-top: 10px;
+}
 
 
 </style>
@@ -98,9 +107,10 @@
     <button onclick="buscarTabla()">Buscar</button>
     <button onclick="refrescarTabla()">Refrescar tabla</button>
   </div>
-
+<div id="tabla-container">
   <div id="tabla-destinos"></div>
   <div id="paginacion"></div>
+  </div>
 
   <h2>Tasa de cambio</h2>
   <div id="tabla-cambio"></div>
