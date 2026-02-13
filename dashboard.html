@@ -6,166 +6,201 @@
 <title>Dashboard</title>
 
 <style>
-  body { 
-    font-family: Arial; 
-    margin: 0;
-    background: #ffffff;
-  }
+ body { 
+  font-family: Arial; 
+  margin: 0;
+  background: #ffffff;
+}
+
+#contenido {
+  display: none;
+  margin-top: 30px;
+  padding: 20px;
+  background: #f0f0f0;
+}
+
+/* ===== MODAL ===== */
+#modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+#modal-box {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+/* ===== TABLAS ===== */
+.tabla-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* scroll suave en iOS */
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 600px;
+  margin-top: 15px;
+  background: white;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  height: 48px;
+  font-size: 14px;
+}
+
+th {
+  background: #eee;
+}
+
+/* ===== BOTONES GENERALES ===== */
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-right: 5px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: white;
+  transition: 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  background: #e6e6e6;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nuevo-btn {
+  margin-bottom: 15px;
+}
+
+/* ===== FILTROS RESPONSIVE ===== */
+#filtros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+#filtros input {
+  padding: 8px;
+  font-size: 14px;
+}
+
+/* ===== CONTENEDOR TABLA + PAGINACION ===== */
+#tabla-container {
+  padding: 10px;
+  min-height: 460px;
+  display: flex;
+  flex-direction: column;
+}
+
+#tabla-destinos {
+  flex: 1;
+}
+
+/* ===== PAGINACION PROFESIONAL ===== */
+#paginacion {
+  margin-top: 10px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+#paginacion button {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+}
+
+#paginacion button.active {
+  background: #333;
+  color: white;
+  font-weight: bold;
+  cursor: default;
+  border: 1px solid #333;
+}
+
+#paginacion button:hover:not(.active):not(:disabled) {
+  background: #dcdcdc;
+}
+
+/* ===== TABLET AJUSTES ===== */
+@media (max-width: 1024px) {
 
   #contenido {
-    display: none;
-    margin-top: 30px;
-    padding: 20px;
-    background: #f0f0f0;
+    padding: 15px;
   }
 
-  /* ===== MODAL ===== */
-  #modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+  h1 {
+    font-size: 22px;
   }
 
-  #modal-box {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-  }
-
-  /* ===== TABLAS ===== */
-  .tabla-scroll {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  table {
-    border-collapse: collapse;
-    width: 100%;
-    min-width: 600px; /* evita que colapsen columnas en tablet */
-    margin-top: 15px;
-    background: white;
+  h2 {
+    font-size: 18px;
   }
 
   th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-    height: 48px;
-    font-size: 14px;
-  }
-
-  th {
-    background: #eee;
-  }
-
-  /* ===== BOTONES ===== */
-  button {
-    padding: 8px 12px;
-    cursor: pointer;
-    margin-right: 5px;
-    font-size: 14px;
-  }
-
-  .nuevo-btn {
-    margin-bottom: 15px;
-  }
-
-  /* ===== FILTROS RESPONSIVE ===== */
-  #filtros {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 8px;
-    margin-bottom: 15px;
-  }
-
-  #filtros input {
+    font-size: 13px;
     padding: 8px;
-    font-size: 14px;
   }
 
-  /* ===== CONTENEDOR TABLA + PAGINACION ===== */
-  #tabla-container {
-    padding: 10px;
-    min-height: 460px;
-    display: flex;
-    flex-direction: column;
+  button {
+    font-size: 13px;
+    padding: 7px 10px;
   }
 
-  #tabla-destinos {
-    flex: 1;
+}
+
+/* ===== CELULAR ===== */
+@media (max-width: 600px) {
+
+  #contenido {
+    margin-top: 10px;
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 16px;
+  }
+
+  table {
+    min-width: 500px;
+  }
+
+  button {
+    width: 100%;
+    margin-right: 0;
   }
 
   #paginacion {
-    margin-top: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+    justify-content: center;
   }
 
-  /* ===== TABLET AJUSTES ===== */
-  @media (max-width: 1024px) {
+}
 
-    #contenido {
-      padding: 15px;
-    }
-
-    h1 {
-      font-size: 22px;
-    }
-
-    h2 {
-      font-size: 18px;
-    }
-
-    th, td {
-      font-size: 13px;
-      padding: 8px;
-    }
-
-    button {
-      font-size: 13px;
-      padding: 7px 10px;
-    }
-
-  }
-
-  /* ===== CELULAR ===== */
-  @media (max-width: 600px) {
-
-    #contenido {
-      margin-top: 10px;
-      padding: 12px;
-    }
-
-    h1 {
-      font-size: 20px;
-    }
-
-    h2 {
-      font-size: 16px;
-    }
-
-    table {
-      min-width: 500px;
-    }
-
-    button {
-      width: 100%;
-      margin-right: 0;
-    }
-
-    #paginacion {
-      justify-content: center;
-    }
-
-  }
 
 </style>
 </head>
@@ -340,13 +375,35 @@ function imprimirTablaPaginada() {
   document.getElementById("tabla-destinos").innerHTML = html;
 
   // Paginación
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-  let pagHtml = "";
-  for(let i=1;i<=totalPages;i++){
-    if(i===currentPage) pagHtml += `<strong>${i}</strong> `;
-    else pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button> `;
+  // Paginación PRO
+const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
+let pagHtml = "";
+
+// Ir al inicio
+pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>&laquo;</button>`;
+
+// Página anterior
+pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
+
+// Rango dinámico de páginas (máximo 5 visibles)
+let startPage = Math.max(1, currentPage - 2);
+let endPage = Math.min(totalPages, currentPage + 2);
+
+for (let i = startPage; i <= endPage; i++) {
+  if (i === currentPage) {
+    pagHtml += `<button class="active">${i}</button>`;
+  } else {
+    pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
   }
-  document.getElementById("paginacion").innerHTML = pagHtml;
+}
+
+// Página siguiente
+pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
+
+// Ir al final
+pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
+
+document.getElementById("paginacion").innerHTML = pagHtml;
 }
 
 
