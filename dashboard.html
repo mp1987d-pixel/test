@@ -389,18 +389,6 @@ pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?
 let startPage = Math.max(1, currentPage - 2);
 let endPage = Math.min(totalPages, currentPage + 2);
 
-let startPage = Math.max(1, currentPage - 2);
-let endPage = Math.min(totalPages, currentPage + 2);
-
-// Siempre mostrar primera
-if (startPage > 1) {
-  pagHtml += `<button onclick="cambiarPagina(1)">1</button>`;
-  if (startPage > 2) {
-    pagHtml += `<span>...</span>`;
-  }
-}
-
-// Rango central
 for (let i = startPage; i <= endPage; i++) {
   if (i === currentPage) {
     pagHtml += `<button class="active">${i}</button>`;
@@ -408,15 +396,6 @@ for (let i = startPage; i <= endPage; i++) {
     pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
   }
 }
-
-// Siempre mostrar última
-if (endPage < totalPages) {
-  if (endPage < totalPages - 1) {
-    pagHtml += `<span>...</span>`;
-  }
-  pagHtml += `<button onclick="cambiarPagina(${totalPages})">${totalPages}</button>`;
-}
-
 
 // Página siguiente
 pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
