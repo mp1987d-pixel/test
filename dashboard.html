@@ -4,7 +4,10 @@
 <meta charset="UTF-8">
 <title>Dashboard</title>
 <style>
-  body { font-family: Arial; }
+  body { 
+    font-family: Arial; 
+    margin: 0;
+  }
 
   #contenido {
     display: none;
@@ -40,6 +43,7 @@
     border: 1px solid #ccc;
     padding: 8px;
     text-align: left;
+    height: 45px; /* altura fija para evitar micro saltos */
   }
 
   th {
@@ -60,25 +64,24 @@
     margin-bottom: 10px;
   }
 
+  /* CONTENEDOR ESTABLE PARA TABLA + PAGINACIÓN */
+  #tabla-container {
+    padding: 10px;
+    min-height: 460px; /* bloquea altura total */
+    display: flex;
+    flex-direction: column;
+  }
+
+  #tabla-destinos {
+    flex: 1; /* ocupa el espacio disponible */
+  }
+
   #paginacion {
     margin-top: 10px;
   }
 
-  #tabla-destinos {
-  min-height: 450px;
-}
-  #tabla-container {
-  background: #f0f0f0; /* mismo gris que el contenedor */
-  padding: 10px;
-  min-height: 460px; /* altura total fija */
-}
-
-#paginacion {
-  margin-top: 10px;
-}
-
-
 </style>
+
 </head>
 <body>
 
