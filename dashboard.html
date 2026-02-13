@@ -62,6 +62,14 @@ th, td {
   font-size: 14px;
 }
 
+ td {
+  max-width: 180px;          /* ancho máximo razonable */
+  white-space: nowrap;       /* evita salto de línea */
+  overflow: hidden;          
+  text-overflow: ellipsis;   /* agrega ... */
+}
+
+
 th {
   background: #eee;
 }
