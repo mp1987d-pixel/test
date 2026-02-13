@@ -185,13 +185,15 @@ function buscarTabla() {
 
 // Imprimir tabla con paginación
 function imprimirTablaPaginada() {
-  if (!Array.isArray(filteredData) || filteredData.length === 0) {
+
+  if (!Array.isArray(filteredData)) {
     document.getElementById("tabla-destinos").innerHTML = "Sin datos";
     document.getElementById("paginacion").innerHTML = "";
     return;
   }
 
-  const columnas = Object.keys(filteredData[0]);
+  const columnas = filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
+
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   const pageData = filteredData.slice(start, end);
@@ -200,23 +202,36 @@ function imprimirTablaPaginada() {
   columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
   html += "<th>Acción</th></tr></thead><tbody>";
 
+  // Filas reales
   pageData.forEach(fila => {
     html += "<tr>";
     columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
+
     if(fila.editar) {
       const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
       html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
     } else {
       html += "<td>-</td>";
     }
+
     html += "</tr>";
   });
 
+  // 🔒 COMPLETAR HASTA 5 FILAS FIJAS
+  const filasVacias = rowsPerPage - pageData.length;
+  for (let i = 0; i < filasVacias; i++) {
+    html += "<tr>";
+    columnas.forEach(col => { if(col !== "editar") html += `<td>&nbsp;</td>`; });
+    html += "<td></td>";
+    html += "</tr>";
+  }
+
   html += "</tbody></table>";
+
   document.getElementById("tabla-destinos").innerHTML = html;
 
   // Paginación
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
   let pagHtml = "";
   for(let i=1;i<=totalPages;i++){
     if(i===currentPage) pagHtml += `<strong>${i}</strong> `;
@@ -224,6 +239,7 @@ function imprimirTablaPaginada() {
   }
   document.getElementById("paginacion").innerHTML = pagHtml;
 }
+
 
 // Cambiar página
 function cambiarPagina(page) {
