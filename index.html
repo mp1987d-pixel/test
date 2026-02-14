@@ -239,8 +239,8 @@ Promise.all([
     const youtubeSrc = fila["Youtube"] ? YT_BASE + fila["Youtube"] : "";
 
     const precioOriginal = parseFloat(fila["Precio"] || 0);
-    const precioPesos = (precioEuro * tasaEuroPeso).toFixed(2);
-    const precioDolar = (precioEuro * tasaEuroDolar).toFixed(2);
+    const precioPesos = (precioOriginal * tasaEuroPeso).toFixed(2);
+    const precioDolar = (precioOriginal * tasaEuroDolar).toFixed(2);
 
     // CARD
     const card = document.createElement("div");
@@ -265,7 +265,7 @@ Promise.all([
         <p>${fila["Descripción_modal"] || ""}</p>
         ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" allowfullscreen></iframe>` : ""}
         <h2>
-  € ${precioEuro.toFixed(2)} <br>
+  € ${precioOriginal.toFixed(2)} <br>
   USD ${precioDolar} <br>
   ARS ${precioPesos}
 </h2>
