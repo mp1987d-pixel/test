@@ -405,9 +405,14 @@ pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>
 // Página anterior
 pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
 
-// Rango dinámico de páginas (máximo 5 visibles)
-let startPage = Math.max(1, currentPage - 2);
-let endPage = Math.min(totalPages, currentPage + 2);
+// ===== SOLO 3 NUMEROS =====
+let startPage = Math.max(1, currentPage - 1);
+let endPage = startPage + 2;
+
+if (endPage > totalPages) {
+  endPage = totalPages;
+  startPage = Math.max(1, endPage - 2);
+}
 
 for (let i = startPage; i <= endPage; i++) {
   if (i === currentPage) {
@@ -415,6 +420,16 @@ for (let i = startPage; i <= endPage; i++) {
   } else {
     pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
   }
+}
+
+// Página siguiente
+pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
+
+// Ir al final
+pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
+
+document.getElementById("paginacion").innerHTML = pagHtml;
+
 }
 
 // Página siguiente
