@@ -249,10 +249,11 @@ fetch(API_URL)
       modal.innerHTML = `
         <div class="modal-content">
           <span class="close">&times;</span>
-          <img src="${imgSrc}" alt="${fila["Título"]}">
           <h2>${fila["Título"]}</h2>
-          <p>${fila["Descripción"] || ""}</p>
+          <img src="${imgSrc}" alt="${fila["Título"]}">
+          <p>${fila["Descripción_modal"] || ""}</p>
           ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" allowfullscreen></iframe>` : ""}
+          <h2>${fila["Precio"]}</h2>
           <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
             Contactar por WhatsApp
           </a>
