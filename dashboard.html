@@ -62,14 +62,6 @@ th, td {
   font-size: 14px;
 }
 
- td {
-  max-width: 180px;          /* ancho máximo razonable */
-  white-space: nowrap;       /* evita salto de línea */
-  overflow: hidden;          
-  text-overflow: ellipsis;   /* agrega ... */
-}
-
-
 th {
   background: #eee;
 }
@@ -198,28 +190,16 @@ button:disabled {
     min-width: 500px;
   }
 
-  /* Botones normales full width */
-  #filtros button {
+  button {
     width: 100%;
     margin-right: 0;
   }
 
-  .nuevo-btn {
-    width: 100%;
-  }
-
-  /* PAGINACION NO full width */
   #paginacion {
     justify-content: center;
   }
 
-  #paginacion button {
-    width: auto;
-    min-width: 36px;
-  }
-
 }
-
 
 
 </style>
@@ -415,16 +395,6 @@ for (let i = startPage; i <= endPage; i++) {
   } else {
     pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
   }
-}
-
-// Página siguiente
-pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
-
-// Ir al final
-pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
-
-document.getElementById("paginacion").innerHTML = pagHtml;
-
 }
 
 // Página siguiente
