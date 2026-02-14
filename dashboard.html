@@ -372,7 +372,7 @@ function imprimirTablaPaginada() {
     html += "</tr>";
   });
 
-  // 🔒 COMPLETAR HASTA 5 FILAS FIJAS
+  // Completar hasta 5 filas fijas
   const filasVacias = rowsPerPage - pageData.length;
   for (let i = 0; i < filasVacias; i++) {
     html += "<tr>";
@@ -382,44 +382,50 @@ function imprimirTablaPaginada() {
   }
 
   html += "</tbody></table>";
-
   document.getElementById("tabla-destinos").innerHTML = html;
 
-  // Paginación
-  // Paginación PRO
-const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-let pagHtml = "";
+  // ===== PAGINACION PROFESIONAL 3 NUMEROS =====
 
-// Ir al inicio
-pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>&laquo;</button>`;
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
+  let pagHtml = "";
 
-// Página anterior
-pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
+  // Ir al inicio
+  pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>&laquo;</button>`;
 
-// Rango dinámico de páginas (máximo 5 visibles)
-let startPage = Math.max(1, currentPage - 2);
-let endPage = Math.min(totalPages, currentPage + 2);
+  // Página anterior
+  pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
 
-for (let i = startPage; i <= endPage; i++) {
-  if (i === currentPage) {
-    pagHtml += `<button class="active">${i}</button>`;
-  } else {
-    pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
+  // SOLO 3 NUMEROS VISIBLES
+  let startPage = Math.max(1, currentPage - 1);
+  let endPage = startPage + 2;
+
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - 2);
   }
+
+  for (let i = startPage; i <= endPage; i++) {
+    if (i === currentPage) {
+      pagHtml += `<button class="active">${i}</button>`;
+    } else {
+      pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
+    }
+  }
+
+  // Página siguiente
+  pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
+
+  // Ir al final
+  pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
+
+  document.getElementById("paginacion").innerHTML = pagHtml;
 }
-
-// Página siguiente
-pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
-
-// Ir al final
-pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
-
-document.getElementById("paginacion").innerHTML = pagHtml;
-}
-
 
 // Cambiar página
 function cambiarPagina(page) {
+  if(page < 1) return;
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
+  if(page > totalPages) return;
   currentPage = page;
   imprimirTablaPaginada();
 }
@@ -452,5 +458,6 @@ function imprimirTablaCambio(data) {
   document.getElementById("tabla-cambio").innerHTML = html;
 }
 </script>
+
 </body>
 </html>
