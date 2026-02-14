@@ -405,14 +405,9 @@ pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>
 // Página anterior
 pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
 
-// ===== SOLO 3 NUMEROS =====
-let startPage = Math.max(1, currentPage - 1);
-let endPage = startPage + 2;
-
-if (endPage > totalPages) {
-  endPage = totalPages;
-  startPage = Math.max(1, endPage - 2);
-}
+// Rango dinámico de páginas (máximo 5 visibles)
+let startPage = Math.max(1, currentPage - 2);
+let endPage = Math.min(totalPages, currentPage + 2);
 
 for (let i = startPage; i <= endPage; i++) {
   if (i === currentPage) {
