@@ -214,56 +214,66 @@ body {
 
 <script>
 const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
+const RATE_URL = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
+
 const IMG_BASE = "https://raw.githubusercontent.com/mp1987d-pixel/test/1503dc4065aeac69e0bdbd53165267c937a57eb5/img/";
 const YT_BASE = "https://www.youtube.com/embed/";
 
-fetch(API_URL)
-  .then(res => res.json())
-  .then(data => {
-    const cards = document.getElementById("cards");
-    const modals = document.getElementById("modals");
+Promise.all([
+  fetch(API_URL).then(res => res.json()),
+  fetch(RATE_URL).then(res => res.json())
+])
+.then(([data, rateData]) => {
 
-    data.forEach((fila, index) => {
-      // Usar solo Título, Descripción, Imagen, Youtube
-      if (!fila["Título"] || !fila["Imagen"]) return;
+  const tasa = parseFloat(rateData[0]["tasa euro - pesos arg"]); // podés cambiar por la otra si querés
+  const cards = document.getElementById("cards");
+  const modals = document.getElementById("modals");
 
-      const modalId = `modal_${index}`;
-      const imgSrc = IMG_BASE + fila["Imagen"];
-      const youtubeSrc = fila["Youtube"] ? YT_BASE + fila["Youtube"] : "";
+  data.forEach((fila, index) => {
 
-      // CARD
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
+    if (!fila["Título"] || !fila["Imagen"]) return;
+
+    const modalId = `modal_${index}`;
+    const imgSrc = IMG_BASE + fila["Imagen"];
+    const youtubeSrc = fila["Youtube"] ? YT_BASE + fila["Youtube"] : "";
+
+    const precioOriginal = parseFloat(fila["Precio"] || 0);
+    const precioConvertido = (precioOriginal * tasa).toFixed(2);
+
+    // CARD
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${imgSrc}" alt="${fila["Título"]}">
+      <h3>${fila["Título"]}</h3>
+      <p>${fila["Descripción"] || ""}</p>
+      <button class="open-modal" data-modal="${modalId}">Ver más</button>
+    `;
+    cards.appendChild(card);
+
+    // MODAL
+    const modal = document.createElement("div");
+    modal.className = "modal";
+    modal.id = modalId;
+    modal.innerHTML = `
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>${fila["Título"]}</h2>
         <img src="${imgSrc}" alt="${fila["Título"]}">
-        <h3>${fila["Título"]}</h3>
-        <p>${fila["Descripción"] || ""}</p>
-        <button class="open-modal" data-modal="${modalId}">Ver más</button>
-      `;
-      cards.appendChild(card);
-
-      // MODAL
-      const modal = document.createElement("div");
-      modal.className = "modal";
-      modal.id = modalId;
-      modal.innerHTML = `
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>${fila["Título"]}</h2>
-          <img src="${imgSrc}" alt="${fila["Título"]}">
-          <p>${fila["Descripción_modal"] || ""}</p>
-          ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" allowfullscreen></iframe>` : ""}
-          <h2>${fila["Precio"]}</h2>
-          <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
-            Contactar por WhatsApp
-          </a>
-        </div>
-      `;
-      modals.appendChild(modal);
-    });
-
-    activarModales();
+        <p>${fila["Descripción_modal"] || ""}</p>
+        ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" allowfullscreen></iframe>` : ""}
+        <h2>€ ${precioOriginal} → ARS ${precioConvertido}</h2>
+        <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
+          Contactar por WhatsApp
+        </a>
+      </div>
+    `;
+    modals.appendChild(modal);
   });
+
+  activarModales();
+});
+
 
 function activarModales() {
   document.querySelectorAll(".open-modal").forEach(btn => {
