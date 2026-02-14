@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
-/* ================= RESET ================= */
 * { box-sizing: border-box; }
 
 body {
@@ -23,7 +22,6 @@ body {
   background-blend-mode: overlay;
 }
 
-/* ================= HEADER ================= */
 .main-header {
   background: #ffffff;
   padding: 15px 30px;
@@ -44,13 +42,15 @@ body {
   font-size: 0.9rem;
 }
 
-/* ================= HERO ================= */
+/* ================= HERO CON CARRUSEL ================= */
 .hero {
   width: 100%;
   height: 70vh;
-  background-image: url("img/fondo.jpeg");
+  background-image: url("img/frente.jpeg");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,7 +121,6 @@ body {
   background: #005fa3;
 }
 
-/* ================= MODAL ================= */
 .modal {
   display: none;
   position: fixed;
@@ -172,7 +171,6 @@ body {
   margin-top: 15px;
 }
 
-/* ================= FOOTER ================= */
 .main-footer {
   background: #111;
   color: #fff;
@@ -213,6 +211,25 @@ body {
 </footer>
 
 <script>
+
+/* ================= HERO CARRUSEL ================= */
+const heroImages = [
+  "img/frente.jpeg",
+  "img/fondo.jpeg",
+  "img/patagonia.jpeg"
+];
+
+let heroIndex = 0;
+const heroSection = document.querySelector(".hero");
+
+setInterval(() => {
+  heroIndex = (heroIndex + 1) % heroImages.length;
+  heroSection.style.backgroundImage = `url('${heroImages[heroIndex]}')`;
+}, 4000);
+
+
+/* ================= TU CODIGO ORIGINAL ================= */
+
 const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
 const RATE_URL = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
 
@@ -226,7 +243,7 @@ Promise.all([
 .then(([data, rateData]) => {
 
   const tasaEuroPeso = parseFloat(rateData[0]["tasa euro - pesos arg"]);
-  const tasaEuroDolar = parseFloat(rateData[0]["tasa euro - dolar"]); // podés cambiar por la otra si querés
+  const tasaEuroDolar = parseFloat(rateData[0]["tasa euro - dolar"]);
   const cards = document.getElementById("cards");
   const modals = document.getElementById("modals");
 
@@ -242,7 +259,6 @@ Promise.all([
     const precioPesos = (precioOriginal * tasaEuroPeso).toFixed(2);
     const precioDolar = (precioOriginal * tasaEuroDolar).toFixed(2);
 
-    // CARD
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
@@ -253,7 +269,6 @@ Promise.all([
     `;
     cards.appendChild(card);
 
-    // MODAL
     const modal = document.createElement("div");
     modal.className = "modal";
     modal.id = modalId;
@@ -265,10 +280,10 @@ Promise.all([
         <p>${fila["Descripción_modal"] || ""}</p>
         ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" allowfullscreen></iframe>` : ""}
         <h2>
-  € ${precioOriginal.toFixed(2)} <br>
-  USD ${precioDolar} <br>
-  ARS ${precioPesos}
-</h2>
+          € ${precioOriginal.toFixed(2)} <br>
+          USD ${precioDolar} <br>
+          ARS ${precioPesos}
+        </h2>
         <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
           Contactar por WhatsApp
         </a>
@@ -279,7 +294,6 @@ Promise.all([
 
   activarModales();
 });
-
 
 function activarModales() {
   document.querySelectorAll(".open-modal").forEach(btn => {
