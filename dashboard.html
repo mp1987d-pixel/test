@@ -19,7 +19,6 @@
   background: #f0f0f0;
 }
 
-/* ===== MODAL ===== */
 #modal {
   position: fixed;
   inset: 0;
@@ -39,11 +38,10 @@
   max-width: 400px;
 }
 
-/* ===== TABLAS ===== */
 .tabla-scroll {
   width: 100%;
   overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* scroll suave en iOS */
+  -webkit-overflow-scrolling: touch;
 }
 
 table {
@@ -66,7 +64,6 @@ th {
   background: #eee;
 }
 
-/* ===== BOTONES GENERALES ===== */
 button {
   padding: 8px 12px;
   cursor: pointer;
@@ -91,7 +88,6 @@ button:disabled {
   margin-bottom: 15px;
 }
 
-/* ===== FILTROS RESPONSIVE ===== */
 #filtros {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -104,7 +100,6 @@ button:disabled {
   font-size: 14px;
 }
 
-/* ===== CONTENEDOR TABLA + PAGINACION ===== */
 #tabla-container {
   padding: 10px;
   min-height: 460px;
@@ -116,7 +111,6 @@ button:disabled {
   flex: 1;
 }
 
-/* ===== PAGINACION PROFESIONAL ===== */
 #paginacion {
   margin-top: 10px;
   display: flex;
@@ -139,58 +133,7 @@ button:disabled {
   border: 1px solid #333;
 }
 
-#paginacion button:hover:not(.active):not(:disabled) {
-  background: #dcdcdc;
-}
-
-/* ===== TABLET AJUSTES ===== */
-@media (max-width: 1024px) {
-
-  #contenido {
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 22px;
-  }
-
-  h2 {
-    font-size: 18px;
-  }
-
-  th, td {
-    font-size: 13px;
-    padding: 8px;
-  }
-
-  button {
-    font-size: 13px;
-    padding: 7px 10px;
-  }
-
-}
-
-/* ===== CELULAR ===== */
 @media (max-width: 600px) {
-
-  #contenido {
-    margin-top: 10px;
-    padding: 12px;
-  }
-
-  h1 {
-    font-size: 20px;
-  }
-
-  h2 {
-    font-size: 16px;
-  }
-
-  table {
-    min-width: 500px;
-  }
-
-  /* Botones normales full width */
   #filtros button {
     width: 100%;
     margin-right: 0;
@@ -200,7 +143,6 @@ button:disabled {
     width: 100%;
   }
 
-  /* PAGINACION NO full width */
   #paginacion {
     justify-content: center;
   }
@@ -209,10 +151,7 @@ button:disabled {
     width: auto;
     min-width: 36px;
   }
-
 }
-
-
 </style>
 </head>
 <body>
@@ -254,7 +193,6 @@ button:disabled {
   <div class="tabla-scroll">
     <div id="tabla-cambio"></div>
   </div>
-
 </div>
 
 <script>
@@ -263,92 +201,13 @@ const URL_DESTINOS = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ
 const URL_CAMBIO = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
 
 let destinosData = [];
-let cambioData = [];
 let currentPage = 1;
 const rowsPerPage = 5;
 let filteredData = [];
 
-window.onload = () => {
-  const pinGuardado = localStorage.getItem("pinDashboard");
-  if(pinGuardado){
-    verificarPin(pinGuardado);
-  }
-}
-
-function validar() {
-  const pin = document.getElementById("pin").value;
-  verificarPin(pin);
-}
-
-function verificarPin(pin){
-  fetch(URL_SCRIPT, {
-    method: "POST",
-    body: new URLSearchParams({ pin: pin })
-  })
-  .then(r => r.json())
-  .then(data => {
-    if (data.ok) {
-      localStorage.setItem("pinDashboard", pin);
-      document.getElementById("modal").style.display = "none";
-      document.getElementById("contenido").style.display = "block";
-      refrescarTabla();
-    } else {
-      document.getElementById("error").innerText = "PIN incorrecto";
-      localStorage.removeItem("pinDashboard");
-    }
-  })
-  .catch(() => {
-    document.getElementById("error").innerText = "Error de conexión";
-  });
-}
-
-// Refrescar toda la tabla desde JSON
-function refrescarTabla() {
-  fetch(URL_DESTINOS).then(r => r.json()).then(data => {
-    destinosData = data;
-    filteredData = [...destinosData];
-    currentPage = 1;
-    imprimirTablaPaginada();
-  });
-  fetch(URL_CAMBIO).then(r => r.json()).then(data => {
-    cambioData = data;
-    imprimirTablaCambio(cambioData);
-  });
-}
-
-// Filtrar Activos
-function cargarTablaActivos() {
-  filteredData = destinosData.filter(f => f.Activo === "true" || f.Activo === true);
-  currentPage = 1;
-  imprimirTablaPaginada();
-}
-
-// Filtrar Inactivos
-function cargarTablaInactivos() {
-  filteredData = destinosData.filter(f => f.Activo === "false" || f.Activo === false);
-  currentPage = 1;
-  imprimirTablaPaginada();
-}
-
-// Buscar por nombre
-function buscarTabla() {
-  const val = document.getElementById("buscarInput").value.toLowerCase();
-  filteredData = destinosData.filter(f => f.Título.toLowerCase().includes(val));
-  currentPage = 1;
-  imprimirTablaPaginada();
-}
-
-// Imprimir tabla con paginación
 function imprimirTablaPaginada() {
 
-  if (!Array.isArray(filteredData)) {
-    document.getElementById("tabla-destinos").innerHTML = "Sin datos";
-    document.getElementById("paginacion").innerHTML = "";
-    return;
-  }
-
   const columnas = filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
-
   const start = (currentPage - 1) * rowsPerPage;
   const end = start + rowsPerPage;
   const pageData = filteredData.slice(start, end);
@@ -357,100 +216,48 @@ function imprimirTablaPaginada() {
   columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
   html += "<th>Acción</th></tr></thead><tbody>";
 
-  // Filas reales
   pageData.forEach(fila => {
     html += "<tr>";
     columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
-
-    if(fila.editar) {
-      const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
-      html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
-    } else {
-      html += "<td>-</td>";
-    }
-
     html += "</tr>";
   });
 
-  // 🔒 COMPLETAR HASTA 5 FILAS FIJAS
-  const filasVacias = rowsPerPage - pageData.length;
-  for (let i = 0; i < filasVacias; i++) {
-    html += "<tr>";
-    columnas.forEach(col => { if(col !== "editar") html += `<td>&nbsp;</td>`; });
-    html += "<td></td>";
-    html += "</tr>";
-  }
-
   html += "</tbody></table>";
-
   document.getElementById("tabla-destinos").innerHTML = html;
 
-  // Paginación
-  // Paginación PRO
-const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-let pagHtml = "";
+  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
+  let pagHtml = "";
 
-// Ir al inicio
-pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>&laquo;</button>`;
+  pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>&laquo;</button>`;
+  pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
 
-// Página anterior
-pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
+  let startPage = Math.max(1, currentPage - 1);
+  let endPage = startPage + 2;
 
-// Rango dinámico de páginas (máximo 5 visibles)
-let startPage = Math.max(1, currentPage - 2);
-let endPage = Math.min(totalPages, currentPage + 2);
-
-for (let i = startPage; i <= endPage; i++) {
-  if (i === currentPage) {
-    pagHtml += `<button class="active">${i}</button>`;
-  } else {
-    pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
+  if (endPage > totalPages) {
+    endPage = totalPages;
+    startPage = Math.max(1, endPage - 2);
   }
+
+  for (let i = startPage; i <= endPage; i++) {
+    if (i === currentPage) {
+      pagHtml += `<button class="active">${i}</button>`;
+    } else {
+      pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
+    }
+  }
+
+  pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
+  pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
+
+  document.getElementById("paginacion").innerHTML = pagHtml;
 }
 
-// Página siguiente
-pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
-
-// Ir al final
-pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
-
-document.getElementById("paginacion").innerHTML = pagHtml;
-}
-
-
-// Cambiar página
 function cambiarPagina(page) {
   currentPage = page;
   imprimirTablaPaginada();
 }
-
-// Imprimir tabla de cambio
-function imprimirTablaCambio(data) {
-  if (!Array.isArray(data) || data.length === 0) {
-    document.getElementById("tabla-cambio").innerHTML = "Sin datos";
-    return;
-  }
-
-  const columnas = Object.keys(data[0]);
-  let html = "<table><thead><tr>";
-  columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
-  html += "<th>Acción</th></tr></thead><tbody>";
-
-  data.forEach(fila => {
-    html += "<tr>";
-    columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
-    if(fila.editar) {
-      const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
-      html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
-    } else {
-      html += "<td>-</td>";
-    }
-    html += "</tr>";
-  });
-
-  html += "</tbody></table>";
-  document.getElementById("tabla-cambio").innerHTML = html;
-}
 </script>
+
 </body>
 </html>
