@@ -42,7 +42,6 @@ body {
   font-size: 0.9rem;
 }
 
-/* ================= HERO CON CARRUSEL ================= */
 .hero {
   width: 100%;
   height: 70vh;
@@ -64,7 +63,6 @@ body {
   color: #fff;
 }
 
-/* ================= SECTION ================= */
 .section {
   max-width: 1200px;
   margin: 40px auto;
@@ -194,25 +192,56 @@ body {
 
 <section class="hero">
   <div class="hero-content">
-    <h1>Descubrí Argentina</h1>
-    <p>Experiencias únicas pensadas para turistas europeos</p>
+    <h1 id="hero-title"></h1>
+    <p id="hero-subtitle"></p>
   </div>
 </section>
 
 <section class="section">
-  <h2>Destinos destacados</h2>
+  <h2 id="section-title"></h2>
   <div class="cards" id="cards"></div>
 </section>
 
 <div id="modals"></div>
 
 <footer class="main-footer">
-  <p>© 2026 Viajes Argentina · Turismo receptivo</p>
+  <p id="footer-text"></p>
 </footer>
 
 <script>
 
+/* ================= DETECCION IDIOMA ================= */
+
+const browserLang = navigator.language || navigator.userLanguage;
+const isSpanish = browserLang.toLowerCase().startsWith("es");
+
+document.documentElement.lang = isSpanish ? "es" : "en";
+
+const TEXTS = {
+  es: {
+    heroTitle: "Descubrí Argentina",
+    heroSubtitle: "Experiencias únicas pensadas para turistas europeos",
+    sectionTitle: "Destinos destacados",
+    footer: "© 2026 Viajes Argentina · Turismo receptivo"
+  },
+  en: {
+    heroTitle: "Discover Argentina",
+    heroSubtitle: "Unique experiences designed for European travelers",
+    sectionTitle: "Featured destinations",
+    footer: "© 2026 Argentina Travel · Incoming tourism"
+  }
+};
+
+const langKey = isSpanish ? "es" : "en";
+
+document.getElementById("hero-title").textContent = TEXTS[langKey].heroTitle;
+document.getElementById("hero-subtitle").textContent = TEXTS[langKey].heroSubtitle;
+document.getElementById("section-title").textContent = TEXTS[langKey].sectionTitle;
+document.getElementById("footer-text").textContent = TEXTS[langKey].footer;
+
+
 /* ================= HERO CARRUSEL ================= */
+
 const heroImages = [
   "img/frente.jpg",
   "img/fondo.jpeg",
@@ -247,7 +276,13 @@ Promise.all([
   const cards = document.getElementById("cards");
   const modals = document.getElementById("modals");
 
-  data.forEach((fila, index) => {
+  // 🔥 FILTRO POR IDIOMA
+  const filteredData = data.filter(fila => {
+    if (isSpanish) return fila["Idioma"] === "Es";
+    return fila["Idioma"] === "En";
+  });
+
+  filteredData.forEach((fila, index) => {
 
     if (!fila["Título"] || !fila["Imagen"]) return;
 
@@ -265,7 +300,9 @@ Promise.all([
       <img src="${imgSrc}" alt="${fila["Título"]}">
       <h3>${fila["Título"]}</h3>
       <p>${fila["Descripción"] || ""}</p>
-      <button class="open-modal" data-modal="${modalId}">Ver más</button>
+      <button class="open-modal" data-modal="${modalId}">
+        ${isSpanish ? "Ver más" : "See more"}
+      </button>
     `;
     cards.appendChild(card);
 
@@ -285,7 +322,7 @@ Promise.all([
           ARS ${precioPesos}
         </h2>
         <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
-          Contactar por WhatsApp
+          ${isSpanish ? "Contactar por WhatsApp" : "Contact via WhatsApp"}
         </a>
       </div>
     `;
