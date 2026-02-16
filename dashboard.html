@@ -354,7 +354,23 @@ function imprimirTablaPaginada() {
   const pageData = filteredData.slice(start, end);
 
   let html = "<table><thead><tr>";
-  columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
+  columnas.forEach(col => { 
+  if (col !== "editar") {
+
+    let valor = fila[col];
+
+    // 🔥 Recortar Descripción_modal a 3 oraciones
+    if (col === "Descripción_modal" && typeof valor === "string") {
+      const oraciones = valor.match(/[^.!?]+[.!?]+/g);
+      if (oraciones) {
+        valor = oraciones.slice(0, 3).join(" ");
+      }
+    }
+
+    html += `<td>${valor}</td>`;
+  }
+});
+
   html += "<th>Acción</th></tr></thead><tbody>";
 
   // Filas reales
