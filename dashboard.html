@@ -6,254 +6,95 @@
 <title>Dashboard</title>
 
 <style>
- body { 
-  font-family: Arial; 
-  margin: 0;
-  background: #ffffff;
-}
+body { font-family: Arial; margin: 0; background: #ffffff; }
+#contenido { display: none; margin-top: 30px; padding: 20px; background: #f0f0f0; }
 
-#contenido {
-  display: none;
-  margin-top: 30px;
-  padding: 20px;
-  background: #f0f0f0;
-}
+#modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; padding: 20px; }
+#modal-box { background: white; padding: 25px; border-radius: 10px; text-align: center; width: 100%; max-width: 400px; }
 
-/* ===== MODAL ===== */
-#modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
+.tabla-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 
-#modal-box {
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  text-align: center;
-  width: 100%;
-  max-width: 400px;
-}
+table { border-collapse: collapse; width: 100%; min-width: 600px; margin-top: 15px; background: white; }
+th, td { border: 1px solid #ccc; padding: 10px; text-align: left; height: 48px; font-size: 14px; }
+th { background: #eee; }
 
-/* ===== TABLAS ===== */
-.tabla-scroll {
-  width: 100%;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch; /* scroll suave en iOS */
-}
+button { padding: 8px 12px; cursor: pointer; margin-right: 5px; font-size: 14px; border-radius: 6px; border: 1px solid #ccc; background: white; transition: 0.2s ease; }
+button:hover:not(:disabled) { background: #e6e6e6; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-table {
-  border-collapse: collapse;
-  width: 100%;
-  min-width: 600px;
-  margin-top: 15px;
-  background: white;
-}
+.nuevo-btn { margin-bottom: 15px; }
 
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: left;
-  height: 48px;
-  font-size: 14px;
-}
+#filtros { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin-bottom: 15px; }
+#filtros input { padding: 8px; font-size: 14px; }
 
-th {
-  background: #eee;
-}
+#tabla-container { padding: 10px; min-height: 460px; display: flex; flex-direction: column; }
+#tabla-destinos { flex: 1; }
 
-/* ===== BOTONES GENERALES ===== */
-button {
-  padding: 8px 12px;
-  cursor: pointer;
-  margin-right: 5px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: white;
-  transition: 0.2s ease;
-}
+#paginacion { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+#paginacion button { min-width: 38px; height: 38px; padding: 0 10px; }
+#paginacion button.active { background: #333; color: white; font-weight: bold; cursor: default; border: 1px solid #333; }
+#paginacion button:hover:not(.active):not(:disabled) { background: #dcdcdc; }
 
-button:hover:not(:disabled) {
-  background: #e6e6e6;
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.nuevo-btn {
-  margin-bottom: 15px;
-}
-
-/* ===== FILTROS RESPONSIVE ===== */
-#filtros {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 8px;
-  margin-bottom: 15px;
-}
-
-#filtros input {
-  padding: 8px;
-  font-size: 14px;
-}
-
-/* ===== CONTENEDOR TABLA + PAGINACION ===== */
-#tabla-container {
-  padding: 10px;
-  min-height: 460px;
-  display: flex;
-  flex-direction: column;
-}
-
-#tabla-destinos {
-  flex: 1;
-}
-
-/* ===== PAGINACION PROFESIONAL ===== */
-#paginacion {
-  margin-top: 10px;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-#paginacion button {
-  min-width: 38px;
-  height: 38px;
-  padding: 0 10px;
-}
-
-#paginacion button.active {
-  background: #333;
-  color: white;
-  font-weight: bold;
-  cursor: default;
-  border: 1px solid #333;
-}
-
-#paginacion button:hover:not(.active):not(:disabled) {
-  background: #dcdcdc;
-}
-
-/* ===== TABLET AJUSTES ===== */
 @media (max-width: 1024px) {
-
-  #contenido {
-    padding: 15px;
-  }
-
-  h1 {
-    font-size: 22px;
-  }
-
-  h2 {
-    font-size: 18px;
-  }
-
-  th, td {
-    font-size: 13px;
-    padding: 8px;
-  }
-
-  button {
-    font-size: 13px;
-    padding: 7px 10px;
-  }
-
+#contenido { padding: 15px; }
+h1 { font-size: 22px; }
+h2 { font-size: 18px; }
+th, td { font-size: 13px; padding: 8px; }
+button { font-size: 13px; padding: 7px 10px; }
 }
 
-/* ===== CELULAR ===== */
 @media (max-width: 600px) {
-
-  #contenido {
-    margin-top: 10px;
-    padding: 12px;
-  }
-
-  h1 {
-    font-size: 20px;
-  }
-
-  h2 {
-    font-size: 16px;
-  }
-
-  table {
-    min-width: 500px;
-  }
-
-  /* Botones normales full width */
-  #filtros button {
-    width: 100%;
-    margin-right: 0;
-  }
-
-  .nuevo-btn {
-    width: 100%;
-  }
-
-  /* PAGINACION NO full width */
-  #paginacion {
-    justify-content: center;
-  }
-
-  #paginacion button {
-    width: auto;
-    min-width: 36px;
-  }
-
+#contenido { margin-top: 10px; padding: 12px; }
+h1 { font-size: 20px; }
+h2 { font-size: 16px; }
+table { min-width: 500px; }
+#filtros button { width: 100%; margin-right: 0; }
+.nuevo-btn { width: 100%; }
+#paginacion { justify-content: center; }
+#paginacion button { width: auto; min-width: 36px; }
 }
-
-
 </style>
 </head>
+
 <body>
 
 <div id="modal">
-  <div id="modal-box">
-    <h3>Ingresar PIN</h3>
-    <input type="password" id="pin" style="width:100%; padding:8px;">
-    <br><br>
-    <button onclick="validar()">Entrar</button>
-    <p id="error" style="color:red;"></p>
-  </div>
+<div id="modal-box">
+<h3>Ingresar PIN</h3>
+<input type="password" id="pin" style="width:100%; padding:8px;">
+<br><br>
+<button onclick="validar()">Entrar</button>
+<p id="error" style="color:red;"></p>
+</div>
 </div>
 
 <div id="contenido">
-  <h1>Dashboard</h1>
+<h1>Dashboard</h1>
 
-  <h2>Destinos</h2>
-  <button class="nuevo-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfLOQEkERoS7b55LIoju9FyDpUI7uDwj-Kym3A3Yr5sLosYLQ/viewform?usp=header','_blank')">
-    Nuevo destino
-  </button>
+<h2>Destinos</h2>
+<button class="nuevo-btn" onclick="window.open('https://docs.google.com/forms/d/e/1FAIpQLSfLOQEkERoS7b55LIoju9FyDpUI7uDwj-Kym3A3Yr5sLosYLQ/viewform?usp=header','_blank')">
+Nuevo destino
+</button>
 
-  <div id="filtros">
-    <button onclick="cargarTablaActivos()">Activos</button>
-    <button onclick="cargarTablaInactivos()">Inactivos</button>
-    <input type="text" id="buscarInput" placeholder="Buscar por nombre" />
-    <button onclick="buscarTabla()">Buscar</button>
-    <button onclick="refrescarTabla()">Refrescar tabla</button>
-  </div>
+<div id="filtros">
+<button onclick="cargarTablaActivos()">Activos</button>
+<button onclick="cargarTablaInactivos()">Inactivos</button>
+<input type="text" id="buscarInput" placeholder="Buscar por nombre" />
+<button onclick="buscarTabla()">Buscar</button>
+<button onclick="refrescarTabla()">Refrescar tabla</button>
+</div>
 
-  <div id="tabla-container">
-    <div class="tabla-scroll">
-      <div id="tabla-destinos"></div>
-    </div>
-    <div id="paginacion"></div>
-  </div>
+<div id="tabla-container">
+<div class="tabla-scroll">
+<div id="tabla-destinos"></div>
+</div>
+<div id="paginacion"></div>
+</div>
 
-  <h2>Tasa de cambio</h2>
-  <div class="tabla-scroll">
-    <div id="tabla-cambio"></div>
-  </div>
+<h2>Tasa de cambio</h2>
+<div class="tabla-scroll">
+<div id="tabla-cambio"></div>
+</div>
 
 </div>
 
@@ -269,209 +110,187 @@ const rowsPerPage = 5;
 let filteredData = [];
 
 window.onload = () => {
-  const pinGuardado = localStorage.getItem("pinDashboard");
-  if(pinGuardado){
-    verificarPin(pinGuardado);
-  }
+const pinGuardado = localStorage.getItem("pinDashboard");
+if(pinGuardado){ verificarPin(pinGuardado); }
 }
 
 function validar() {
-  const pin = document.getElementById("pin").value;
-  verificarPin(pin);
+const pin = document.getElementById("pin").value;
+verificarPin(pin);
 }
 
 function verificarPin(pin){
-  fetch(URL_SCRIPT, {
-    method: "POST",
-    body: new URLSearchParams({ pin: pin })
-  })
-  .then(r => r.json())
-  .then(data => {
-    if (data.ok) {
-      localStorage.setItem("pinDashboard", pin);
-      document.getElementById("modal").style.display = "none";
-      document.getElementById("contenido").style.display = "block";
-      refrescarTabla();
-    } else {
-      document.getElementById("error").innerText = "PIN incorrecto";
-      localStorage.removeItem("pinDashboard");
-    }
-  })
-  .catch(() => {
-    document.getElementById("error").innerText = "Error de conexión";
-  });
+fetch(URL_SCRIPT, {
+method: "POST",
+body: new URLSearchParams({ pin: pin })
+})
+.then(r => r.json())
+.then(data => {
+if (data.ok) {
+localStorage.setItem("pinDashboard", pin);
+document.getElementById("modal").style.display = "none";
+document.getElementById("contenido").style.display = "block";
+refrescarTabla();
+} else {
+document.getElementById("error").innerText = "PIN incorrecto";
+localStorage.removeItem("pinDashboard");
+}
+})
+.catch(() => {
+document.getElementById("error").innerText = "Error de conexión";
+});
 }
 
-// Refrescar toda la tabla desde JSON
 function refrescarTabla() {
-  fetch(URL_DESTINOS).then(r => r.json()).then(data => {
-    destinosData = data;
-    filteredData = [...destinosData];
-    currentPage = 1;
-    imprimirTablaPaginada();
-  });
-  fetch(URL_CAMBIO).then(r => r.json()).then(data => {
-    cambioData = data;
-    imprimirTablaCambio(cambioData);
-  });
+fetch(URL_DESTINOS).then(r => r.json()).then(data => {
+destinosData = data;
+filteredData = [...destinosData];
+currentPage = 1;
+imprimirTablaPaginada();
+});
+fetch(URL_CAMBIO).then(r => r.json()).then(data => {
+cambioData = data;
+imprimirTablaCambio(cambioData);
+});
 }
 
-// Filtrar Activos
 function cargarTablaActivos() {
-  filteredData = destinosData.filter(f => f.Activo === "true" || f.Activo === true);
-  currentPage = 1;
-  imprimirTablaPaginada();
+filteredData = destinosData.filter(f => f.Activo === "true" || f.Activo === true);
+currentPage = 1;
+imprimirTablaPaginada();
 }
 
-// Filtrar Inactivos
 function cargarTablaInactivos() {
-  filteredData = destinosData.filter(f => f.Activo === "false" || f.Activo === false);
-  currentPage = 1;
-  imprimirTablaPaginada();
+filteredData = destinosData.filter(f => f.Activo === "false" || f.Activo === false);
+currentPage = 1;
+imprimirTablaPaginada();
 }
 
-// Buscar por nombre
 function buscarTabla() {
-  const val = document.getElementById("buscarInput").value.toLowerCase();
-  filteredData = destinosData.filter(f => f.Título.toLowerCase().includes(val));
-  currentPage = 1;
-  imprimirTablaPaginada();
+const val = document.getElementById("buscarInput").value.toLowerCase();
+filteredData = destinosData.filter(f => f.Título.toLowerCase().includes(val));
+currentPage = 1;
+imprimirTablaPaginada();
 }
 
-// Imprimir tabla con paginación
 function imprimirTablaPaginada() {
 
-  if (!Array.isArray(filteredData)) {
-    document.getElementById("tabla-destinos").innerHTML = "Sin datos";
-    document.getElementById("paginacion").innerHTML = "";
-    return;
-  }
+if (!Array.isArray(filteredData)) {
+document.getElementById("tabla-destinos").innerHTML = "Sin datos";
+document.getElementById("paginacion").innerHTML = "";
+return;
+}
 
-  const columnas = filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
+const columnas = filteredData.length > 0 ? Object.keys(filteredData[0]) : [];
+const start = (currentPage - 1) * rowsPerPage;
+const end = start + rowsPerPage;
+const pageData = filteredData.slice(start, end);
 
-  const start = (currentPage - 1) * rowsPerPage;
-  const end = start + rowsPerPage;
-  const pageData = filteredData.slice(start, end);
+let html = "<table><thead><tr>";
+columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
+html += "<th>Acción</th></tr></thead><tbody>";
 
-  let html = "<table><thead><tr>";
-  columnas.forEach(col => { 
-  if (col !== "editar") {
+pageData.forEach(fila => {
+html += "<tr>";
 
-    let valor = fila[col];
+columnas.forEach(col => {
+if(col !== "editar"){
 
-    // 🔥 Recortar Descripción_modal a 3 oraciones
-    if (col === "Descripción_modal" && typeof valor === "string") {
-      const oraciones = valor.match(/[^.!?]+[.!?]+/g);
-      if (oraciones) {
-        valor = oraciones.slice(0, 3).join(" ");
-      }
-    }
+let valor = fila[col];
 
-    html += `<td>${valor}</td>`;
-  }
+// 🔥 RECORTAR Descripción_modal a 3 oraciones
+if(col === "Descripción_modal" && typeof valor === "string"){
+const oraciones = valor.match(/[^.!?]+[.!?]+/g);
+if(oraciones){
+valor = oraciones.slice(0,3).join(" ");
+}
+}
+
+html += `<td>${valor || ""}</td>`;
+}
 });
 
-  html += "<th>Acción</th></tr></thead><tbody>";
-
-  // Filas reales
-  pageData.forEach(fila => {
-    html += "<tr>";
-    columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
-
-    if(fila.editar) {
-      const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
-      html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
-    } else {
-      html += "<td>-</td>";
-    }
-
-    html += "</tr>";
-  });
-
-  // Completar hasta 5 filas fijas
-  const filasVacias = rowsPerPage - pageData.length;
-  for (let i = 0; i < filasVacias; i++) {
-    html += "<tr>";
-    columnas.forEach(col => { if(col !== "editar") html += `<td>&nbsp;</td>`; });
-    html += "<td></td>";
-    html += "</tr>";
-  }
-
-  html += "</tbody></table>";
-  document.getElementById("tabla-destinos").innerHTML = html;
-
-  // ===== PAGINACION PROFESIONAL 3 NUMEROS =====
-
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-  let pagHtml = "";
-
-  // Ir al inicio
-  pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>&laquo;</button>`;
-
-  // Página anterior
-  pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
-
-  // SOLO 3 NUMEROS VISIBLES
-  let startPage = Math.max(1, currentPage - 1);
-  let endPage = startPage + 2;
-
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, endPage - 2);
-  }
-
-  for (let i = startPage; i <= endPage; i++) {
-    if (i === currentPage) {
-      pagHtml += `<button class="active">${i}</button>`;
-    } else {
-      pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
-    }
-  }
-
-  // Página siguiente
-  pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
-
-  // Ir al final
-  pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
-
-  document.getElementById("paginacion").innerHTML = pagHtml;
+if(fila.editar){
+const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
+html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
+}else{
+html += "<td>-</td>";
 }
 
-// Cambiar página
+html += "</tr>";
+});
+
+const filasVacias = rowsPerPage - pageData.length;
+for (let i = 0; i < filasVacias; i++) {
+html += "<tr>";
+columnas.forEach(col => { if(col !== "editar") html += `<td>&nbsp;</td>`; });
+html += "<td></td></tr>";
+}
+
+html += "</tbody></table>";
+document.getElementById("tabla-destinos").innerHTML = html;
+
+const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
+let pagHtml = "";
+
+pagHtml += `<button onclick="cambiarPagina(1)" ${currentPage===1?"disabled":""}>&laquo;</button>`;
+pagHtml += `<button onclick="cambiarPagina(${currentPage-1})" ${currentPage===1?"disabled":""}>&lsaquo;</button>`;
+
+let startPage = Math.max(1, currentPage - 1);
+let endPage = startPage + 2;
+
+if (endPage > totalPages) {
+endPage = totalPages;
+startPage = Math.max(1, endPage - 2);
+}
+
+for (let i = startPage; i <= endPage; i++) {
+if (i === currentPage) {
+pagHtml += `<button class="active">${i}</button>`;
+} else {
+pagHtml += `<button onclick="cambiarPagina(${i})">${i}</button>`;
+}
+}
+
+pagHtml += `<button onclick="cambiarPagina(${currentPage+1})" ${currentPage===totalPages?"disabled":""}>&rsaquo;</button>`;
+pagHtml += `<button onclick="cambiarPagina(${totalPages})" ${currentPage===totalPages?"disabled":""}>&raquo;</button>`;
+
+document.getElementById("paginacion").innerHTML = pagHtml;
+}
+
 function cambiarPagina(page) {
-  if(page < 1) return;
-  const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
-  if(page > totalPages) return;
-  currentPage = page;
-  imprimirTablaPaginada();
+if(page < 1) return;
+const totalPages = Math.ceil(filteredData.length / rowsPerPage) || 1;
+if(page > totalPages) return;
+currentPage = page;
+imprimirTablaPaginada();
 }
 
-// Imprimir tabla de cambio
 function imprimirTablaCambio(data) {
-  if (!Array.isArray(data) || data.length === 0) {
-    document.getElementById("tabla-cambio").innerHTML = "Sin datos";
-    return;
-  }
+if (!Array.isArray(data) || data.length === 0) {
+document.getElementById("tabla-cambio").innerHTML = "Sin datos";
+return;
+}
 
-  const columnas = Object.keys(data[0]);
-  let html = "<table><thead><tr>";
-  columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
-  html += "<th>Acción</th></tr></thead><tbody>";
+const columnas = Object.keys(data[0]);
+let html = "<table><thead><tr>";
+columnas.forEach(col => { if(col !== "editar") html += `<th>${col}</th>`; });
+html += "<th>Acción</th></tr></thead><tbody>";
 
-  data.forEach(fila => {
-    html += "<tr>";
-    columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
-    if(fila.editar) {
-      const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
-      html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
-    } else {
-      html += "<td>-</td>";
-    }
-    html += "</tr>";
-  });
+data.forEach(fila => {
+html += "<tr>";
+columnas.forEach(col => { if(col !== "editar") html += `<td>${fila[col]}</td>`; });
+if(fila.editar){
+const urlForm = `${fila.editar}&entry.1060124700=${encodeURIComponent(fila.editar)}`;
+html += `<td><button onclick="window.open('${urlForm}','_blank')">Editar</button></td>`;
+}else{
+html += "<td>-</td>";
+}
+html += "</tr>";
+});
 
-  html += "</tbody></table>";
-  document.getElementById("tabla-cambio").innerHTML = html;
+html += "</tbody></table>";
+document.getElementById("tabla-cambio").innerHTML = html;
 }
 </script>
 
