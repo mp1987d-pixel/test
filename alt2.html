@@ -64,11 +64,19 @@ body {
 }
 
 .section {
+
   max-width: 1200px;
   margin: 40px auto;
   padding: 40px;
-  background: rgba(255,255,255,0.72);
-  border-radius: 12px;
+  /* El blanco "Apple": muy claro, brillante y con desenfoque */
+  background: rgba(255, 255, 255, 0.85); 
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px); /* Soporte para Safari */
+  
+  border-radius: 24px; /* Bordes más redondeados y modernos */
+  border: 1px solid rgba(255, 255, 255, 0.3); /* Un borde sutil para dar relieve */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); /* Sombra suave y aireada */
+
   position: relative; /* Necesario para posicionar flechas */
 }
 
