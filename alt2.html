@@ -98,13 +98,29 @@ body {
 }
 
 .card {
-  min-width: 300px; /* Ancho fijo para las tarjetas en el carrusel */
+  width: 300px;         /* Ancho fijo */
+  height: 450px;        /* Alto fijo para que todas sean iguales */
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   text-align: center;
-  flex-shrink: 0; /* Evita que las tarjetas se achiquen */
+  flex-shrink: 0;
+  
+  /* Esto asegura que el contenido se distribuya parejo */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+}
+
+/* Ajuste opcional para que el texto no rompa la card si es muy largo */
+.card p {
+  padding: 0 15px;
+  font-size: 0.95rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Corta el texto a 3 líneas y pone puntos suspensivos */
+  -webkit-box-orient: vertical;
 }
 
 /* Botones de navegación */
