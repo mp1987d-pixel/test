@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ArgentinaGo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #0b1d3a;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, transparent 30%),
+    radial-gradient(circle at 70% 50%, rgba(255,255,255,0.06) 0%, transparent 30%),
+    radial-gradient(circle at 40% 80%, rgba(255,255,255,0.07) 0%, transparent 30%);
+  background-size: 250px 250px, 300px 300px, 200px 200px;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-blend-mode: overlay;
+}
+
+.main-header {
+  background: #ffffff;
+  padding: 15px 30px;
+}
+
+.header-container {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.socials a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.hero {
+  width: 100%;
+  height: 70vh;
+  background-image: url("img/frente.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: background-image 1s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-content {
+  background: rgba(0,0,0,0.45);
+  padding: 30px 40px;
+  border-radius: 10px;
+  text-align: center;
+  color: #fff;
+}
+
+.section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px;
+  background: rgba(255,255,255,0.72);
+  border-radius: 12px;
+}
+
+.section h2 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* ======== CAROUSEL ======== */
+
+.cards-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.cards {
+  display: flex;
+  gap: 25px;
+  transition: transform 0.4s ease;
+}
+
+.card {
+  min-width: calc(50% - 12.5px);
+  flex: 0 0 calc(50% - 12.5px);
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #0077cc;
+  color: white;
+  border: none;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  z-index: 10;
+  transition: 0.3s;
+}
+
+.carousel-btn:hover {
+  background: #005fa3;
+}
+
+.prev { left: -20px; }
+.next { right: -20px; }
+
+/* ======== FIN CAROUSEL ======== */
+
+.card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.card h3 {
+  margin: 15px 0 10px;
+}
+
+.card p {
+  padding: 0 15px;
+  font-size: 0.95rem;
+}
+
+.card button {
+  margin: 15px 0 20px;
+  padding: 10px 20px;
+  border: none;
+  background: #0077cc;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background: #005fa3;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: #fff;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  text-align: center;
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+}
+
+.modal-content img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.close {
+  position: sticky;
+  top: 0;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+}
+
+.whatsapp-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  background: #25D366;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.main-footer {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 20px;
+}
+  </style>
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="header-container">
+    <h2>ArgentinaGo</h2>
+    <div class="socials">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1 id="hero-title"></h1>
+    <p id="hero-subtitle"></p>
+  </div>
+</section>
+
+<section class="section">
+  <h2 id="section-title"></h2>
+
+  <!-- CAROUSEL WRAPPER -->
+  <div class="cards-wrapper">
+    <button class="carousel-btn prev">&#10094;</button>
+    <div class="cards" id="cards"></div>
+    <button class="carousel-btn next">&#10095;</button>
+  </div>
+
+</section>
+
+<div id="modals"></div>
+
+<footer class="main-footer">
+  <p id="footer-text"></p>
+</footer>
+
+<script>
+
+/* ================= CAROUSEL CARDS ================= */
+
+let currentIndex = 0;
+
+function updateCarousel() {
+  const cards = document.querySelector(".cards");
+  const cardWidth = document.querySelector(".card")?.offsetWidth + 25;
+  if (cardWidth) {
+    cards.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
+  }
+}
+
+document.addEventListener("click", function(e) {
+  if (e.target.classList.contains("next")) {
+    const totalCards = document.querySelectorAll(".card").length;
+    if (currentIndex < totalCards - 2) {
+      currentIndex++;
+      updateCarousel();
+    }
+  }
+
+  if (e.target.classList.contains("prev")) {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateCarousel();
+    }
+  }
+});
+
+/* TOUCH SUPPORT */
+
+let startX = 0;
+const wrapper = document.querySelector(".cards-wrapper");
+
+wrapper.addEventListener("touchstart", e => {
+  startX = e.touches[0].clientX;
+});
+
+wrapper.addEventListener("touchend", e => {
+  let endX = e.changedTouches[0].clientX;
+  if (startX - endX > 50) {
+    document.querySelector(".next").click();
+  }
+  if (endX - startX > 50) {
+    document.querySelector(".prev").click();
+  }
+});
+
+</script>
+
+</body>
+</html>
