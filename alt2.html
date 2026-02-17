@@ -23,63 +23,55 @@ body {
 }
 
 .main-header {
-  background: #000000; /* Fondo negro puro */
-  padding: 10px 20px;   /* Espaciado interno */
+  background: #000000; /* Fondo negro por si la imagen no carga */
+  padding: 0;          /* Sin espacios internos para que la imagen toque los bordes */
   width: 100%;
-  border-bottom: 1px solid rgba(255,255,255,0.1); /* Línea sutil elegante */
+  position: relative;  /* Necesario para las redes sociales */
+  overflow: hidden;
 }
 
 .header-container {
-  max-width: 1400px;    /* Ocupa casi todo el ancho en pantallas grandes */
-  margin: 0 auto;
+  width: 100%;
   display: flex;
-  justify-content: space-between; /* Logo a la izq, redes a la der */
-  align-items: center;
-}
-
-.logo-link {
-  display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .logo-img {
-  height: 60px;         /* Altura fija para mantener consistencia */
-  width: auto;          /* Mantiene la proporción */
-  display: block;
-  object-fit: contain;
+  width: 100%;         /* Ocupa todo el ancho disponible */
+  height: auto;        /* Mantiene la proporción original */
+  display: block;      /* Elimina espacios en blanco debajo de la imagen */
+  object-fit: cover;   /* Si le das una altura fija, esto evita que se deforme */
 }
 
 .socials {
+  position: absolute;  /* Flotan sobre la imagen */
+  top: 50%;            /* Centrado vertical respecto al header */
+  right: 20px;
+  transform: translateY(-50%);
   display: flex;
-  gap: 20px;            /* Espacio entre iconos */
+  gap: 15px;
+  background: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para legibilidad */
+  padding: 8px 15px;
+  border-radius: 20px;
+  backdrop-filter: blur(5px);   /* Efecto de cristal esmerilado */
 }
 
 .socials a {
   text-decoration: none;
   color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
 }
 
-.socials a:hover {
-  color: #0077cc;       /* Color de énfasis al pasar el mouse */
-}
-
-/* --- RESPONSIVE --- */
-@media (max-width: 480px) {
-  .header-container {
-    flex-direction: row; /* Mantiene logo y redes en la misma línea */
-    padding: 0 5px;
-  }
-  
-  .logo-img {
-    height: 45px;       /* Logo un poco más chico en móviles */
-  }
-
-  .socials a {
-    font-size: 0.8rem;  /* Texto más pequeño en móviles */
-    gap: 10px;
+/* Ajuste para que en móviles no tape el logo importante */
+@media (max-width: 600px) {
+  .socials {
+    top: auto;
+    bottom: 10px;
+    right: 10px;
+    transform: none;
+    font-size: 0.7rem;
   }
 }
 .hero {
