@@ -1,11 +1,11 @@
 <!DOCTYPE html> 
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>ArgentinaGo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>ArgentinaGo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
+<style>
 * { box-sizing: border-box; }
 
 body {
@@ -17,50 +17,6 @@ body {
     radial-gradient(circle at 70% 50%, rgba(255,255,255,0.06) 0%, transparent 30%),
     radial-gradient(circle at 40% 80%, rgba(255,255,255,0.07) 0%, transparent 30%);
   background-size: 250px 250px, 300px 300px, 200px 200px;
-  background-repeat: repeat;
-  background-attachment: scroll;
-  background-blend-mode: overlay;
-}
-
-.main-header {
-  background: #ffffff;
-  padding: 15px 30px;
-}
-
-.header-container {
-  max-width: 1200px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.socials a {
-  margin-left: 15px;
-  text-decoration: none;
-  color: #333;
-  font-size: 0.9rem;
-}
-
-.hero {
-  width: 100%;
-  height: 70vh;
-  background-image: url("img/frente.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  transition: background-image 1s ease-in-out;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-content {
-  background: rgba(0,0,0,0.45);
-  padding: 30px 40px;
-  border-radius: 10px;
-  text-align: center;
-  color: #fff;
 }
 
 .section {
@@ -71,27 +27,28 @@ body {
   border-radius: 12px;
 }
 
-.section h2 {
-  text-align: center;
-  margin-bottom: 30px;
-}
+.section h2 { text-align:center; margin-bottom:30px; }
 
-/* ===== CAMBIO A CARRUSEL ===== */
+/* ===== PREMIUM CAROUSEL ===== */
 
-.cards-wrapper {
+.carousel-container {
   position: relative;
-  overflow: hidden;
 }
 
 .cards {
   display: flex;
   gap: 25px;
-  transition: transform 0.4s ease;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 20px;
 }
 
+.cards::-webkit-scrollbar { display: none; }
+
 .card {
-  min-width: calc(50% - 12.5px);
   flex: 0 0 calc(50% - 12.5px);
+  scroll-snap-align: start;
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
@@ -101,7 +58,7 @@ body {
 
 .carousel-btn {
   position: absolute;
-  top: 50%;
+  top: 45%;
   transform: translateY(-50%);
   background: #0077cc;
   color: white;
@@ -111,323 +68,218 @@ body {
   border-radius: 50%;
   cursor: pointer;
   font-size: 22px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   z-index: 10;
-}
-
-.carousel-btn:hover {
-  background: #005fa3;
 }
 
 .prev { left: -20px; }
 .next { right: -20px; }
 
-/* ===== FIN CAMBIO ===== */
-
-.card img {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
+.carousel-dots {
+  text-align: center;
+  margin-top: 10px;
 }
 
-.card h3 {
-  margin: 15px 0 10px;
-}
-
-.card p {
-  padding: 0 15px;
-  font-size: 0.95rem;
-}
-
-.card button {
-  margin: 15px 0 20px;
-  padding: 10px 20px;
-  border: none;
-  background: #0077cc;
-  color: #fff;
-  border-radius: 6px;
+.carousel-dots span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin: 5px;
+  background: #ccc;
+  border-radius: 50%;
   cursor: pointer;
 }
 
-.card button:hover {
-  background: #005fa3;
+.carousel-dots .active {
+  background: #0077cc;
+}
+
+/* ===== RESTO ORIGINAL ===== */
+
+.card img {
+  width:100%;
+  height:180px;
+  object-fit:cover;
+}
+
+.card h3 { margin:15px 0 10px; }
+
+.card p { padding:0 15px; font-size:0.95rem; }
+
+.card button {
+  margin:15px 0 20px;
+  padding:10px 20px;
+  border:none;
+  background:#0077cc;
+  color:#fff;
+  border-radius:6px;
+  cursor:pointer;
 }
 
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  overflow-y: auto;
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  z-index:1000;
 }
 
 .modal-content {
-  background: #fff;
-  margin: 40px auto;
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 800px;
-  width: 90%;
-  text-align: center;
-  max-height: calc(100vh - 80px);
-  overflow-y: auto;
-}
-
-.modal-content img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 8px;
-  margin-bottom: 15px;
+  background:#fff;
+  margin:40px auto;
+  padding:20px;
+  border-radius:12px;
+  max-width:800px;
+  width:90%;
 }
 
 .close {
-  position: sticky;
-  top: 0;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
+  float:right;
+  font-size:28px;
+  cursor:pointer;
 }
 
 .whatsapp-btn {
-  display: inline-block;
-  padding: 12px 25px;
-  background: #25D366;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: bold;
-  margin-top: 15px;
+  display:inline-block;
+  padding:12px 25px;
+  background:#25D366;
+  color:#fff;
+  text-decoration:none;
+  border-radius:8px;
+  margin-top:15px;
 }
-
-.main-footer {
-  background: #111;
-  color: #fff;
-  text-align: center;
-  padding: 20px;
-}
-  </style>
+</style>
 </head>
 
 <body>
 
-<header class="main-header">
-  <div class="header-container">
-    <h2>ArgentinaGo</h2>
-    <div class="socials">
-      <a href="#">Instagram</a>
-      <a href="#">Facebook</a>
-    </div>
-  </div>
-</header>
-
-<section class="hero">
-  <div class="hero-content">
-    <h1 id="hero-title"></h1>
-    <p id="hero-subtitle"></p>
-  </div>
-</section>
-
 <section class="section">
-  <h2 id="section-title"></h2>
+<h2 id="section-title"></h2>
 
-  <!-- WRAPPER AGREGADO -->
-  <div class="cards-wrapper">
-    <button class="carousel-btn prev">&#10094;</button>
-    <div class="cards" id="cards"></div>
-    <button class="carousel-btn next">&#10095;</button>
-  </div>
+<div class="carousel-container">
+<button class="carousel-btn prev">&#10094;</button>
+<div class="cards" id="cards"></div>
+<button class="carousel-btn next">&#10095;</button>
+<div class="carousel-dots" id="dots"></div>
+</div>
 
 </section>
 
 <div id="modals"></div>
 
-<footer class="main-footer">
-  <p id="footer-text"></p>
-</footer>
-
 <script>
 
-/* ================= DETECCION IDIOMA ================= */
-
-const browserLang = navigator.language || navigator.userLanguage;
-const isSpanish = browserLang.toLowerCase().startsWith("es");
-
-document.documentElement.lang = isSpanish ? "es" : "en";
-
-const TEXTS = {
-  es: {
-    heroTitle: "Descubrí Argentina",
-    heroSubtitle: "Experiencias únicas pensadas para turistas europeos",
-    sectionTitle: "Destinos destacados",
-    footer: "© 2026 Viajes Argentina · Turismo receptivo"
-  },
-  en: {
-    heroTitle: "Discover Argentina",
-    heroSubtitle: "Unique experiences designed for European travelers",
-    sectionTitle: "Featured destinations",
-    footer: "© 2026 Argentina Travel · Incoming tourism"
-  }
-};
-
-const langKey = isSpanish ? "es" : "en";
-
-document.getElementById("hero-title").textContent = TEXTS[langKey].heroTitle;
-document.getElementById("hero-subtitle").textContent = TEXTS[langKey].heroSubtitle;
-document.getElementById("section-title").textContent = TEXTS[langKey].sectionTitle;
-document.getElementById("footer-text").textContent = TEXTS[langKey].footer;
-
-/* HERO CARRUSEL igual que el tuyo */
-const heroImages = ["img/frente.jpg","img/fondo.jpeg","img/patagonia.jpeg"];
-let heroIndex = 0;
-const heroSection = document.querySelector(".hero");
-
-setInterval(() => {
-  heroIndex = (heroIndex + 1) % heroImages.length;
-  heroSection.style.backgroundImage = `url('${heroImages[heroIndex]}')`;
-}, 4000);
-
-/* ================= TU CODIGO ORIGINAL (INTACTO) ================= */
+/* ========= API ORIGINAL ========= */
 
 const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
 const RATE_URL = "https://script.google.com/macros/s/AKfycbxjq944t-U8WVGm7SiJGGxG43ww2VDRELUbg6Q_GyHPeKGEcMG7zy0NwP3lTE2NVxApmw/exec";
-
 const IMG_BASE = "https://raw.githubusercontent.com/mp1987d-pixel/test/1503dc4065aeac69e0bdbd53165267c937a57eb5/img/";
 const YT_BASE = "https://www.youtube.com/embed/";
 
-let currentIndex = 0;
+let autoplay;
 
 Promise.all([
-  fetch(API_URL).then(res => res.json()),
-  fetch(RATE_URL).then(res => res.json())
+  fetch(API_URL).then(res=>res.json()),
+  fetch(RATE_URL).then(res=>res.json())
 ])
-.then(([data, rateData]) => {
+.then(([data, rateData])=>{
 
-  const tasaEuroPeso = parseFloat(rateData[0]["tasa euro - pesos arg"]);
-  const tasaEuroDolar = parseFloat(rateData[0]["tasa euro - dolar"]);
-  const cards = document.getElementById("cards");
-  const modals = document.getElementById("modals");
+const tasaEuroPeso = parseFloat(rateData[0]["tasa euro - pesos arg"]);
+const tasaEuroDolar = parseFloat(rateData[0]["tasa euro - dolar"]);
+const cards = document.getElementById("cards");
+const dotsContainer = document.getElementById("dots");
+const modals = document.getElementById("modals");
 
-  const filteredData = data.filter(fila => {
-    if (isSpanish) return fila["Idioma"] === "Es";
-    return fila["Idioma"] === "En";
-  });
+data.forEach((fila,index)=>{
 
-  filteredData.forEach((fila, index) => {
+if(!fila["Título"] || !fila["Imagen"]) return;
 
-    if (!fila["Título"] || !fila["Imagen"]) return;
+const imgSrc = IMG_BASE + fila["Imagen"];
+const precioOriginal = parseFloat(fila["Precio"]||0);
+const precioPesos = (precioOriginal*tasaEuroPeso).toFixed(2);
+const precioDolar = (precioOriginal*tasaEuroDolar).toFixed(2);
 
-    const modalId = `modal_${index}`;
-    const imgSrc = IMG_BASE + fila["Imagen"];
-    const youtubeSrc = fila["Youtube"] ? YT_BASE + fila["Youtube"] : "";
+const card = document.createElement("div");
+card.className="card";
+card.innerHTML=`
+<img src="${imgSrc}">
+<h3>${fila["Título"]}</h3>
+<p>${fila["Descripción"]||""}</p>
+<button>Ver más</button>
+`;
+cards.appendChild(card);
 
-    const precioOriginal = parseFloat(fila["Precio"] || 0);
-    const precioPesos = (precioOriginal * tasaEuroPeso).toFixed(2);
-    const precioDolar = (precioOriginal * tasaEuroDolar).toFixed(2);
+const dot=document.createElement("span");
+dot.onclick=()=>scrollToCard(index);
+dotsContainer.appendChild(dot);
 
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${imgSrc}" alt="${fila["Título"]}">
-      <h3>${fila["Título"]}</h3>
-      <p>${fila["Descripción"] || ""}</p>
-      <button class="open-modal" data-modal="${modalId}">
-        ${isSpanish ? "Ver más" : "See more"}
-      </button>
-    `;
-    cards.appendChild(card);
-
-    const modal = document.createElement("div");
-    modal.className = "modal";
-    modal.id = modalId;
-    modal.innerHTML = `
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>${fila["Título"]}</h2>
-        <img src="${imgSrc}" alt="${fila["Título"]}">
-        <p>${fila["Descripción_modal"] || ""}</p>
-        ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" allowfullscreen></iframe>` : ""}
-        <h2>
-          € ${precioOriginal.toFixed(2)} <br>
-          USD ${precioDolar} <br>
-          ARS ${precioPesos}
-        </h2>
-        <a href="https://wa.me/5491112345678" target="_blank" class="whatsapp-btn">
-          ${isSpanish ? "Contactar por WhatsApp" : "Contact via WhatsApp"}
-        </a>
-      </div>
-    `;
-    modals.appendChild(modal);
-  });
-
-  activarModales();
-  initCarousel();
 });
 
-function initCarousel() {
-  const cardsContainer = document.querySelector(".cards");
-  const totalCards = document.querySelectorAll(".card").length;
+initCarousel();
 
-  function updateCarousel() {
-    const cardWidth = document.querySelector(".card").offsetWidth + 25;
-    cardsContainer.style.transform = `translateX(-${currentIndex * cardWidth}px)`;
-  }
+});
 
-  document.querySelector(".next").onclick = () => {
-    if (currentIndex < totalCards - 2) {
-      currentIndex++;
-      updateCarousel();
-    }
-  };
+/* ========= PREMIUM CAROUSEL ========= */
 
-  document.querySelector(".prev").onclick = () => {
-    if (currentIndex > 0) {
-      currentIndex--;
-      updateCarousel();
-    }
-  };
+function initCarousel(){
+const container=document.querySelector(".cards");
+const cards=document.querySelectorAll(".card");
+const dots=document.querySelectorAll(".carousel-dots span");
 
-  let startX = 0;
-  const wrapper = document.querySelector(".cards-wrapper");
+let index=0;
 
-  wrapper.addEventListener("touchstart", e => {
-    startX = e.touches[0].clientX;
-  });
-
-  wrapper.addEventListener("touchend", e => {
-    let endX = e.changedTouches[0].clientX;
-    if (startX - endX > 50) document.querySelector(".next").click();
-    if (endX - startX > 50) document.querySelector(".prev").click();
-  });
+function scrollToCard(i){
+container.scrollTo({
+left:cards[i].offsetLeft,
+behavior:"smooth"
+});
+index=i;
+updateDots();
 }
 
-function activarModales() {
-  document.querySelectorAll(".open-modal").forEach(btn => {
-    btn.onclick = () => {
-      document.getElementById(btn.dataset.modal).style.display = "block";
-      document.body.style.overflow = "hidden";
-    };
-  });
-
-  document.querySelectorAll(".close").forEach(btn => {
-    btn.onclick = () => {
-      btn.closest(".modal").style.display = "none";
-      document.body.style.overflow = "";
-    };
-  });
-
-  window.onclick = e => {
-    document.querySelectorAll(".modal").forEach(m => {
-      if (e.target === m) {
-        m.style.display = "none";
-        document.body.style.overflow = "";
-      }
-    });
-  };
+function updateDots(){
+dots.forEach(d=>d.classList.remove("active"));
+if(dots[index]) dots[index].classList.add("active");
 }
+
+document.querySelector(".next").onclick=()=>{
+index=(index+1)%cards.length;
+scrollToCard(index);
+};
+
+document.querySelector(".prev").onclick=()=>{
+index=(index-1+cards.length)%cards.length;
+scrollToCard(index);
+};
+
+container.addEventListener("scroll",()=>{
+let closest=0;
+let minDiff=Infinity;
+cards.forEach((card,i)=>{
+let diff=Math.abs(container.scrollLeft-card.offsetLeft);
+if(diff<minDiff){minDiff=diff;closest=i;}
+});
+index=closest;
+updateDots();
+});
+
+function startAutoplay(){
+autoplay=setInterval(()=>{
+document.querySelector(".next").click();
+},4000);
+}
+
+function stopAutoplay(){
+clearInterval(autoplay);
+}
+
+container.addEventListener("mouseenter",stopAutoplay);
+container.addEventListener("touchstart",stopAutoplay);
+container.addEventListener("mouseleave",startAutoplay);
+
+startAutoplay();
+updateDots();
+}
+
 </script>
 
 </body>
