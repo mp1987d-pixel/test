@@ -76,9 +76,8 @@ body {
 }
 .hero {
   width: 100%;
-  /* En Móvil: La imagen será más alta para que se luzca */
-  height: 50vh; 
-  background-size: cover;
+  height: 60vh; /* Puedes ajustar este número a tu gusto (50vh, 70vh, etc) */
+  background-size: 100% 100%; /* ESTO DEFORMA LA IMAGEN PARA ENCAJAR */
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 1s ease-in-out;
@@ -87,22 +86,17 @@ body {
   justify-content: center;
 }
 
-/* TABLET: Ajustamos la altura para que no corte tanto */
-@media (min-width: 768px) {
+/* Celulares: un poco más baja para que no se estire tanto hacia arriba */
+@media (max-width: 600px) {
   .hero {
-    height: 60vh;
-    background-size: 100% 100%; /* Estira la imagen al contenedor si son similares */
-    /* O mejor aún, usa cover pero con una altura que sepamos que funciona */
-    background-size: cover; 
+    height: 35vh; 
   }
 }
 
-/* PC: Aquí es donde se cortaba. Bajamos la altura para que coincida con una foto apaisada */
-@media (min-width: 1024px) {
+/* Tablets y PC: un poco más alta */
+@media (min-width: 601px) {
   .hero {
-    height: 85vh; /* Ocupa casi toda la pantalla de alto */
-    background-size: cover;
-    background-position: center;
+    height: 70vh;
   }
 }
 
