@@ -76,8 +76,8 @@ body {
 }
 .hero {
   width: 100%;
-  height: 60vh; /* Puedes ajustar este número a tu gusto (50vh, 70vh, etc) */
-  background-size: 100% 100%; /* ESTO DEFORMA LA IMAGEN PARA ENCAJAR */
+  height: 40vh; /* Altura para celulares (ajustada para que no se deforme tanto) */
+  background-size: 100% 100%; /* Forzamos a que ocupe todo el espacio */
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 1s ease-in-out;
@@ -86,17 +86,17 @@ body {
   justify-content: center;
 }
 
-/* Celulares: un poco más baja para que no se estire tanto hacia arriba */
-@media (max-width: 600px) {
+/* TABLET: Aumentamos la altura */
+@media (min-width: 768px) and (max-width: 1023px) {
   .hero {
-    height: 35vh; 
+    height: 65vh; /* Altura intermedia para tablets */
   }
 }
 
-/* Tablets y PC: un poco más alta */
-@media (min-width: 601px) {
+/* PC / DESKTOP: Aquí lo hacemos "el doble de largo" (alto) */
+@media (min-width: 1024px) {
   .hero {
-    height: 70vh;
+    height: 85vh; /* Casi el total de la pantalla para evitar el efecto de estiramiento horizontal */
   }
 }
 
