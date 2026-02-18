@@ -76,9 +76,9 @@ body {
 }
 .hero {
   width: 100%;
-  /* Eliminamos el height: 70vh para que no fuerce un corte */
-  aspect-ratio: 16 / 9; /* Esto mantiene la proporción de una foto típica de paisaje */
-  background-size: contain; /* Asegura que la imagen se vea completa */
+  /* En Móvil: La imagen será más alta para que se luzca */
+  height: 50vh; 
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 1s ease-in-out;
@@ -86,20 +86,23 @@ body {
   align-items: center;
   justify-content: center;
 }
-@media (min-width: 1024px) {
+
+/* TABLET: Ajustamos la altura para que no corte tanto */
+@media (min-width: 768px) {
   .hero {
-    /* En PC, si las fotos son muy alargadas, bajamos el aspect-ratio */
-    aspect-ratio: 21 / 9; 
-    background-size: cover; /* Aquí puedes volver a cover si prefieres que llene todo, pero con la proporción ajustada */
+    height: 60vh;
+    background-size: 100% 100%; /* Estira la imagen al contenedor si son similares */
+    /* O mejor aún, usa cover pero con una altura que sepamos que funciona */
+    background-size: cover; 
   }
 }
 
-/* Si quieres que se vea TODO sin importar el espacio vacío: */
-@media (min-width: 768px) {
+/* PC: Aquí es donde se cortaba. Bajamos la altura para que coincida con una foto apaisada */
+@media (min-width: 1024px) {
   .hero {
-    height: auto;
-    min-height: 400px; /* Un mínimo para que no desaparezca el texto */
-    background-size: contain; 
+    height: 85vh; /* Ocupa casi toda la pantalla de alto */
+    background-size: cover;
+    background-position: center;
   }
 }
 
