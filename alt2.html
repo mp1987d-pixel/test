@@ -38,25 +38,10 @@ body {
 
 /* Logo para Móviles (se mantiene como querías) */
 .logo-img {
-  width: 35%;
-  height: auto;
-  display: block;
-  object-fit: cover;
-}
-
-/* Ajustes para Tablet y PC */
-@media (min-width: 768px) {
-  .main-header {
-    height: 100px; /* Limitamos la altura del header */
-    display: flex;
-    align-items: center; /* Centra el contenido verticalmente */
-  }
-
-  .logo-img {
-    width: auto;      /* Deja que el ancho sea automático */
-    height: 80px;     /* Forzamos a que el logo no mida más de 80px de alto */
-    margin-left: 20px; /* Un poco de aire a la izquierda */
-  }
+  width: 25%;         /* Ocupa todo el ancho disponible */
+  height: auto;        /* Mantiene la proporción original */
+  display: block;      /* Elimina espacios en blanco debajo de la imagen */
+  object-fit: cover;   /* Si le das una altura fija, esto evita que se deforme */
 }
 
 .socials {
