@@ -76,14 +76,31 @@ body {
 }
 .hero {
   width: 100%;
-  height: 70vh;
-  background-size: cover;
+  /* Eliminamos el height: 70vh para que no fuerce un corte */
+  aspect-ratio: 16 / 9; /* Esto mantiene la proporción de una foto típica de paisaje */
+  background-size: contain; /* Asegura que la imagen se vea completa */
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 1s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+@media (min-width: 1024px) {
+  .hero {
+    /* En PC, si las fotos son muy alargadas, bajamos el aspect-ratio */
+    aspect-ratio: 21 / 9; 
+    background-size: cover; /* Aquí puedes volver a cover si prefieres que llene todo, pero con la proporción ajustada */
+  }
+}
+
+/* Si quieres que se vea TODO sin importar el espacio vacío: */
+@media (min-width: 768px) {
+  .hero {
+    height: auto;
+    min-height: 400px; /* Un mínimo para que no desaparezca el texto */
+    background-size: contain; 
+  }
 }
 
 .hero-content {
