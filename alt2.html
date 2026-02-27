@@ -272,36 +272,41 @@
 
     /* Ajustes para los Modales en Celulares */
 @media (max-width: 600px) {
-  .modal-content {
-    width: 95%;          /* Aprovechamos casi todo el ancho de la pantalla */
-    margin: 20px auto;   /* Menos margen superior para no perder espacio */
-    padding: 15px;       /* Espaciado interno más compacto */
-    max-height: 90vh;    /* Evita que el modal sea más alto que la pantalla */
-    overflow-y: auto;    /* Permite scroll interno si el contenido es largo */
+  /* 1. Hacemos que la sección ocupe todo el ancho disponible */
+  .section {
+    width: 100%;
+    max-width: 100%;
+    margin: 20px 0;
+    padding: 20px 0; /* Quitamos padding lateral para que el carrusel llegue al borde */
+    border-radius: 0; /* Opcional: quitar redondeado en móvil para ganar espacio */
   }
 
-  .modal-content h2 {
-    font-size: 1.4rem;   /* Título un poco más pequeño */
-    margin-top: 10px;
+  .section h2 {
+    margin-bottom: 20px;
+    padding: 0 15px; /* El título sí mantiene margen */
   }
 
-  .modal-content img {
-    max-height: 250px;   /* Evitamos que la imagen ocupe toda la pantalla inicial */
+  /* 2. El contenedor de tarjetas ahora permite ver el borde de la pantalla */
+  .cards {
+    gap: 15px;
+    padding: 10px 15px; /* Agregamos aire solo al inicio y final del scroll */
+    scroll-snap-type: x mandatory;
   }
 
-  .modal-content iframe {
-    height: 200px;       /* Ajustamos el video de YouTube para que no se corte */
+  /* 3. Ajustamos la tarjeta para que se vea "importante" pero no enorme */
+  .card {
+    width: 80vw; /* 80% del ancho de la pantalla, para que se vea la siguiente */
+    height: 420px;
+    scroll-snap-align: center; /* Se centra automáticamente al deslizar */
   }
 
-  .close {
-    font-size: 26px;     /* Botón de cerrar más manejable */
-    padding: 2px 8px;
+  .card img {
+    height: 200px;
   }
 
-  .whatsapp-btn {
-    width: 100%;         /* Botón de WhatsApp a lo ancho para que sea fácil de tocar */
-    box-sizing: border-box;
-    font-size: 0.9rem;
+  /* 4. Escondemos las flechas en celular (estorban y el usuario usa el dedo) */
+  .nav-btn {
+    display: none;
   }
 }
   </style>
