@@ -269,6 +269,41 @@
       font-size: 28px;
       cursor: pointer;
     }
+
+    /* Ajustes para los Modales en Celulares */
+@media (max-width: 600px) {
+  .modal-content {
+    width: 95%;          /* Aprovechamos casi todo el ancho de la pantalla */
+    margin: 20px auto;   /* Menos margen superior para no perder espacio */
+    padding: 15px;       /* Espaciado interno más compacto */
+    max-height: 90vh;    /* Evita que el modal sea más alto que la pantalla */
+    overflow-y: auto;    /* Permite scroll interno si el contenido es largo */
+  }
+
+  .modal-content h2 {
+    font-size: 1.4rem;   /* Título un poco más pequeño */
+    margin-top: 10px;
+  }
+
+  .modal-content img {
+    max-height: 250px;   /* Evitamos que la imagen ocupe toda la pantalla inicial */
+  }
+
+  .modal-content iframe {
+    height: 200px;       /* Ajustamos el video de YouTube para que no se corte */
+  }
+
+  .close {
+    font-size: 26px;     /* Botón de cerrar más manejable */
+    padding: 2px 8px;
+  }
+
+  .whatsapp-btn {
+    width: 100%;         /* Botón de WhatsApp a lo ancho para que sea fácil de tocar */
+    box-sizing: border-box;
+    font-size: 0.9rem;
+  }
+}
   </style>
 </head>
 
