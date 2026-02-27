@@ -202,11 +202,20 @@
     }
 
     .close {
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
+  position: sticky; /* Se queda fija mientras haces scroll */
+  top: 0;           /* Se pega al borde superior del modal-content */
+  right: 0;
+  float: right;     /* La empuja a la derecha */
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  background: white; /* Evita que el texto de abajo se transparente al pasar */
+  padding: 5px 10px;
+  border-radius: 50%;
+  line-height: 1;
+  z-index: 100;     /* Asegura que esté por encima de imágenes y videos */
+}
 
     .whatsapp-btn {
       display: inline-block;
