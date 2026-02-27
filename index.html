@@ -23,23 +23,73 @@ body {
 }
 
 .main-header {
-  background: #ffffff;
-  padding: 15px 30px;
+  background: #000000;
+  padding: 0;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
 }
 
 .header-container {
-  max-width: 1200px;
-  margin: auto;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+}
+
+.logo-img {
+  width: 25%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* ===== REDES SOCIALES NUEVAS ===== */
+
+.socials {
+  position: absolute;
+  top: 50%;
+  right: 15px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 8px 12px;
+  border-radius: 30px;
+  backdrop-filter: blur(6px);
+  z-index: 20;
 }
 
 .socials a {
-  margin-left: 15px;
-  text-decoration: none;
-  color: #333;
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.socials img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  transition: transform 0.2s ease;
+}
+
+.socials img:hover {
+  transform: scale(1.15);
+}
+
+/* PRIORIDAD MOVIL */
+@media (max-width: 600px) {
+  .socials {
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    padding: 6px 10px;
+    gap: 10px;
+  }
+
+  .socials img {
+    width: 26px;
+    height: 26px;
+  }
 }
 
 .hero {
@@ -181,11 +231,25 @@ body {
 
 <header class="main-header">
   <div class="header-container">
-    <h2>ArgentinaGo</h2>
+    <a href="/" class="logo-link">
+      <img src="img/logo4.jpg" alt="ArgentinaGo" class="logo-img">
+    </a>
+
     <div class="socials">
-      <a href="#">Instagram</a>
-      <a href="#">Facebook</a>
+      <a href="#" target="_blank">
+        <img src="img/Facebook.png" alt="Facebook">
+      </a>
+      <a href="#" target="_blank">
+        <img src="img/Instagra.png" alt="Instagram">
+      </a>
+      <a href="#" target="_blank">
+        <img src="img/YouTube.png" alt="YouTube">
+      </a>
+      <a href="#" target="_blank">
+        <img src="img/TikTok.png" alt="TikTok">
+      </a>
     </div>
+
   </div>
 </header>
 
