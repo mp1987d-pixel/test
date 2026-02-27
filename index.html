@@ -70,18 +70,10 @@
       transition: transform 0.2s ease;
     }
 
-    .socials img:hover {
-      transform: scale(1.15);
-    }
+    .socials img:hover { transform: scale(1.15); }
 
     @media (max-width: 600px) {
-      .socials {
-        top: 50%;
-        right: 10px;
-        transform: translateY(-50%);
-        padding: 6px 10px;
-        gap: 10px;
-      }
+      .socials { top: 50%; right: 10px; transform: translateY(-50%); padding: 6px 10px; gap: 10px; }
       .socials img { width: 26px; height: 26px; }
       .logo-img { width: 50%; }
     }
@@ -96,7 +88,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-image: url('img/vino.jpeg'); /* Imagen inicial */
+      background-image: url('img/vino.jpeg');
     }
 
     .hero-content {
@@ -111,25 +103,21 @@
       max-width: 1200px;
       margin: 40px auto;
       padding: 40px;
-      background: rgba(255,255,255,0.72);
-      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 28px;
     }
 
-    .section h2 {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #111;
-    }
+    .section h2 { text-align: center; margin-bottom: 40px; color: #1d1d1f; }
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
     }
 
     .card {
       background: #fff;
-      border-radius: 10px;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       text-align: center;
@@ -138,15 +126,7 @@
       justify-content: space-between;
     }
 
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-
-    .card h3 { margin: 15px 0 10px; }
-    .card p { padding: 0 15px; font-size: 0.95rem; }
-
+    .card img { width: 100%; height: 180px; object-fit: cover; }
     .card button {
       margin: 15px 0 20px;
       padding: 10px 20px;
@@ -156,8 +136,6 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
-    .card button:hover { background: #005fa3; }
 
     .modal {
       display: none;
@@ -178,21 +156,7 @@
       text-align: center;
     }
 
-    .modal-content img {
-      width: 100%;
-      max-height: 400px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 15px;
-    }
-
-    .close {
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      color: #333;
-      cursor: pointer;
-    }
+    .close { float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
 
     .whatsapp-btn {
       display: inline-block;
@@ -201,7 +165,6 @@
       color: #fff;
       text-decoration: none;
       border-radius: 8px;
-      font-weight: bold;
       margin-top: 15px;
     }
 
@@ -211,6 +174,32 @@
       text-align: center;
       padding: 20px;
     }
+
+    .footer-links a { color: #fff; text-decoration: none; cursor: pointer; }
+
+    /* Modal términos */
+    #termsModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #termsContent {
+      background: #000;
+      color: #fff;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close-terms { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; }
   </style>
 </head>
 
@@ -244,8 +233,19 @@
 
 <div id="modals"></div>
 
+<div id="termsModal">
+  <div id="termsContent">
+    <span class="close-terms">&times;</span>
+    <p id="termsText"></p>
+  </div>
+</div>
+
 <footer class="main-footer">
-  <p id="footer-text"></p>
+  <div class="footer-links">
+    <a id="terms-link" href="javascript:void(0)"></a> |
+    <span>virvik@gmail.com</span> |
+    <span>+5491130162083</span>
+  </div>
 </footer>
 
 <script>
@@ -259,23 +259,26 @@ const TEXTS = {
     heroTitle: "Descubrí Argentina",
     heroSubtitle: "Experiencias únicas pensadas para nuestros huéspedes",
     sectionTitle: "Destinos destacados",
-    footer: "© 2026 Viajes Argentina · Turismo receptivo"
+    terms: "Términos y condiciones",
+    termsText: "Este es el texto legal de prueba para ArgentinaGo."
   },
   en: {
     heroTitle: "Discover Argentina",
     heroSubtitle: "Unique experiences thought for our visitors",
     sectionTitle: "Featured destinations",
-    footer: "© 2026 Argentina Travel · Incoming tourism"
+    terms: "Terms and conditions",
+    termsText: "This is the test legal text for ArgentinaGo."
   }
 };
 
 const langKey = isSpanish ? "es" : "en";
 
-// Inyectar textos
+// Rellenar textos (Ahora sí encontrará los IDs)
 document.getElementById("hero-title").textContent = TEXTS[langKey].heroTitle;
 document.getElementById("hero-subtitle").textContent = TEXTS[langKey].heroSubtitle;
 document.getElementById("section-title").textContent = TEXTS[langKey].sectionTitle;
-document.getElementById("footer-text").textContent = TEXTS[langKey].footer;
+document.getElementById("terms-link").textContent = TEXTS[langKey].terms;
+document.getElementById("termsText").textContent = TEXTS[langKey].termsText;
 
 /* ================= HERO CARRUSEL ================= */
 const heroImages = ["img/vino.jpeg", "img/prueba2.jpeg", "img/carru4.jpeg"];
@@ -295,12 +298,10 @@ const YT_BASE = "https://www.youtube.com/embed/";
 fetch(API_URL)
   .then(res => res.json())
   .then(data => {
-    const cards = document.getElementById("cards");
-    const modals = document.getElementById("modals");
+    const cardsContainer = document.getElementById("cards");
+    const modalsContainer = document.getElementById("modals");
 
-    const filteredData = data.filter(fila => {
-      return isSpanish ? fila["Idioma"] === "Es" : fila["Idioma"] === "En";
-    });
+    const filteredData = data.filter(fila => isSpanish ? fila["Idioma"] === "Es" : fila["Idioma"] === "En");
 
     filteredData.forEach((fila, index) => {
       if (!fila["Título"] || !fila["Imagen"]) return;
@@ -309,9 +310,7 @@ fetch(API_URL)
       const imgSrc = IMG_BASE + fila["Imagen"];
       const img2Src = IMG_BASE + (fila["Imagen_modal"] || fila["Imagen"]);
       const youtubeSrc = fila["Youtube"] ? YT_BASE + fila["Youtube"] : "";
-      const youtube2Src = fila["Youtube2"] ? YT_BASE + fila["Youtube2"] : "";
 
-      // Crear Card
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -322,9 +321,8 @@ fetch(API_URL)
           ${isSpanish ? "Ver más" : "See more"}
         </button>
       `;
-      cards.appendChild(card);
+      cardsContainer.appendChild(card);
 
-      // Crear Modal
       const modal = document.createElement("div");
       modal.className = "modal";
       modal.id = modalId;
@@ -334,43 +332,53 @@ fetch(API_URL)
           <h2>${fila["Título"]}</h2>
           <img src="${img2Src}" alt="${fila["Título"]}">
           <p>${fila["Descripción_modal"] || ""}</p>
-          ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" frameborder="0" allowfullscreen style="margin-bottom:10px;"></iframe>` : ""}
-          ${youtube2Src ? `<iframe src="${youtube2Src}" width="100%" height="315" frameborder="0" allowfullscreen></iframe>` : ""}
+          ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" frameborder="0" allowfullscreen></iframe>` : ""}
           <a href="https://wa.me/5491130162083" target="_blank" class="whatsapp-btn">
             ${isSpanish ? "Contactar por WhatsApp" : "Contact via WhatsApp"}
           </a>
         </div>
       `;
-      modals.appendChild(modal);
+      modalsContainer.appendChild(modal);
     });
 
     activarModales();
-  })
-  .catch(err => console.error("Error cargando destinos:", err));
+  });
 
 function activarModales() {
   document.querySelectorAll(".open-modal").forEach(btn => {
     btn.onclick = () => {
-      const target = document.getElementById(btn.dataset.modal);
-      if(target) {
-        target.style.display = "block";
-        document.body.style.overflow = "hidden";
-      }
+      document.getElementById(btn.dataset.modal).style.display = "block";
+      document.body.style.overflow = "hidden";
     };
   });
-
-  // Delegación de eventos para cerrar (ya que los botones se crean dinámicamente)
-  document.addEventListener("click", e => {
-    if (e.target.classList.contains("close")) {
-      e.target.closest(".modal").style.display = "none";
-      document.body.style.overflow = "";
-    }
-    if (e.target.classList.contains("modal")) {
-      e.target.style.display = "none";
-      document.body.style.overflow = "";
-    }
-  });
 }
+
+// Eventos de cierre y Términos
+const termsModal = document.getElementById("termsModal");
+const termsLink = document.getElementById("terms-link");
+const closeTerms = document.querySelector(".close-terms");
+
+termsLink.onclick = () => {
+  termsModal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+};
+
+closeTerms.onclick = () => {
+  termsModal.style.display = "none";
+  document.body.style.overflow = "";
+};
+
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("close")) {
+    e.target.closest(".modal").style.display = "none";
+    document.body.style.overflow = "";
+  }
+  if (e.target === termsModal || e.target.classList.contains("modal")) {
+    termsModal.style.display = "none";
+    if(e.target.classList.contains("modal")) e.target.style.display = "none";
+    document.body.style.overflow = "";
+  }
+});
 </script>
 
 </body>
