@@ -96,22 +96,14 @@ body {
 
 .hero {
   width: 100%;
-  height: 40vh;
-  background-size: 100% 100%;
+  height: 70vh;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transition: background-image 1s ease-in-out;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-@media (min-width: 768px) and (max-width: 1023px) {
-  .hero { height: 150vh; }
-}
-
-@media (min-width: 1024px) {
-  .hero { height: 165vh; }
 }
 
 .hero-content {
@@ -121,6 +113,7 @@ body {
   text-align: center;
   color: #fff;
 }
+
 
 .section {
   max-width: 1200px;
@@ -351,10 +344,11 @@ function moveCarousel(direction) {
 
 /* ================= HERO CARRUSEL ================= */
 const heroImages = [
-  "img/car11.jpeg",
-  "img/car22.jpg",
-  "img/car33.jpg"
+  "img/vino.jpeg",
+  "img/prueba2.jpeg",
+  "img/carru4.jpeg"
 ];
+
 let heroIndex = 0;
 const heroSection = document.querySelector(".hero");
 
