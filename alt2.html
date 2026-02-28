@@ -134,46 +134,39 @@
       align-items: center;
     }
 
-    .cards {
-      display: flex;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      gap: 25px;
-      padding: 10px 5px;
-      scrollbar-width: none;
-    }
-
-    .cards::-webkit-scrollbar { display: none; }
-
     .card {
-      width: 300px;
-      height: 450px;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+  width: 300px;
+  height: 450px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden; /* Esto es clave para que el botón se "corte" en las esquinas */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
 
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
+.card h3, .card p {
+  padding: 0 15px; /* Agregamos padding al texto ya que la tarjeta no tendrá */
+}
 
-    .card button {
-      margin: 15px 0 20px;
-      padding: 10px 20px;
-      border: none;
-      background: #0077cc;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+.card p {
+  flex-grow: 1; /* Esto empuja el botón siempre hacia el fondo */
+  margin-bottom: 0;
+}
+
+.card button {
+  width: 100%;       /* Ocupa todo el ancho */
+  margin: 0;         /* Sin márgenes para que pegue al borde */
+  padding: 15px 0;   /* Más alto para que se vea mejor */
+  border: none;
+  background: #0077cc;
+  color: #fff;
+  border-radius: 0;  /* El 'overflow: hidden' de la card le dará la forma curva */
+  cursor: pointer;
+  font-weight: bold;
+}
 
     .modal {
       display: none;
@@ -269,7 +262,27 @@
       font-size: 28px;
       cursor: pointer;
     }
+.nav-btn {
+  background: rgba(255, 140, 0, 0.8); /* Naranja con transparencia */
+  color: white;
+  border: none;
+  padding: 15px 10px;
+  font-size: 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border-radius: 50%; /* Opcional: para que sean redondas */
+  transition: background 0.3s ease;
+}
 
+.nav-btn:hover {
+  background: rgba(255, 100, 0, 1); /* Naranja más fuerte al pasar el mouse */
+}
+
+.prev-btn { left: -20px; }
+.next-btn { right: -20px; }
     /* Ajustes para los Modales en Celulares */
 @media (max-width: 600px) {
   /* 1. Hacemos que la sección ocupe todo el ancho disponible */
