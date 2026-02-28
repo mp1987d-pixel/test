@@ -99,7 +99,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      background-image: url('img/vino.jpeg'); /* Imagen inicial */
+      background-image: url('img/vino.jpeg');
     }
 
     .hero-content {
@@ -134,40 +134,96 @@
       align-items: center;
     }
 
+    /* --- CONTENEDOR DE TARJETAS (ARREGLADO) --- */
+    .cards {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      gap: 25px;
+      padding: 10px 5px;
+      scrollbar-width: none;
+      flex-wrap: nowrap; /* Evita que se amontonen abajo */
+    }
+
+    .cards::-webkit-scrollbar { display: none; }
+
+    /* --- TARJETA Y BOTÓN ADAPTADO --- */
     .card {
-  width: 300px;
-  height: 450px;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden; /* Esto es clave para que el botón se "corte" en las esquinas */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  text-align: center;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-}
+      width: 300px;
+      height: 450px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden; /* Esto hace que el botón respete el redondeado de la card */
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      flex-shrink: 0; /* Evita que la card se achique */
+      display: flex;
+      flex-direction: column;
+    }
 
-.card h3, .card p {
-  padding: 0 15px; /* Agregamos padding al texto ya que la tarjeta no tendrá */
-}
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
 
-.card p {
-  flex-grow: 1; /* Esto empuja el botón siempre hacia el fondo */
-  margin-bottom: 0;
-}
+    .card h3, .card p {
+      padding: 0 15px;
+    }
 
-.card button {
-  width: 100%;       /* Ocupa todo el ancho */
-  margin: 0;         /* Sin márgenes para que pegue al borde */
-  padding: 15px 0;   /* Más alto para que se vea mejor */
-  border: none;
-  background: #0077cc;
-  color: #fff;
-  border-radius: 0;  /* El 'overflow: hidden' de la card le dará la forma curva */
-  cursor: pointer;
-  font-weight: bold;
-}
+    .card p {
+      flex-grow: 1; /* Empuja el botón al fondo */
+      margin-bottom: 0;
+      overflow-y: auto; /* Por si el texto es muy largo */
+    }
 
+    .card button {
+      width: 100%;
+      margin: 0;
+      padding: 15px 0;
+      border: none;
+      background: #0077cc;
+      color: #fff;
+      border-radius: 0; /* Toma la forma de la card por el overflow:hidden */
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .card button:hover {
+      background: #005fa3;
+    }
+
+    /* --- FLECHAS NARANJAS --- */
+    .nav-btn {
+      background: rgba(255, 140, 0, 0.9);
+      color: white;
+      border: none;
+      width: 45px;
+      height: 45px;
+      font-size: 20px;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 10;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 100, 0, 1);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .prev-btn { left: -22.5px; } /* Ajustado para que sobresalga un poco */
+    .next-btn { right: -22.5px; }
+
+    /* --- MODALES Y OTROS --- */
     .modal {
       display: none;
       position: fixed;
@@ -195,20 +251,20 @@
     }
 
     .close {
-  position: sticky; /* Se queda fija mientras haces scroll */
-  top: 0;           /* Se pega al borde superior del modal-content */
-  right: 0;
-  float: right;     /* La empuja a la derecha */
-  font-size: 32px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  background: white; /* Evita que el texto de abajo se transparente al pasar */
-  padding: 5px 10px;
-  border-radius: 50%;
-  line-height: 1;
-  z-index: 100;     /* Asegura que esté por encima de imágenes y videos */
-}
+      position: sticky;
+      top: 0;
+      right: 0;
+      float: right;
+      font-size: 32px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      background: white;
+      padding: 5px 10px;
+      border-radius: 50%;
+      line-height: 1;
+      z-index: 100;
+    }
 
     .whatsapp-btn {
       display: inline-block;
@@ -233,7 +289,6 @@
       cursor: pointer;
     }
 
-    /* Modal términos */
     #termsModal {
       display: none;
       position: fixed;
@@ -262,67 +317,34 @@
       font-size: 28px;
       cursor: pointer;
     }
-.nav-btn {
-  background: rgba(255, 140, 0, 0.8); /* Naranja con transparencia */
-  color: white;
-  border: none;
-  padding: 15px 10px;
-  font-size: 24px;
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 10;
-  border-radius: 50%; /* Opcional: para que sean redondas */
-  transition: background 0.3s ease;
-}
 
-.nav-btn:hover {
-  background: rgba(255, 100, 0, 1); /* Naranja más fuerte al pasar el mouse */
-}
-
-.prev-btn { left: -20px; }
-.next-btn { right: -20px; }
-    /* Ajustes para los Modales en Celulares */
-@media (max-width: 600px) {
-  /* 1. Hacemos que la sección ocupe todo el ancho disponible */
-  .section {
-    width: 100%;
-    max-width: 100%;
-    margin: 20px 0;
-    padding: 20px 0; /* Quitamos padding lateral para que el carrusel llegue al borde */
-    border-radius: 0; /* Opcional: quitar redondeado en móvil para ganar espacio */
-  }
-
-  .section h2 {
-    margin-bottom: 20px;
-    padding: 0 15px; /* El título sí mantiene margen */
-  }
-
-  /* 2. El contenedor de tarjetas ahora permite ver el borde de la pantalla */
-  .cards {
-    gap: 15px;
-    padding: 10px 15px; /* Agregamos aire solo al inicio y final del scroll */
-    scroll-snap-type: x mandatory;
-  }
-
-  /* 3. Ajustamos la tarjeta para que se vea "importante" pero no enorme */
-  .card {
-    width: 80vw; /* 80% del ancho de la pantalla, para que se vea la siguiente */
-    height: 420px;
-    scroll-snap-align: center; /* Se centra automáticamente al deslizar */
-  }
-
-  .card img {
-    height: 200px;
-  }
-
-  /* 4. Escondemos las flechas en celular (estorban y el usuario usa el dedo) */
-  .nav-btn {
-    display: none;
-  }
-}
-  </style>
+    /* --- RESPONSIVE --- */
+    @media (max-width: 600px) {
+      .section {
+        width: 100%;
+        max-width: 100%;
+        margin: 20px 0;
+        padding: 20px 0;
+        border-radius: 0;
+      }
+      .section h2 {
+        padding: 0 15px;
+      }
+      .cards {
+        gap: 15px;
+        padding: 10px 15px;
+        scroll-snap-type: x mandatory;
+      }
+      .card {
+        width: 80vw;
+        height: 420px;
+        scroll-snap-align: center;
+      }
+      .nav-btn {
+        display: none; /* Se oculta en móvil para facilitar el touch */
+      }
+    }
+</style>
 </head>
 
 <body>
