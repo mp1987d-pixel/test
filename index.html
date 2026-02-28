@@ -116,26 +116,38 @@
     }
 
     .card {
-      background: #fff;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
+  width: 300px;
+  height: 450px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden; /* Esto es clave para que el botón se "corte" en las esquinas */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
 
-    .card img { width: 100%; height: 180px; object-fit: cover; }
-    .card button {
-      margin: 15px 0 20px;
-      padding: 10px 20px;
-      border: none;
-      background: #0077cc;
-      color: #fff;
-      border-radius: 6px;
-      cursor: pointer;
-    }
+.card h3, .card p {
+  padding: 0 15px; /* Agregamos padding al texto ya que la tarjeta no tendrá */
+}
+
+.card p {
+  flex-grow: 1; /* Esto empuja el botón siempre hacia el fondo */
+  margin-bottom: 0;
+}
+
+.card button {
+  width: 100%;       /* Ocupa todo el ancho */
+  margin: 0;         /* Sin márgenes para que pegue al borde */
+  padding: 15px 0;   /* Más alto para que se vea mejor */
+  border: none;
+  background: #0077cc;
+  color: #fff;
+  border-radius: 0;  /* El 'overflow: hidden' de la card le dará la forma curva */
+  cursor: pointer;
+  font-weight: bold;
+}
 
     /* MODALES - CORRECCIÓN DE ESCALA Y DESBORDE */
     .modal {
