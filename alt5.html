@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ArgentinaGo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #0b1d3a;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, transparent 30%),
+        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.06) 0%, transparent 30%),
+        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.07) 0%, transparent 30%);
+      background-size: 250px 250px, 300px 300px, 200px 200px;
+      background-repeat: repeat;
+      background-attachment: scroll;
+      background-blend-mode: overlay;
+    }
+
+    /* --- HEADER --- */
+    .main-header {
+      background: #000000;
+      padding: 0;
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-img {
+      width: 25%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .socials {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 12px;
+      background: rgba(0, 0, 0, 0.55);
+      padding: 8px 12px;
+      border-radius: 30px;
+      backdrop-filter: blur(6px);
+      z-index: 20;
+    }
+
+    .socials a { display: flex; align-items: center; justify-content: center; }
+    .socials img { width: 28px; height: 28px; transition: transform 0.2s ease; }
+    .socials img:hover { transform: scale(1.15); }
+
+    /* --- HERO --- */
+    .hero {
+      width: 100%;
+      height: 70vh;
+      background-size: cover;
+      background-position: center;
+      transition: background-image 1s ease-in-out;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: url('img/vino.jpeg');
+    }
+
+    .hero-content {
+      background: rgba(0,0,0,0.45);
+      padding: 30px 40px;
+      border-radius: 10px;
+      text-align: center;
+      color: #fff;
+    }
+
+    /* --- SECTION & CARDS --- */
+    .section {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 28px;
+      position: relative;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .cards {
+      display: flex;
+      overflow-x: auto;
+      gap: 25px;
+      padding: 10px 5px;
+      scrollbar-width: none;
+    }
+    .cards::-webkit-scrollbar { display: none; }
+
+    .card {
+      width: 300px;
+      height: 450px;
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .card img { width: 100%; height: 180px; object-fit: cover; }
+    .card h3, .card p { padding: 0 15px; margin: 15px 0; }
+    .card p { flex-grow: 1; overflow-y: auto; text-align: center; }
+    .card button {
+      width: 100%;
+      padding: 15px 0;
+      border: none;
+      background: #0077cc;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* --- MODALES REDISEÑADOS --- */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      inset: 0;
+      background: #000;
+    }
+
+    /* Contenedor con scroll para deslizar entre contenido y video */
+    .modal-scroll-container {
+      height: 100%;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: none;
+    }
+    .modal-scroll-container::-webkit-scrollbar { display: none; }
+
+    /* Secciones del modal */
+    .modal-section {
+      height: 100vh;
+      width: 100%;
+      scroll-snap-align: start;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Sección 1: Información */
+    .info-section {
+      background: #fff;
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .info-section img {
+      max-height: 40vh;
+      width: auto;
+      max-width: 90%;
+      border-radius: 15px;
+      object-fit: cover;
+      margin-bottom: 20px;
+    }
+    .info-section h2 { margin-top: 0; color: #333; }
+    .info-section p { color: #666; max-width: 600px; }
+
+    /* Sección 2: Video Full */
+    .video-section {
+      background: #000;
+    }
+
+    .video-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .video-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* Botón WhatsApp sobre Video */
+    .whatsapp-float {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: #25D366;
+      color: white;
+      padding: 12px 25px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+    }
+    .whatsapp-float:hover { transform: translateX(-50%) scale(1.05); }
+
+    /* Controles de PC (Flechas y Mute) */
+    .modal-nav-pc {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 110;
+    }
+
+    @media (max-width: 1024px) {
+        .modal-nav-pc { display: none; } /* Solo flechas en PC */
+    }
+
+    .pc-arrow {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid white;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    .mute-toggle {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid white;
+      color: white;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .close-modal-x {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 120;
+      background: #fff;
+      color: #000;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 40px;
+      font-size: 24px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Otros estilos de navegación */
+    .nav-btn {
+      background: rgba(255, 140, 0, 0.9);
+      color: white;
+      border: none;
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 10;
+    }
+    .prev-btn { left: -22.5px; }
+    .next-btn { right: -22.5px; }
+
+    .main-footer { background: #111; color: #fff; text-align: center; padding: 20px; }
+
+    @media (max-width: 600px) {
+      .logo-img { width: 50%; }
+      .section { border-radius: 0; width: 100%; padding: 20px 0; }
+    }
+  </style>
+  <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+
+<body>
+
+<header class="main-header">
+  <div class="header-container">
+    <a href="/" class="logo-link"><img src="img/logo4.jpg" alt="ArgentinaGo" class="logo-img"></a>
+    <div class="socials">
+      <a href="#"><img src="img/Facebook.png" alt="F"></a>
+      <a href="#"><img src="img/Instagra.png" alt="I"></a>
+      <a href="#"><img src="img/YouTube.png" alt="Y"></a>
+      <a href="#"><img src="img/TikTok.png" alt="T"></a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <h1 id="hero-title"></h1>
+    <p id="hero-subtitle"></p>
+  </div>
+</section>
+
+<section class="section">
+  <h2 id="section-title"></h2>
+  <div class="carousel-container">
+    <button class="nav-btn prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
+    <div class="cards" id="cards"></div>
+    <button class="nav-btn next-btn" onclick="moveCarousel(1)">&#10095;</button>
+  </div>
+</section>
+
+<div id="modals"></div>
+
+<footer class="main-footer">
+  <div class="footer-links">
+    <a id="terms-link" href="#"></a> | <span>virvik@gmail.com</span> | <span>+5491130162083</span>
+  </div>
+</footer>
+
+<script>
+const isSpanish = (navigator.language || navigator.userLanguage).toLowerCase().startsWith("es");
+const TEXTS = {
+  es: { heroTitle: "Descubrí Argentina", heroSubtitle: "Experiencias únicas", sectionTitle: "Destinos destacados", terms: "Términos y condiciones", btnWap: "Reservar ahora", scrollHint: "Desliza para ver video" },
+  en: { heroTitle: "Discover Argentina", heroSubtitle: "Unique experiences", sectionTitle: "Featured destinations", terms: "Terms and conditions", btnWap: "Book Now", scrollHint: "Scroll for video" }
+};
+
+const lang = isSpanish ? "es" : "en";
+document.getElementById("hero-title").textContent = TEXTS[lang].heroTitle;
+document.getElementById("hero-subtitle").textContent = TEXTS[lang].heroSubtitle;
+document.getElementById("section-title").textContent = TEXTS[lang].sectionTitle;
+document.getElementById("terms-link").textContent = TEXTS[lang].terms;
+
+function moveCarousel(direction) {
+  const container = document.getElementById("cards");
+  container.scrollBy({ left: direction * (container.clientWidth * 0.8), behavior: 'smooth' });
+}
+
+/* API DATA & MODALS */
+const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
+const IMG_BASE = "https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
+let players = {}; 
+
+fetch(API_URL)
+  .then(res => res.json())
+  .then(data => {
+    const cardsContainer = document.getElementById("cards");
+    const modalsContainer = document.getElementById("modals");
+    const filteredData = data.filter(fila => isSpanish ? fila["Idioma"] === "Es" : fila["Idioma"] === "En");
+
+    filteredData.forEach((fila, index) => {
+      if (!fila["Título"] || !fila["Imagen"]) return;
+      const modalId = `modal_${index}`;
+      const ytId1 = fila["Youtube"];
+      const ytId2 = fila["Youtube2"];
+      const playlist = ytId2 ? `${ytId1},${ytId2}` : ytId1;
+
+      // Card
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <img src="${IMG_BASE + fila["Imagen"]}" alt="">
+        <h3>${fila["Título"]}</h3>
+        <p>${fila["Descripción"] || ""}</p>
+        <button class="open-modal" data-modal="${modalId}">${isSpanish ? "Ver más" : "See more"}</button>
+      `;
+      cardsContainer.appendChild(card);
+
+      // Modal Estructura Deslizable
+      const modal = document.createElement("div");
+      modal.className = "modal";
+      modal.id = modalId;
+      modal.innerHTML = `
+        <span class="close-modal-x" onclick="cerrarModal('${modalId}', '${index}')">&times;</span>
+        
+        <div class="modal-nav-pc">
+           <button class="pc-arrow" onclick="scrollModal('${modalId}', 'up')">↑</button>
+           <button class="pc-arrow" onclick="scrollModal('${modalId}', 'down')">↓</button>
+        </div>
+
+        <div class="modal-scroll-container" id="scroll-${modalId}">
+          
+          <section class="modal-section info-section">
+            <img src="${IMG_BASE + (fila["Imagen_modal"] || fila["Imagen"])}" alt="">
+            <h2>${fila["Título"]}</h2>
+            <p>${fila["Descripción_modal"] || fila["Descripción"]}</p>
+            <div style="margin-top:20px; color:#0077cc; font-weight:bold;">${TEXTS[lang].scrollHint} ↓</div>
+          </section>
+
+          <section class="modal-section video-section">
+            <button class="mute-toggle" onclick="toggleMute('${index}')">
+              <span id="icon-${index}">🔇</span>
+            </button>
+            
+            <div class="video-container">
+              <div id="player-${index}"></div>
+            </div>
+
+            <a href="https://wa.me/5491130162083" target="_blank" class="whatsapp-float">
+              <img src="img/WhatsApp.png" width="24" style="filter: brightness(0) invert(1);">
+              ${TEXTS[lang].btnWap}
+            </a>
+          </section>
+
+        </div>
+      `;
+      modalsContainer.appendChild(modal);
+      players[index] = { id: ytId1, playlist: playlist, instance: null };
+    });
+
+    activarModales();
+  });
+
+function scrollModal(modalId, dir) {
+    const container = document.getElementById(`scroll-${modalId}`);
+    const amount = dir === 'down' ? window.innerHeight : -window.innerHeight;
+    container.scrollBy({ top: amount, behavior: 'smooth' });
+}
+
+function onYouTubeIframeAPIReady() {
+  console.log("YouTube API Ready");
+}
+
+function initYTPlayer(index) {
+  if (players[index].instance) {
+      players[index].instance.playVideo();
+      return;
+  }
+
+  players[index].instance = new YT.Player(`player-${index}`, {
+    height: '100%',
+    width: '100%',
+    videoId: players[index].id,
+    playerVars: {
+      'autoplay': 1,
+      'mute': 1,
+      'controls': 0,
+      'loop': 1,
+      'playlist': players[index].playlist,
+      'modestbranding': 1,
+      'rel': 0,
+      'showinfo': 0,
+      'iv_load_policy': 3,
+      'playsinline': 1
+    },
+    events: {
+      'onReady': (event) => event.target.playVideo()
+    }
+  });
+}
+
+function toggleMute(index) {
+  const p = players[index].instance;
+  const icon = document.getElementById(`icon-${index}`);
+  if (p) {
+    if (p.isMuted()) {
+      p.unMute();
+      icon.textContent = "🔊";
+    } else {
+      p.mute();
+      icon.textContent = "🔇";
+    }
+  }
+}
+
+function activarModales() {
+  document.querySelectorAll(".open-modal").forEach(btn => {
+    btn.onclick = () => {
+      const modalId = btn.dataset.modal;
+      const idx = modalId.split('_')[1];
+      document.getElementById(modalId).style.display = "block";
+      document.body.style.overflow = "hidden";
+      initYTPlayer(idx);
+    };
+  });
+}
+
+function cerrarModal(modalId, index) {
+    document.getElementById(modalId).style.display = "none";
+    document.body.style.overflow = "";
+    if(players[index].instance) players[index].instance.pauseVideo();
+    // Reset scroll al cerrar
+    document.getElementById(`scroll-${modalId}`).scrollTop = 0;
+}
+
+// Cerrar si hace click fuera del contenedor (opcional, aquí el modal es full)
+window.onclick = (e) => {
+  if (e.target.classList.contains('modal-scroll-container')) {
+    const modalId = e.target.id.replace('scroll-', '');
+    const idx = modalId.split('_')[1];
+    cerrarModal(modalId, idx);
+  }
+};
+</script>
+
+</body>
+</html>
