@@ -113,12 +113,12 @@
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      text-align: center;
+      text-align: center; /* Centrado corregido */
     }
 
     .card img { width: 100%; height: 180px; object-fit: cover; }
-    .card h3, .card p { padding: 0 15px; }
-    .card p { flex-grow: 1; overflow-y: auto; }
+    .card h3, .card p { padding: 0 15px; margin: 15px 0; }
+    .card p { flex-grow: 1; overflow-y: auto; text-align: center; }
     .card button {
       width: 100%;
       padding: 15px 0;
@@ -129,7 +129,7 @@
       font-weight: bold;
     }
 
-    /* --- MODALES & VIDEO (EL CORAZÓN DEL CAMBIO) --- */
+    /* --- MODALES & VIDEO --- */
     .modal {
       display: none;
       position: fixed;
@@ -146,11 +146,14 @@
       border-radius: 12px;
       max-width: 800px;
       width: 95%;
-      text-align: center;
+      text-align: center; /* Centrado corregido */
       position: relative;
     }
 
-    /* Contenedor del video con impacto visual */
+    .modal-content h2, .modal-content p {
+      text-align: center; /* Asegura el centrado en el modal */
+    }
+
     .video-container {
       position: relative;
       width: calc(100% + 40px);
@@ -165,10 +168,9 @@
     .video-container iframe {
       width: 100%;
       height: 100%;
-      pointer-events: none; /* Bloquea interacciones directas con YouTube */
+      pointer-events: none;
     }
 
-    /* Capa invisible para evitar que aparezca el player al pasar el mouse */
     .video-overlay {
       position: absolute;
       top: 0;
@@ -178,7 +180,6 @@
       z-index: 5;
     }
 
-    /* Botón de sonido personalizado */
     .mute-toggle {
       position: absolute;
       bottom: 20px;
@@ -308,7 +309,7 @@ function moveCarousel(direction) {
 /* API DATA & MODALS */
 const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
 const IMG_BASE = "https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
-let players = {}; // Para guardar los reproductores de YT
+let players = {}; 
 
 fetch(API_URL)
   .then(res => res.json())
@@ -361,20 +362,18 @@ fetch(API_URL)
       `;
       modalsContainer.appendChild(modal);
 
-      // Guardar info para inicializar el player de YT luego
       players[index] = { id: ytId1, playlist: playlist, instance: null };
     });
 
     activarModales();
   });
 
-// Esta función es llamada automáticamente por la API de YouTube
 function onYouTubeIframeAPIReady() {
   console.log("YouTube API Ready");
 }
 
 function initYTPlayer(index) {
-  if (players[index].instance) return; // Ya existe
+  if (players[index].instance) return;
 
   players[index].instance = new YT.Player(`player-${index}`, {
     height: '100%',
@@ -400,12 +399,14 @@ function initYTPlayer(index) {
 function toggleMute(index) {
   const p = players[index].instance;
   const icon = document.getElementById(`icon-${index}`);
-  if (p.isMuted()) {
-    p.unMute();
-    icon.textContent = "🔊";
-  } else {
-    p.mute();
-    icon.textContent = "🔇";
+  if (p && p.isMuted) {
+    if (p.isMuted()) {
+      p.unMute();
+      icon.textContent = "🔊";
+    } else {
+      p.mute();
+      icon.textContent = "🔇";
+    }
   }
 }
 
@@ -424,7 +425,6 @@ function activarModales() {
       const modal = btn.closest(".modal");
       modal.style.display = "none";
       document.body.style.overflow = "";
-      // Pausar video al cerrar
       const idx = modal.id.split('_')[1];
       if(players[idx].instance) players[idx].instance.pauseVideo();
     };
