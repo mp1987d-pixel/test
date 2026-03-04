@@ -102,15 +102,23 @@
       text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.8); 
     }
 
-    .section {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 40px;
-      background: rgba(255, 255, 255, 0.98);
-      border-radius: 28px;
-    }
+ .section {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 40px;
+  /* CAMBIA ESTA LÍNEA */
+  background: #606C38; 
+  border-radius: 28px;
+  /* Agregamos color de texto blanco para que el título (h2) se lea bien */
+  color: #ffffff; 
+}
 
-    .section h2 { text-align: center; margin-bottom: 40px; color: #1d1d1f; }
+/* También asegúrate de que el título H2 dentro cambie a blanco */
+.section h2 { 
+  text-align: center; 
+  margin-bottom: 40px; 
+  color: #ffffff; 
+}
 
     .cards {
       display: grid;
