@@ -54,7 +54,7 @@
       background: rgba(0, 0, 0, 0.55);
       padding: 8px 12px;
       border-radius: 30px;
-      backdrop-filter: blur(6px);
+      backdrop-filter: blur(66px);
       z-index: 20;
     }
 
@@ -135,7 +135,7 @@
       position: fixed;
       z-index: 2000;
       inset: 0;
-      background: #000;
+      background: #fff; /* Fondo blanco para todo el modal */
     }
 
     .modal-scroll-container {
@@ -158,47 +158,84 @@
       overflow: hidden;
     }
 
+    /* Sección Información y Carrusel - Diseño Maximizado */
     .info-section {
       background: #fff;
-      padding: 60px 0 40px; /* Sin padding lateral para que el carrusel respire */
+      padding: 0; /* Eliminamos rellenos para maximizar espacio */
       text-align: center;
       justify-content: flex-start;
       overflow-y: auto;
     }
 
-    /* --- CAROUSEL MODIFICADO (SIN BORDES, MÁS GRANDE) --- */
+    /* --- CAROUSEL MODIFICADO (SIN MOVIMIENTO, MAXIMIZADO) --- */
     .modal-carousel {
       position: relative;
       width: 100%;
-      height: 70vh; /* Aumentado un 40% aprox (de 50 a 70) */
-      margin-bottom: 25px;
-      background: #fff; /* Fondo blanco para quitar el efecto de bordes negros */
+      height: 80vh; /* Ocupa el 80% de la altura de la pantalla */
+      background: #fff;
       overflow: hidden;
       cursor: pointer;
+      margin-bottom: 10px;
     }
 
     .carousel-track {
       display: flex;
       height: 100%;
-      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+      position: relative;
+      /* Eliminamos la transición de movimiento (transform) */
     }
 
     .carousel-item {
-      min-width: 100%;
+      position: absolute; /* Superponemos las imágenes */
+      top: 0;
+      left: 0;
+      width: 100%;
       height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      opacity: 0; /* Ocultas por defecto */
+      z-index: 1;
+      /* Eliminamos transiciones para cambio instantáneo (reemplazo) */
+    }
+
+    .carousel-item.active {
+      opacity: 1; /* Visible si está activa */
+      z-index: 2; /* Por encima de las demás */
     }
 
     .carousel-item img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain; 
+      width: 100%; /* Ocupa todo el ancho */
+      height: 100%; /* Ocupa toda la altura del contenedor */
+      max-width: none; /* Eliminamos restricciones anteriores */
+      max-height: none;
+      object-fit: contain; /* Mantiene proporción sin estirar, maximizando tamaño visible */
     }
 
-    .info-section h2 { margin: 10px 20px; color: #333; }
-    .info-section p { color: #666; max-width: 800px; margin: 10px auto; padding: 0 20px; line-height: 1.6; }
+    /* Textos debajo del carrusel */
+    .info-section h2 { 
+      margin: 10px 0 5px 0; 
+      color: #333; 
+      font-size: 24px; 
+      padding: 0 15px; 
+    }
+    .info-section p { 
+      color: #666; 
+      max-width: 900px; /* Un poco más ancho el contenedor de texto */
+      margin: 0 auto 10px auto; 
+      padding: 0 15px; 
+      line-height: 1.5; 
+      font-size: 16px; 
+    }
+
+    /* Indicador de scroll flotante */
+    .scroll-hint {
+      color: #0077cc;
+      font-weight: bold;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
 
     /* Sección Video */
     .video-section { background: #000; }
@@ -242,20 +279,21 @@
     @media (max-width: 1024px) { .modal-nav-pc { display: none; } }
 
     .pc-arrow {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid white;
-      color: white;
+      background: rgba(0,0,0,0.3); /* Un poco más visible sobre fondo blanco */
+      border: 1px solid #333;
+      color: #333;
       width: 50px; height: 50px;
       border-radius: 50%;
       cursor: pointer;
+      font-size: 20px;
     }
 
     .close-modal-x {
       position: absolute;
       top: 20px; right: 20px;
       z-index: 120;
-      background: #fff;
-      color: #000;
+      background: rgba(0,0,0,0.5); /* Más visible sobre imágenes */
+      color: #fff;
       width: 40px; height: 40px;
       border-radius: 50%;
       text-align: center;
@@ -295,7 +333,9 @@
     @media (max-width: 600px) {
       .logo-img { width: 50%; }
       .section { border-radius: 0; width: 100%; }
-      .modal-carousel { height: 60vh; }
+      .modal-carousel { height: 70vh; } /* Un poco más bajo en móvil */
+      .info-section h2 { font-size: 20px; }
+      .info-section p { font-size: 14px; }
     }
   </style>
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -394,8 +434,9 @@ fetch(API_URL)
       columnasFotos.forEach(col => { if (fila[col] && fila[col].trim() !== "") fotosArray.push(fila[col].trim()); });
       if (fotosArray.length === 0) fotosArray.push(fila["Imagen"]);
 
-      let carouselItemsHtml = fotosArray.map(foto => `
-          <div class="carousel-item">
+      // Generar ítems del carrusel, marcando el primero como activo
+      let carouselItemsHtml = fotosArray.map((foto, i) => `
+          <div class="carousel-item ${i === 0 ? 'active' : ''}">
               <img src="${IMG_BASE + foto}" alt="">
           </div>
       `).join('');
@@ -423,7 +464,7 @@ fetch(API_URL)
 
             <h2>${fila["Título"]}</h2>
             <p>${fila["Descripción_modal"] || fila["Descripción"]}</p>
-            <div style="margin-top:20px; color:#0077cc; font-weight:bold;">${TEXTS[lang].scrollHint} ↓</div>
+            <div class="scroll-hint">${TEXTS[lang].scrollHint} ↓</div>
           </section>
 
           <section class="modal-section video-section">
@@ -443,7 +484,7 @@ fetch(API_URL)
     activarModales();
   });
 
-/* AUTOPLAY & CLICK LOGIC */
+/* AUTOPLAY & CLICK LOGIC (MODIFICADO PARA REEMPLAZO INSTANTÁNEO) */
 function startAutoplay(modalId) {
     stopAutoplay(modalId); // Limpiar previo
     const track = document.querySelector(`#${modalId} .carousel-track`);
@@ -453,8 +494,8 @@ function startAutoplay(modalId) {
     carouselIntervals[modalId] = setInterval(() => {
         let currentIndex = parseInt(track.dataset.index);
         currentIndex = (currentIndex + 1) % count;
-        updateTrack(track, currentIndex);
-    }, 3000); // Cambio cada 3 segundos
+        updateTrackInstant(modalId, track, currentIndex);
+    }, 4000); // Cambio cada 4 segundos (un poco más lento para apreciar la foto grande)
 }
 
 function stopAutoplay(modalId) {
@@ -475,7 +516,7 @@ function handleCarouselClick(modalId) {
     // Mover a la siguiente imagen manualmente al hacer clic
     let currentIndex = parseInt(track.dataset.index);
     currentIndex = (currentIndex + 1) % count;
-    updateTrack(track, currentIndex);
+    updateTrackInstant(modalId, track, currentIndex);
 
     // Reiniciar autoplay tras 60 segundos (60000ms)
     clearTimeout(window[`timeout_${modalId}`]);
@@ -484,9 +525,16 @@ function handleCarouselClick(modalId) {
     }, 60000);
 }
 
-function updateTrack(track, index) {
+// Función para actualización instantánea (reemplazo)
+function updateTrackInstant(modalId, track, index) {
     track.dataset.index = index;
-    track.style.transform = `translateX(-${index * 100}%)`;
+    const items = track.querySelectorAll('.carousel-item');
+    
+    // Quitamos la clase active de todas las imágenes
+    items.forEach(item => item.classList.remove('active'));
+    
+    // Añadimos la clase active solo a la imagen actual (reemplazo directo)
+    items[index].classList.add('active');
 }
 
 /* OTROS CONTROLES */
