@@ -34,37 +34,28 @@
       position: fixed;
       z-index: 2000;
       inset: 0;
-      background: #000;
+      background: #fff;
     }
 
     .modal-scroll-container {
       height: 100%;
       overflow-y: scroll;
-      scroll-snap-type: y mandatory; /* El scroll se "pega" a las secciones */
+      /* Eliminamos el snap-type mandatory para que no sea tan saltarín */
       scrollbar-width: none;
+      scroll-behavior: smooth;
     }
     .modal-scroll-container::-webkit-scrollbar { display: none; }
 
-    /* SECCIÓN 1: IMAGEN (3/4) + TEXTO */
-    .modal-section-content {
-      min-height: 100vh;
-      width: 100%;
-      background: #fff;
-      scroll-snap-align: start;
-      display: flex;
-      flex-direction: column;
-    }
-
+    /* SECCIÓN 1: IMAGEN (3/4) */
     .carousel-wrapper {
       width: 100%;
-      height: 75vh; /* 3/4 de la pantalla para la imagen */
+      height: 75vh; 
       background: #000;
       position: relative;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
     }
 
     .carousel-item {
@@ -74,54 +65,62 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      transition: opacity 0.3s ease; /* Pequeña transición para que el reemplazo no sea tan crudo */
     }
     .carousel-item.active { opacity: 1; }
     .carousel-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
+    /* SECCIÓN TEXTO: Ahora con más cuerpo para que el scroll sea "pesado" */
     .text-container {
-      padding: 30px 25px;
+      padding: 40px 25px 80px 25px; /* Más padding abajo para separar del video */
       background: #fff;
       text-align: center;
+      min-height: 40vh;
     }
-    .text-container h2 { font-size: 28px; margin: 0 0 15px 0; color: #111; }
-    .text-container p { font-size: 17px; line-height: 1.6; color: #444; max-width: 800px; margin: 0 auto 30px; }
+    .text-container h2 { font-size: 32px; margin: 0 0 20px 0; color: #111; }
+    .text-container p { font-size: 18px; line-height: 1.8; color: #444; max-width: 800px; margin: 0 auto 40px; }
 
-    .scroll-down-info {
+    .video-anchor-btn {
+      display: inline-block;
+      padding: 12px 25px;
+      border: 2px solid #0077cc;
       color: #0077cc;
+      text-decoration: none;
+      border-radius: 5px;
       font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 20px;
-      display: block;
+      transition: all 0.3s;
+      cursor: pointer;
     }
+    .video-anchor-btn:hover { background: #0077cc; color: #fff; }
 
-    /* SECCIÓN 2: VIDEO FULL SCREEN */
+    /* SECCIÓN 2: VIDEO */
     .modal-section-video {
       height: 100vh;
       width: 100%;
       background: #000;
-      scroll-snap-align: start;
       position: relative;
+      /* Solo anclamos el video para que cuando llegue ahí se quede fijo */
+      scroll-snap-align: start; 
     }
     .video-wrapper { position: absolute; inset: 0; }
     .video-wrapper iframe { width: 100%; height: 100%; border: none; }
 
     .close-modal-x {
       position: absolute; top: 20px; right: 20px; z-index: 2100;
-      background: rgba(255,255,255,0.8); width: 45px; height: 45px;
+      background: rgba(0,0,0,0.5); width: 45px; height: 45px;
       border-radius: 50%; text-align: center; line-height: 45px;
-      font-size: 24px; cursor: pointer; color: #000;
+      font-size: 24px; cursor: pointer; color: #fff;
     }
 
     .whatsapp-btn {
       position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
       z-index: 2100; background: #25D366; color: #fff; padding: 15px 30px;
       border-radius: 50px; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
 
     @media (max-width: 600px) {
-      .carousel-wrapper { height: 65vh; }
-      .text-container h2 { font-size: 22px; }
+      .carousel-wrapper { height: 60vh; }
+      .text-container h2 { font-size: 24px; }
     }
   </style>
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -144,8 +143,8 @@
 <script>
 const isSpanish = (navigator.language || navigator.userLanguage).toLowerCase().startsWith("es");
 const TEXTS = {
-  es: { sectionTitle: "Destinos Destacados", seeMore: "Ver más", wap: "Reservar ahora", hint: "Desliza para ver video ↓" },
-  en: { sectionTitle: "Featured Destinations", seeMore: "See more", wap: "Book Now", hint: "Scroll for video ↓" }
+  es: { sectionTitle: "Destinos Destacados", seeMore: "Ver más", wap: "Reservar ahora", videoBtn: "Ver Video de la Experiencia ↓" },
+  en: { sectionTitle: "Featured Destinations", seeMore: "See more", wap: "Book Now", videoBtn: "Watch Experience Video ↓" }
 };
 const lang = isSpanish ? "es" : "en";
 document.getElementById("section-title").textContent = TEXTS[lang].sectionTitle;
@@ -165,7 +164,6 @@ fetch(API_URL).then(res => res.json()).then(data => {
     filtered.forEach((fila, index) => {
       const modalId = `modal_${index}`;
       
-      // Card
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -175,7 +173,6 @@ fetch(API_URL).then(res => res.json()).then(data => {
       `;
       cardsContainer.appendChild(card);
 
-      // Fotos logic
       const cols = ["Imagen_modal", "Imagen3", "Imagen4", "Imagen5", "Imagen6"];
       let fotos = [];
       cols.forEach(c => { if(fila[c]) fotos.push(fila[c].trim()); });
@@ -187,7 +184,6 @@ fetch(API_URL).then(res => res.json()).then(data => {
         </div>
       `).join('');
 
-      // Modal HTML
       const modal = document.createElement("div");
       modal.className = "modal";
       modal.id = modalId;
@@ -195,23 +191,22 @@ fetch(API_URL).then(res => res.json()).then(data => {
         <span class="close-modal-x" onclick="cerrarModal('${modalId}', ${index})">&times;</span>
         <div class="modal-scroll-container" id="scroll-${modalId}">
           
-          <section class="modal-section-content">
-            <div class="carousel-wrapper" 
-                 ontouchstart="handleTouchStart(event)" 
-                 ontouchend="handleTouchEnd(event, '${modalId}')"
-                 onclick="nextSlide('${modalId}')">
-              ${itemsHtml}
-              <input type="hidden" class="idx" value="0">
-              <input type="hidden" class="count" value="${fotos.length}">
-            </div>
-            <div class="text-container">
-              <h2>${fila["Título"]}</h2>
-              <p>${fila["Descripción_modal"] || fila["Descripción"]}</p>
-              <span class="scroll-down-info">${TEXTS[lang].hint}</span>
-            </div>
-          </section>
+          <div class="carousel-wrapper" 
+               ontouchstart="handleTouchStart(event)" 
+               ontouchend="handleTouchEnd(event, '${modalId}')"
+               onclick="nextSlide('${modalId}')">
+            ${itemsHtml}
+            <input type="hidden" class="idx" value="0">
+            <input type="hidden" class="count" value="${fotos.length}">
+          </div>
 
-          <section class="modal-section-video">
+          <div class="text-container" id="text-${modalId}">
+            <h2>${fila["Título"]}</h2>
+            <p>${fila["Descripción_modal"] || fila["Descripción"]}</p>
+            <div class="video-anchor-btn" onclick="scrollToVideo('${modalId}')">${TEXTS[lang].videoBtn}</div>
+          </div>
+
+          <section class="modal-section-video" id="video-sec-${modalId}">
             <div class="video-wrapper"><div id="player-${index}"></div></div>
             <a href="https://wa.me/5491130162083" target="_blank" class="whatsapp-btn">
               <img src="img/WhatsApp.png" width="24" style="filter:brightness(0) invert(1)"> ${TEXTS[lang].wap}
@@ -225,7 +220,6 @@ fetch(API_URL).then(res => res.json()).then(data => {
     });
 });
 
-/* CARRUSEL LOGIC */
 function nextSlide(modalId, dir = 1) {
     const wrapper = document.querySelector(`#${modalId} .carousel-wrapper`);
     const items = wrapper.querySelectorAll('.carousel-item');
@@ -256,7 +250,6 @@ function startAutoplay(modalId) {
 }
 function stopAutoplay(modalId) { clearInterval(carouselIntervals[modalId]); }
 
-/* MODAL NAV */
 function abrirModal(id, idx) {
     document.getElementById(id).style.display = "block";
     document.body.style.overflow = "hidden";
@@ -269,6 +262,11 @@ function cerrarModal(id, idx) {
     stopAutoplay(id);
     if(players[idx].inst) players[idx].inst.pauseVideo();
     document.getElementById(`scroll-${id}`).scrollTop = 0;
+}
+
+function scrollToVideo(modalId) {
+    const videoSec = document.getElementById(`video-sec-${modalId}`);
+    videoSec.scrollIntoView({ behavior: 'smooth' });
 }
 
 function initYT(idx) {
