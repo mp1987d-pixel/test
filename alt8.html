@@ -158,31 +158,29 @@
       overflow: hidden;
     }
 
-    /* Sección 1: Info y Carousel */
     .info-section {
       background: #fff;
-      padding: 60px 20px 40px;
+      padding: 60px 0 40px; /* Sin padding lateral para que el carrusel respire */
       text-align: center;
       justify-content: flex-start;
       overflow-y: auto;
     }
 
-    /* --- CAROUSEL INTERNO --- */
+    /* --- CAROUSEL MODIFICADO (SIN BORDES, MÁS GRANDE) --- */
     .modal-carousel {
       position: relative;
       width: 100%;
-      max-width: 800px;
-      height: 50vh;
-      margin-bottom: 20px;
-      background: #000;
-      border-radius: 15px;
+      height: 70vh; /* Aumentado un 40% aprox (de 50 a 70) */
+      margin-bottom: 25px;
+      background: #fff; /* Fondo blanco para quitar el efecto de bordes negros */
       overflow: hidden;
+      cursor: pointer;
     }
 
     .carousel-track {
       display: flex;
       height: 100%;
-      transition: transform 0.5s ease-in-out;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .carousel-item {
@@ -196,62 +194,22 @@
     .carousel-item img {
       max-width: 100%;
       max-height: 100%;
-      object-fit: contain; /* Fundamental para dimensiones mixtas */
+      object-fit: contain; 
     }
 
-    .carousel-control {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      background: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      width: 40px;
-      height: 40px;
-      cursor: pointer;
-      font-size: 18px;
-      z-index: 5;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .carousel-control.prev { left: 10px; }
-    .carousel-control.next { right: 10px; }
+    .info-section h2 { margin: 10px 20px; color: #333; }
+    .info-section p { color: #666; max-width: 800px; margin: 10px auto; padding: 0 20px; line-height: 1.6; }
 
-    .carousel-dots {
-      position: absolute;
-      bottom: 10px;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 6px;
-    }
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: rgba(255,255,255,0.4);
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    .dot.active { background: #fff; }
-
-    .info-section h2 { margin: 10px 0; color: #333; }
-    .info-section p { color: #666; max-width: 600px; margin: 10px auto; line-height: 1.5; }
-
-    /* Sección 2: Video Full */
+    /* Sección Video */
     .video-section { background: #000; }
     .video-container {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       z-index: 1;
     }
     .video-container iframe { width: 100%; height: 100%; border: none; }
 
-    /* Botón WhatsApp */
     .whatsapp-float {
       position: absolute;
       bottom: 30px;
@@ -268,11 +226,8 @@
       align-items: center;
       gap: 10px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
     }
-    .whatsapp-float:hover { transform: translateX(-50%) scale(1.05); }
 
-    /* Controles PC */
     .modal-nav-pc {
       position: absolute;
       right: 20px;
@@ -290,55 +245,46 @@
       background: rgba(255,255,255,0.2);
       border: 1px solid white;
       color: white;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 20px;
-    }
-
-    .mute-toggle {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      z-index: 100;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid white;
-      color: white;
-      width: 45px;
-      height: 45px;
+      width: 50px; height: 50px;
       border-radius: 50%;
       cursor: pointer;
     }
 
     .close-modal-x {
       position: absolute;
-      top: 20px;
-      right: 20px;
+      top: 20px; right: 20px;
       z-index: 120;
       background: #fff;
       color: #000;
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       text-align: center;
       line-height: 40px;
       font-size: 24px;
       cursor: pointer;
-      font-weight: bold;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    .mute-toggle {
+      position: absolute;
+      top: 20px; left: 20px;
+      z-index: 100;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid white;
+      color: white;
+      width: 45px; height: 45px;
+      border-radius: 50%;
     }
 
     .nav-btn {
       background: rgba(255, 140, 0, 0.9);
       color: white;
       border: none;
-      width: 45px;
-      height: 45px;
+      width: 45px; height: 45px;
       border-radius: 50%;
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      cursor: pointer;
       z-index: 10;
     }
     .prev-btn { left: -22.5px; }
@@ -348,8 +294,8 @@
 
     @media (max-width: 600px) {
       .logo-img { width: 50%; }
-      .section { border-radius: 0; width: 100%; padding: 20px 0; }
-      .modal-carousel { height: 40vh; }
+      .section { border-radius: 0; width: 100%; }
+      .modal-carousel { height: 60vh; }
     }
   </style>
   <script src="https://www.youtube.com/iframe_api"></script>
@@ -415,6 +361,7 @@ function moveCarousel(direction) {
 const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
 const IMG_BASE = "https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
 let players = {}; 
+let carouselIntervals = {}; 
 
 fetch(API_URL)
   .then(res => res.json())
@@ -430,7 +377,7 @@ fetch(API_URL)
       const ytId2 = fila["Youtube2"];
       const playlist = ytId2 ? `${ytId1},${ytId2}` : ytId1;
 
-      // Card inicial
+      // Card
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -442,17 +389,9 @@ fetch(API_URL)
       cardsContainer.appendChild(card);
 
       // --- LÓGICA DE FOTOS DINÁMICAS ---
-      // Verificamos las columnas de la base de datos Imagen_modal, Imagen3, Imagen4, Imagen5, Imagen6
       const columnasFotos = ["Imagen_modal", "Imagen3", "Imagen4", "Imagen5", "Imagen6"];
       let fotosArray = [];
-      
-      columnasFotos.forEach(col => {
-          if (fila[col] && fila[col].trim() !== "") {
-              fotosArray.push(fila[col].trim());
-          }
-      });
-
-      // Si no hay fotos en esas columnas, usamos la 'Imagen' principal como fallback
+      columnasFotos.forEach(col => { if (fila[col] && fila[col].trim() !== "") fotosArray.push(fila[col].trim()); });
       if (fotosArray.length === 0) fotosArray.push(fila["Imagen"]);
 
       let carouselItemsHtml = fotosArray.map(foto => `
@@ -461,11 +400,7 @@ fetch(API_URL)
           </div>
       `).join('');
 
-      let dotsHtml = fotosArray.length > 1 ? fotosArray.map((_, i) => `
-          <div class="dot ${i === 0 ? 'active' : ''}" onclick="jumpToSlide('${modalId}', ${i})"></div>
-      `).join('') : '';
-
-      // Estructura Modal
+      // Modal
       const modal = document.createElement("div");
       modal.className = "modal";
       modal.id = modalId;
@@ -480,15 +415,10 @@ fetch(API_URL)
         <div class="modal-scroll-container" id="scroll-${modalId}">
           
           <section class="modal-section info-section">
-            <div class="modal-carousel" id="carousel-${modalId}">
-                <div class="carousel-track" style="transform: translateX(0%);">
+            <div class="modal-carousel" id="carousel-${modalId}" onclick="handleCarouselClick('${modalId}')">
+                <div class="carousel-track" data-count="${fotosArray.length}" data-index="0">
                     ${carouselItemsHtml}
                 </div>
-                ${fotosArray.length > 1 ? `
-                <button class="carousel-control prev" onclick="moveInternalCarousel('${modalId}', -1)">&#10094;</button>
-                <button class="carousel-control next" onclick="moveInternalCarousel('${modalId}', 1)">&#10095;</button>
-                <div class="carousel-dots">${dotsHtml}</div>
-                ` : ''}
             </div>
 
             <h2>${fila["Título"]}</h2>
@@ -500,89 +430,78 @@ fetch(API_URL)
             <button class="mute-toggle" onclick="toggleMute('${index}')">
               <span id="icon-${index}">🔇</span>
             </button>
-            
-            <div class="video-container">
-              <div id="player-${index}"></div>
-            </div>
-
+            <div class="video-container"><div id="player-${index}"></div></div>
             <a href="https://wa.me/5491130162083" target="_blank" class="whatsapp-float">
-              <img src="img/WhatsApp.png" width="24" style="filter: brightness(0) invert(1);">
-              ${TEXTS[lang].btnWap}
+              <img src="img/WhatsApp.png" width="24" style="filter: brightness(0) invert(1);"> ${TEXTS[lang].btnWap}
             </a>
           </section>
-
         </div>
       `;
       modalsContainer.appendChild(modal);
       players[index] = { id: ytId1, playlist: playlist, instance: null };
     });
-
     activarModales();
   });
 
-/* FUNCIONES CAROUSEL INTERNO */
-function moveInternalCarousel(modalId, direction) {
+/* AUTOPLAY & CLICK LOGIC */
+function startAutoplay(modalId) {
+    stopAutoplay(modalId); // Limpiar previo
     const track = document.querySelector(`#${modalId} .carousel-track`);
-    const items = track.querySelectorAll('.carousel-item');
-    const dots = document.querySelectorAll(`#${modalId} .dot`);
-    let currentIndex = parseInt(track.dataset.index || 0);
-    
-    currentIndex += direction;
-    if (currentIndex >= items.length) currentIndex = 0;
-    if (currentIndex < 0) currentIndex = items.length - 1;
-    
-    updateCarouselPosition(modalId, track, currentIndex, dots);
+    const count = parseInt(track.dataset.count);
+    if (count <= 1) return;
+
+    carouselIntervals[modalId] = setInterval(() => {
+        let currentIndex = parseInt(track.dataset.index);
+        currentIndex = (currentIndex + 1) % count;
+        updateTrack(track, currentIndex);
+    }, 3000); // Cambio cada 3 segundos
 }
 
-function jumpToSlide(modalId, index) {
-    const track = document.querySelector(`#${modalId} .carousel-track`);
-    const dots = document.querySelectorAll(`#${modalId} .dot`);
-    updateCarouselPosition(modalId, track, index, dots);
+function stopAutoplay(modalId) {
+    if (carouselIntervals[modalId]) {
+        clearInterval(carouselIntervals[modalId]);
+        delete carouselIntervals[modalId];
+    }
 }
 
-function updateCarouselPosition(modalId, track, index, dots) {
-    track.style.transform = `translateX(-${index * 100}%)`;
+function handleCarouselClick(modalId) {
+    const track = document.querySelector(`#${modalId} .carousel-track`);
+    const count = parseInt(track.dataset.count);
+    if (count <= 1) return;
+
+    // Pausar autoplay
+    stopAutoplay(modalId);
+    
+    // Mover a la siguiente imagen manualmente al hacer clic
+    let currentIndex = parseInt(track.dataset.index);
+    currentIndex = (currentIndex + 1) % count;
+    updateTrack(track, currentIndex);
+
+    // Reiniciar autoplay tras 60 segundos (60000ms)
+    clearTimeout(window[`timeout_${modalId}`]);
+    window[`timeout_${modalId}`] = setTimeout(() => {
+        startAutoplay(modalId);
+    }, 60000);
+}
+
+function updateTrack(track, index) {
     track.dataset.index = index;
-    dots.forEach((dot, i) => {
-        dot.classList.toggle('active', i === index);
-    });
+    track.style.transform = `translateX(-${index * 100}%)`;
 }
 
+/* OTROS CONTROLES */
 function scrollModal(modalId, dir) {
     const container = document.getElementById(`scroll-${modalId}`);
     const amount = dir === 'down' ? window.innerHeight : -window.innerHeight;
     container.scrollBy({ top: amount, behavior: 'smooth' });
 }
 
-function onYouTubeIframeAPIReady() {
-  console.log("YouTube API Ready");
-}
-
 function initYTPlayer(index) {
-  if (players[index].instance) {
-      players[index].instance.playVideo();
-      return;
-  }
-
+  if (players[index].instance) { players[index].instance.playVideo(); return; }
   players[index].instance = new YT.Player(`player-${index}`, {
-    height: '100%',
-    width: '100%',
-    videoId: players[index].id,
-    playerVars: {
-      'autoplay': 1,
-      'mute': 1,
-      'controls': 0,
-      'loop': 1,
-      'playlist': players[index].playlist,
-      'modestbranding': 1,
-      'rel': 0,
-      'showinfo': 0,
-      'iv_load_policy': 3,
-      'playsinline': 1
-    },
-    events: {
-      'onReady': (event) => event.target.playVideo()
-    }
+    height: '100%', width: '100%', videoId: players[index].id,
+    playerVars: { 'autoplay': 1, 'mute': 1, 'controls': 0, 'loop': 1, 'playlist': players[index].playlist, 'playsinline': 1 },
+    events: { 'onReady': (event) => event.target.playVideo() }
   });
 }
 
@@ -590,13 +509,8 @@ function toggleMute(index) {
   const p = players[index].instance;
   const icon = document.getElementById(`icon-${index}`);
   if (p) {
-    if (p.isMuted()) {
-      p.unMute();
-      icon.textContent = "🔊";
-    } else {
-      p.mute();
-      icon.textContent = "🔇";
-    }
+    if (p.isMuted()) { p.unMute(); icon.textContent = "🔊"; } 
+    else { p.mute(); icon.textContent = "🔇"; }
   }
 }
 
@@ -608,6 +522,7 @@ function activarModales() {
       document.getElementById(modalId).style.display = "block";
       document.body.style.overflow = "hidden";
       initYTPlayer(idx);
+      startAutoplay(modalId);
     };
   });
 }
@@ -616,19 +531,11 @@ function cerrarModal(modalId, index) {
     document.getElementById(modalId).style.display = "none";
     document.body.style.overflow = "";
     if(players[index].instance) players[index].instance.pauseVideo();
-    // Resetear scroll y posición de fotos al cerrar
+    stopAutoplay(modalId);
     document.getElementById(`scroll-${modalId}`).scrollTop = 0;
-    const track = document.querySelector(`#${modalId} .carousel-track`);
-    if(track) jumpToSlide(modalId, 0);
 }
 
-window.onclick = (e) => {
-  if (e.target.classList.contains('modal-scroll-container')) {
-    const modalId = e.target.id.replace('scroll-', '');
-    const idx = modalId.split('_')[1];
-    cerrarModal(modalId, idx);
-  }
-};
+function onYouTubeIframeAPIReady() { console.log("YT Ready"); }
 </script>
 
 </body>
