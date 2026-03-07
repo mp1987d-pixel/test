@@ -23,568 +23,277 @@
     }
 
     /* --- HEADER --- */
-    .main-header {
-      background: #000000;
-      padding: 0;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .header-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .logo-img {
-      width: 25%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
-
+    .main-header { background: #000; width: 100%; position: relative; overflow: hidden; }
+    .header-container { width: 100%; display: flex; flex-direction: column; }
+    .logo-img { width: 25%; height: auto; display: block; object-fit: cover; }
     .socials {
-      position: absolute;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%);
-      display: flex;
-      gap: 12px;
-      background: rgba(0, 0, 0, 0.55);
-      padding: 8px 12px;
-      border-radius: 30px;
-      backdrop-filter: blur(66px);
-      z-index: 20;
+      position: absolute; top: 50%; right: 15px; transform: translateY(-50%);
+      display: flex; gap: 12px; background: rgba(0, 0, 0, 0.55);
+      padding: 8px 12px; border-radius: 30px; backdrop-filter: blur(6px); z-index: 20;
     }
-
-    .socials a { display: flex; align-items: center; justify-content: center; }
     .socials img { width: 28px; height: 28px; transition: transform 0.2s ease; }
     .socials img:hover { transform: scale(1.15); }
 
-    /* --- HERO --- */
-    .hero {
-      width: 100%;
-      height: 70vh;
-      background-size: cover;
-      background-position: center;
-      transition: background-image 1s ease-in-out;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-image: url('img/vino.jpeg');
-    }
-
-    .hero-content {
-      background: rgba(0,0,0,0.45);
-      padding: 30px 40px;
-      border-radius: 10px;
-      text-align: center;
-      color: #fff;
-    }
-
-    /* --- SECTION & CARDS --- */
-    .section {
-      max-width: 1200px;
-      margin: 40px auto;
-      padding: 40px;
-      background: rgba(255, 255, 255, 0.98);
-      border-radius: 28px;
-      position: relative;
-      box-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
-    }
-
-    .cards {
-      display: flex;
-      overflow-x: auto;
-      gap: 25px;
-      padding: 10px 5px;
-      scrollbar-width: none;
-    }
+    /* --- CARDS --- */
+    .section { max-width: 1200px; margin: 40px auto; padding: 40px; background: rgba(255, 255, 255, 0.98); border-radius: 28px; position: relative; }
+    .cards { display: flex; overflow-x: auto; gap: 25px; padding: 10px 5px; scrollbar-width: none; }
     .cards::-webkit-scrollbar { display: none; }
-
-    .card {
-      width: 300px;
-      height: 450px;
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      flex-shrink: 0;
-      text-align: center;
-    }
-
+    .card { width: 300px; height: 450px; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); display: flex; flex-direction: column; flex-shrink: 0; text-align: center; }
     .card img { width: 100%; height: 180px; object-fit: cover; }
-    .card h3, .card p { padding: 0 15px; margin: 15px 0; }
-    .card p { flex-grow: 1; overflow-y: auto; text-align: center; }
-    .card button {
-      width: 100%;
-      padding: 15px 0;
-      border: none;
-      background: #0077cc;
-      color: #fff;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    .card button { width: 100%; padding: 15px; border: none; background: #0077cc; color: #fff; cursor: pointer; font-weight: bold; }
 
-    /* --- MODALES --- */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 2000;
-      inset: 0;
-      background: #fff; /* Fondo blanco para todo el modal */
-    }
-
-    .modal-scroll-container {
-      height: 100%;
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-      scrollbar-width: none;
+    /* --- MODAL --- */
+    .modal { display: none; position: fixed; z-index: 2000; inset: 0; background: #000; }
+    .modal-scroll-container { 
+      height: 100%; 
+      overflow-y: scroll; 
+      scroll-snap-type: y mandatory; 
+      scrollbar-width: none; 
+      scroll-behavior: smooth;
     }
     .modal-scroll-container::-webkit-scrollbar { display: none; }
 
-    .modal-section {
-      height: 100vh;
-      width: 100%;
-      scroll-snap-align: start;
-      position: relative;
+    .modal-section { 
+      height: 100vh; 
+      width: 100%; 
+      scroll-snap-align: start; 
+      position: relative; 
+      overflow: hidden; 
       display: flex;
       flex-direction: column;
+    }
+
+    /* Fondo negro de punta a punta para las fotos */
+    .info-section { background: #fff; justify-content: flex-start; }
+    
+    .carousel-wrapper {
+      width: 100%;
+      height: 75vh;
+      background: #000; /* Fondo negro punta a punta */
+      position: relative;
+      display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-    }
-
-    /* Sección Información y Carrusel - Diseño Maximizado */
-    .info-section {
-      background: #fff;
-      padding: 0; /* Eliminamos rellenos para maximizar espacio */
-      text-align: center;
-      justify-content: flex-start;
-      overflow-y: auto;
-    }
-
-    /* --- CAROUSEL MODIFICADO (SIN MOVIMIENTO, MAXIMIZADO) --- */
-    .modal-carousel {
-      position: relative;
-      width: 100%;
-      height: 80vh; /* Ocupa el 80% de la altura de la pantalla */
-      background: #fff;
-      overflow: hidden;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-
-    .carousel-track {
-      display: flex;
-      height: 100%;
-      width: 100%;
-      position: relative;
-      /* Eliminamos la transición de movimiento (transform) */
+      touch-action: pan-y; /* Permite scroll vertical pero intercepta horizontal */
     }
 
     .carousel-item {
-      position: absolute; /* Superponemos las imágenes */
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0; /* Ocultas por defecto */
-      z-index: 1;
-      /* Eliminamos transiciones para cambio instantáneo (reemplazo) */
+      position: absolute; inset: 0;
+      opacity: 0; z-index: 1;
+      display: flex; align-items: center; justify-content: center;
     }
+    .carousel-item.active { opacity: 1; z-index: 2; }
+    .carousel-item img { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-    .carousel-item.active {
-      opacity: 1; /* Visible si está activa */
-      z-index: 2; /* Por encima de las demás */
+    .text-content { 
+      padding: 10px 20px; 
+      background: #fff; 
+      flex-grow: 1; 
+      text-align: center;
     }
+    .text-content h2 { margin: 5px 0; font-size: 24px; color: #111; }
+    .text-content p { color: #555; max-width: 700px; margin: 0 auto; line-height: 1.4; }
 
-    .carousel-item img {
-      width: 100%; /* Ocupa todo el ancho */
-      height: 100%; /* Ocupa toda la altura del contenedor */
-      max-width: none; /* Eliminamos restricciones anteriores */
-      max-height: none;
-      object-fit: contain; /* Mantiene proporción sin estirar, maximizando tamaño visible */
-    }
-
-    /* Textos debajo del carrusel */
-    .info-section h2 { 
-      margin: 10px 0 5px 0; 
-      color: #333; 
-      font-size: 24px; 
-      padding: 0 15px; 
-    }
-    .info-section p { 
-      color: #666; 
-      max-width: 900px; /* Un poco más ancho el contenedor de texto */
-      margin: 0 auto 10px auto; 
-      padding: 0 15px; 
-      line-height: 1.5; 
-      font-size: 16px; 
-    }
-
-    /* Indicador de scroll flotante */
-    .scroll-hint {
-      color: #0077cc;
-      font-weight: bold;
-      margin-bottom: 15px;
-      font-size: 14px;
-    }
-
-    /* Sección Video */
+    /* Video Section */
     .video-section { background: #000; }
-    .video-container {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: 1;
-    }
+    .video-container { position: absolute; inset: 0; }
     .video-container iframe { width: 100%; height: 100%; border: none; }
 
-    .whatsapp-float {
-      position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 100;
-      background: #25D366;
-      color: white;
-      padding: 12px 25px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-
-    .modal-nav-pc {
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      z-index: 110;
-    }
-
-    @media (max-width: 1024px) { .modal-nav-pc { display: none; } }
-
-    .pc-arrow {
-      background: rgba(0,0,0,0.3); /* Un poco más visible sobre fondo blanco */
-      border: 1px solid #333;
-      color: #333;
-      width: 50px; height: 50px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-size: 20px;
-    }
-
     .close-modal-x {
-      position: absolute;
-      top: 20px; right: 20px;
-      z-index: 120;
-      background: rgba(0,0,0,0.5); /* Más visible sobre imágenes */
-      color: #fff;
-      width: 40px; height: 40px;
-      border-radius: 50%;
-      text-align: center;
-      line-height: 40px;
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: absolute; top: 20px; right: 20px; z-index: 120;
+      background: rgba(255,255,255,0.7); color: #000;
+      width: 40px; height: 40px; border-radius: 50%;
+      text-align: center; line-height: 40px; font-size: 24px; cursor: pointer;
     }
 
-    .mute-toggle {
-      position: absolute;
-      top: 20px; left: 20px;
-      z-index: 100;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid white;
-      color: white;
-      width: 45px; height: 45px;
-      border-radius: 50%;
+    .whatsapp-float {
+      position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      z-index: 100; background: #25D366; color: white; padding: 12px 25px;
+      border-radius: 50px; text-decoration: none; font-weight: bold;
+      display: flex; align-items: center; gap: 10px;
     }
 
-    .nav-btn {
-      background: rgba(255, 140, 0, 0.9);
-      color: white;
-      border: none;
-      width: 45px; height: 45px;
-      border-radius: 50%;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      z-index: 10;
+    .scroll-hint-btn {
+      margin-top: 10px; color: #0077cc; font-weight: bold; cursor: pointer;
+      background: none; border: none; font-size: 14px;
     }
-    .prev-btn { left: -22.5px; }
-    .next-btn { right: -22.5px; }
-
-    .main-footer { background: #111; color: #fff; text-align: center; padding: 20px; }
 
     @media (max-width: 600px) {
-      .logo-img { width: 50%; }
-      .section { border-radius: 0; width: 100%; }
-      .modal-carousel { height: 70vh; } /* Un poco más bajo en móvil */
-      .info-section h2 { font-size: 20px; }
-      .info-section p { font-size: 14px; }
+      .carousel-wrapper { height: 65vh; }
+      .text-content h2 { font-size: 20px; }
     }
   </style>
   <script src="https://www.youtube.com/iframe_api"></script>
 </head>
-
 <body>
 
 <header class="main-header">
   <div class="header-container">
-    <a href="/" class="logo-link"><img src="img/logo4.jpg" alt="ArgentinaGo" class="logo-img"></a>
+    <img src="img/logo4.jpg" alt="ArgentinaGo" class="logo-img">
     <div class="socials">
-      <a href="#"><img src="img/Facebook.png" alt="F"></a>
-      <a href="#"><img src="img/Instagra.png" alt="I"></a>
-      <a href="#"><img src="img/YouTube.png" alt="Y"></a>
-      <a href="#"><img src="img/TikTok.png" alt="T"></a>
+      <a href="#"><img src="img/Facebook.png" alt=""></a>
+      <a href="#"><img src="img/Instagra.png" alt=""></a>
     </div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="hero-content">
-    <h1 id="hero-title"></h1>
-    <p id="hero-subtitle"></p>
-  </div>
-</section>
-
 <section class="section">
   <h2 id="section-title"></h2>
-  <div class="carousel-container">
-    <button class="nav-btn prev-btn" onclick="moveCarousel(-1)">&#10094;</button>
-    <div class="cards" id="cards"></div>
-    <button class="nav-btn next-btn" onclick="moveCarousel(1)">&#10095;</button>
-  </div>
+  <div class="cards" id="cards"></div>
 </section>
 
 <div id="modals"></div>
 
-<footer class="main-footer">
-  <div class="footer-links">
-    <a id="terms-link" href="#"></a> | <span>virvik@gmail.com</span> | <span>+5491130162083</span>
-  </div>
-</footer>
-
 <script>
 const isSpanish = (navigator.language || navigator.userLanguage).toLowerCase().startsWith("es");
 const TEXTS = {
-  es: { heroTitle: "Descubrí Argentina", heroSubtitle: "Experiencias únicas", sectionTitle: "Destinos destacados", terms: "Términos y condiciones", btnWap: "Reservar ahora", scrollHint: "Desliza para ver video" },
-  en: { heroTitle: "Discover Argentina", heroSubtitle: "Unique experiences", sectionTitle: "Featured destinations", terms: "Terms and conditions", btnWap: "Book Now", scrollHint: "Scroll for video" }
+  es: { sectionTitle: "Destinos destacados", btnWap: "Reservar ahora", scrollHint: "Ver video ↓", seeMore: "Ver más" },
+  en: { sectionTitle: "Featured destinations", btnWap: "Book Now", scrollHint: "Watch video ↓", seeMore: "See more" }
 };
-
 const lang = isSpanish ? "es" : "en";
-document.getElementById("hero-title").textContent = TEXTS[lang].heroTitle;
-document.getElementById("hero-subtitle").textContent = TEXTS[lang].heroSubtitle;
 document.getElementById("section-title").textContent = TEXTS[lang].sectionTitle;
-document.getElementById("terms-link").textContent = TEXTS[lang].terms;
 
-function moveCarousel(direction) {
-  const container = document.getElementById("cards");
-  container.scrollBy({ left: direction * (container.clientWidth * 0.8), behavior: 'smooth' });
-}
-
-/* API DATA & MODALS */
 const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
 const IMG_BASE = "https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
-let players = {}; 
-let carouselIntervals = {}; 
 
-fetch(API_URL)
-  .then(res => res.json())
-  .then(data => {
+let players = {}; 
+let carouselIntervals = {};
+let touchStartX = 0;
+
+fetch(API_URL).then(res => res.json()).then(data => {
     const cardsContainer = document.getElementById("cards");
     const modalsContainer = document.getElementById("modals");
     const filteredData = data.filter(fila => isSpanish ? fila["Idioma"] === "Es" : fila["Idioma"] === "En");
 
     filteredData.forEach((fila, index) => {
-      if (!fila["Título"] || !fila["Imagen"]) return;
       const modalId = `modal_${index}`;
-      const ytId1 = fila["Youtube"];
-      const ytId2 = fila["Youtube2"];
-      const playlist = ytId2 ? `${ytId1},${ytId2}` : ytId1;
-
-      // Card
+      
+      // Card principal
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
-        <img src="${IMG_BASE + fila["Imagen"]}" alt="">
+        <img src="${IMG_BASE + fila["Imagen"]}">
         <h3>${fila["Título"]}</h3>
-        <p>${fila["Descripción"] || ""}</p>
-        <button class="open-modal" data-modal="${modalId}">${isSpanish ? "Ver más" : "See more"}</button>
+        <button onclick="abrirModal('${modalId}', ${index})">${TEXTS[lang].seeMore}</button>
       `;
       cardsContainer.appendChild(card);
 
-      // --- LÓGICA DE FOTOS DINÁMICAS ---
-      const columnasFotos = ["Imagen_modal", "Imagen3", "Imagen4", "Imagen5", "Imagen6"];
+      // Fotos del Carrusel
+      const fotosCols = ["Imagen_modal", "Imagen3", "Imagen4", "Imagen5", "Imagen6"];
       let fotosArray = [];
-      columnasFotos.forEach(col => { if (fila[col] && fila[col].trim() !== "") fotosArray.push(fila[col].trim()); });
-      if (fotosArray.length === 0) fotosArray.push(fila["Imagen"]);
+      fotosCols.forEach(col => { if(fila[col]) fotosArray.push(fila[col].trim()); });
+      if(fotosArray.length === 0) fotosArray.push(fila["Imagen"]);
 
-      // Generar ítems del carrusel, marcando el primero como activo
-      let carouselItemsHtml = fotosArray.map((foto, i) => `
-          <div class="carousel-item ${i === 0 ? 'active' : ''}">
-              <img src="${IMG_BASE + foto}" alt="">
-          </div>
+      const carouselHtml = fotosArray.map((f, i) => `
+        <div class="carousel-item ${i===0?'active':''}">
+          <img src="${IMG_BASE + f}">
+        </div>
       `).join('');
 
-      // Modal
+      // Modal Structure
       const modal = document.createElement("div");
       modal.className = "modal";
       modal.id = modalId;
       modal.innerHTML = `
-        <span class="close-modal-x" onclick="cerrarModal('${modalId}', '${index}')">&times;</span>
-        
-        <div class="modal-nav-pc">
-           <button class="pc-arrow" onclick="scrollModal('${modalId}', 'up')">↑</button>
-           <button class="pc-arrow" onclick="scrollModal('${modalId}', 'down')">↓</button>
-        </div>
-
+        <span class="close-modal-x" onclick="cerrarModal('${modalId}', ${index})">&times;</span>
         <div class="modal-scroll-container" id="scroll-${modalId}">
-          
           <section class="modal-section info-section">
-            <div class="modal-carousel" id="carousel-${modalId}" onclick="handleCarouselClick('${modalId}')">
-                <div class="carousel-track" data-count="${fotosArray.length}" data-index="0">
-                    ${carouselItemsHtml}
-                </div>
+            <div class="carousel-wrapper" 
+                 ontouchstart="handleTouchStart(event)" 
+                 ontouchend="handleTouchEnd(event, '${modalId}')"
+                 onclick="nextSlide('${modalId}')">
+              ${carouselHtml}
+              <input type="hidden" class="slide-index" value="0">
+              <input type="hidden" class="slide-count" value="${fotosArray.length}">
             </div>
-
-            <h2>${fila["Título"]}</h2>
-            <p>${fila["Descripción_modal"] || fila["Descripción"]}</p>
-            <div class="scroll-hint">${TEXTS[lang].scrollHint} ↓</div>
+            <div class="text-content">
+              <h2>${fila["Título"]}</h2>
+              <p>${fila["Descripción_modal"] || fila["Descripción"]}</p>
+              <button class="scroll-hint-btn" onclick="scrollToVideo('${modalId}')">${TEXTS[lang].scrollHint}</button>
+            </div>
           </section>
-
           <section class="modal-section video-section">
-            <button class="mute-toggle" onclick="toggleMute('${index}')">
-              <span id="icon-${index}">🔇</span>
-            </button>
             <div class="video-container"><div id="player-${index}"></div></div>
             <a href="https://wa.me/5491130162083" target="_blank" class="whatsapp-float">
-              <img src="img/WhatsApp.png" width="24" style="filter: brightness(0) invert(1);"> ${TEXTS[lang].btnWap}
+              <img src="img/WhatsApp.png" width="24" style="filter:invert(1)"> ${TEXTS[lang].btnWap}
             </a>
           </section>
         </div>
       `;
       modalsContainer.appendChild(modal);
-      players[index] = { id: ytId1, playlist: playlist, instance: null };
+      players[index] = { yt: fila["Youtube"], pl: fila["Youtube2"] ? `${fila["Youtube"]},${fila["Youtube2"]}` : fila["Youtube"], inst: null };
     });
-    activarModales();
-  });
+});
 
-/* AUTOPLAY & CLICK LOGIC (MODIFICADO PARA REEMPLAZO INSTANTÁNEO) */
-function startAutoplay(modalId) {
-    stopAutoplay(modalId); // Limpiar previo
-    const track = document.querySelector(`#${modalId} .carousel-track`);
-    const count = parseInt(track.dataset.count);
-    if (count <= 1) return;
-
-    carouselIntervals[modalId] = setInterval(() => {
-        let currentIndex = parseInt(track.dataset.index);
-        currentIndex = (currentIndex + 1) % count;
-        updateTrackInstant(modalId, track, currentIndex);
-    }, 4000); // Cambio cada 4 segundos (un poco más lento para apreciar la foto grande)
+/* LÓGICA DE CARRUSEL Y TOUCH */
+function nextSlide(modalId, direction = 1) {
+    const wrapper = document.querySelector(`#${modalId} .carousel-wrapper`);
+    const items = wrapper.querySelectorAll('.carousel-item');
+    const indexInput = wrapper.querySelector('.slide-index');
+    const count = parseInt(wrapper.querySelector('.slide-count').value);
+    
+    let idx = parseInt(indexInput.value);
+    items[idx].classList.remove('active');
+    
+    idx = (idx + direction + count) % count;
+    
+    items[idx].classList.add('active');
+    indexInput.value = idx;
 }
 
-function stopAutoplay(modalId) {
-    if (carouselIntervals[modalId]) {
-        clearInterval(carouselIntervals[modalId]);
-        delete carouselIntervals[modalId];
+function handleTouchStart(e) { touchStartX = e.changedTouches[0].screenX; }
+
+function handleTouchEnd(e, modalId) {
+    let touchEndX = e.changedTouches[0].screenX;
+    if (Math.abs(touchStartX - touchEndX) > 50) {
+        const dir = touchStartX > touchEndX ? 1 : -1;
+        nextSlide(modalId, dir);
+        
+        // Pausar autoplay por 30 segundos en touch
+        stopAutoplay(modalId);
+        clearTimeout(window[`t_${modalId}`]);
+        window[`t_${modalId}`] = setTimeout(() => startAutoplay(modalId), 30000);
     }
 }
 
-function handleCarouselClick(modalId) {
-    const track = document.querySelector(`#${modalId} .carousel-track`);
-    const count = parseInt(track.dataset.count);
-    if (count <= 1) return;
-
-    // Pausar autoplay
+function startAutoplay(modalId) {
     stopAutoplay(modalId);
-    
-    // Mover a la siguiente imagen manualmente al hacer clic
-    let currentIndex = parseInt(track.dataset.index);
-    currentIndex = (currentIndex + 1) % count;
-    updateTrackInstant(modalId, track, currentIndex);
-
-    // Reiniciar autoplay tras 60 segundos (60000ms)
-    clearTimeout(window[`timeout_${modalId}`]);
-    window[`timeout_${modalId}`] = setTimeout(() => {
-        startAutoplay(modalId);
-    }, 60000);
+    carouselIntervals[modalId] = setInterval(() => nextSlide(modalId), 3500);
 }
 
-// Función para actualización instantánea (reemplazo)
-function updateTrackInstant(modalId, track, index) {
-    track.dataset.index = index;
-    const items = track.querySelectorAll('.carousel-item');
-    
-    // Quitamos la clase active de todas las imágenes
-    items.forEach(item => item.classList.remove('active'));
-    
-    // Añadimos la clase active solo a la imagen actual (reemplazo directo)
-    items[index].classList.add('active');
+function stopAutoplay(modalId) {
+    clearInterval(carouselIntervals[modalId]);
 }
 
-/* OTROS CONTROLES */
-function scrollModal(modalId, dir) {
-    const container = document.getElementById(`scroll-${modalId}`);
-    const amount = dir === 'down' ? window.innerHeight : -window.innerHeight;
-    container.scrollBy({ top: amount, behavior: 'smooth' });
+/* NAVEGACIÓN MODAL */
+function abrirModal(id, idx) {
+    document.getElementById(id).style.display = "block";
+    document.body.style.overflow = "hidden";
+    startAutoplay(id);
+    initYT(idx);
 }
 
-function initYTPlayer(index) {
-  if (players[index].instance) { players[index].instance.playVideo(); return; }
-  players[index].instance = new YT.Player(`player-${index}`, {
-    height: '100%', width: '100%', videoId: players[index].id,
-    playerVars: { 'autoplay': 1, 'mute': 1, 'controls': 0, 'loop': 1, 'playlist': players[index].playlist, 'playsinline': 1 },
-    events: { 'onReady': (event) => event.target.playVideo() }
-  });
-}
-
-function toggleMute(index) {
-  const p = players[index].instance;
-  const icon = document.getElementById(`icon-${index}`);
-  if (p) {
-    if (p.isMuted()) { p.unMute(); icon.textContent = "🔊"; } 
-    else { p.mute(); icon.textContent = "🔇"; }
-  }
-}
-
-function activarModales() {
-  document.querySelectorAll(".open-modal").forEach(btn => {
-    btn.onclick = () => {
-      const modalId = btn.dataset.modal;
-      const idx = modalId.split('_')[1];
-      document.getElementById(modalId).style.display = "block";
-      document.body.style.overflow = "hidden";
-      initYTPlayer(idx);
-      startAutoplay(modalId);
-    };
-  });
-}
-
-function cerrarModal(modalId, index) {
-    document.getElementById(modalId).style.display = "none";
+function cerrarModal(id, idx) {
+    document.getElementById(id).style.display = "none";
     document.body.style.overflow = "";
-    if(players[index].instance) players[index].instance.pauseVideo();
-    stopAutoplay(modalId);
-    document.getElementById(`scroll-${modalId}`).scrollTop = 0;
+    stopAutoplay(id);
+    if(players[idx].inst) players[idx].inst.pauseVideo();
+    document.getElementById(`scroll-${id}`).scrollTop = 0;
 }
 
-function onYouTubeIframeAPIReady() { console.log("YT Ready"); }
-</script>
+function scrollToVideo(modalId) {
+    document.getElementById(`scroll-${modalId}`).scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+}
 
+function initYT(idx) {
+    if (players[idx].inst) { players[idx].inst.playVideo(); return; }
+    players[idx].inst = new YT.Player(`player-${idx}`, {
+        height: '100%', width: '100%', videoId: players[idx].yt,
+        playerVars: { autoplay: 1, mute: 1, loop: 1, playlist: players[idx].pl, playsinline: 1 }
+    });
+}
+
+function onYouTubeIframeAPIReady() {}
+</script>
 </body>
 </html>
