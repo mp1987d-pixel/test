@@ -119,17 +119,18 @@
       gap: 25px;
     }
 
-    .card {
+  .card {
   width: 300px;
-  height: 450px;
+  height: 420px;
   background: #fff;
   border-radius: 10px;
-  overflow: hidden; /* Esto es clave para que el botón se "corte" en las esquinas */
+  overflow: hidden;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   text-align: center;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .card h3, .card p {
@@ -137,8 +138,7 @@
 }
 
 .card p {
-  flex-grow: 1; /* Esto empuja el botón siempre hacia el fondo */
-  margin-bottom: 0;
+  margin-bottom: 10px;
 }
 
 .card button {
