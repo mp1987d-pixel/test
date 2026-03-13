@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ArgentinaGo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{box-sizing:border-box;}
+
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background-color:#0b1d3a;
+background-image:
+radial-gradient(circle at 20% 30%,rgba(255,255,255,0.08)0%,transparent 30%),
+radial-gradient(circle at 70% 50%,rgba(255,255,255,0.06)0%,transparent 30%),
+radial-gradient(circle at 40% 80%,rgba(255,255,255,0.07)0%,transparent 30%);
+background-size:250px 250px,300px 300px,200px 200px;
+background-repeat:repeat;
+background-blend-mode:overlay;
+}
+
+.main-header{
+background:#000;
+width:100%;
+position:relative;
+overflow:hidden;
+}
+
+.header-container{
+width:100%;
+display:flex;
+flex-direction:column;
+}
+
+.logo-img{
+width:25%;
+height:auto;
+display:block;
+object-fit:cover;
+}
+
+.socials{
+position:absolute;
+top:50%;
+right:15px;
+transform:translateY(-50%);
+display:flex;
+gap:12px;
+background:rgba(0,0,0,0.55);
+padding:8px 12px;
+border-radius:30px;
+backdrop-filter:blur(6px);
+}
+
+.socials img{
+width:28px;
+height:28px;
+transition:.2s;
+}
+.socials img:hover{transform:scale(1.15);}
+
+.hero{
+width:100%;
+height:70vh;
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+background-image:url('img/vino.jpeg');
+transition:background-image 1s;
+}
+
+.hero-content{
+background:transparent;
+padding:30px 40px;
+text-align:center;
+color:#fff;
+}
+
+.section{
+max-width:1200px;
+margin:40px auto;
+padding:40px;
+background:linear-gradient(135deg,#1f3a2e 0%,#2f4f3a 50%,#1b2e24 100%);
+border-radius:28px;
+}
+
+.section h2{
+text-align:center;
+margin-bottom:40px;
+color:#fff;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
+
+.card{
+width:300px;
+height:400px;
+background:#fff;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+text-align:center;
+display:flex;
+flex-direction:column;
+}
+
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+.card h3,.card p{padding:0 15px;}
+
+.card p{flex-grow:1;}
+
+.card button{
+width:100%;
+padding:15px 0;
+border:none;
+background:#0077cc;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+z-index:2000;
+inset:0;
+background:#fff;
+}
+
+.modal-scroll-container{
+height:100%;
+overflow-y:scroll;
+scroll-behavior:smooth;
+scrollbar-width:none;
+}
+.modal-scroll-container::-webkit-scrollbar{display:none;}
+
+.carousel-wrapper{
+width:100%;
+height:75vh;
+background:#000;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+.carousel-item{
+position:absolute;
+inset:0;
+opacity:0;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:opacity .3s;
+}
+.carousel-item.active{opacity:1;}
+
+.carousel-item img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+}
+
+.text-container{
+padding:40px 25px 80px;
+background:#fff;
+text-align:center;
+}
+
+.text-container h2{
+font-size:32px;
+margin-bottom:20px;
+}
+
+.text-container p{
+font-size:18px;
+line-height:1.8;
+max-width:800px;
+margin:auto;
+}
+
+.video-anchor-btn{
+margin-top:20px;
+display:inline-block;
+padding:12px 25px;
+border:2px solid #0077cc;
+color:#0077cc;
+cursor:pointer;
+border-radius:5px;
+font-weight:bold;
+}
+
+.modal-section-video{
+height:100vh;
+background:#000;
+position:relative;
+}
+
+.video-wrapper{
+position:absolute;
+inset:0;
+}
+
+.video-wrapper iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+.close-modal-x{
+position:absolute;
+top:20px;
+right:20px;
+background:rgba(0,0,0,.5);
+width:45px;
+height:45px;
+border-radius:50%;
+text-align:center;
+line-height:45px;
+font-size:24px;
+cursor:pointer;
+color:#fff;
+z-index:2100;
+}
+
+.whatsapp-btn{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+background:#25D366;
+color:#fff;
+padding:15px 30px;
+border-radius:50px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.main-footer{
+background:#111;
+color:#fff;
+text-align:center;
+padding:20px;
+}
+
+.footer-links a{color:#fff;text-decoration:none;}
+
+/* Modal términos */
+    #termsModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #termsContent {
+      background: #000;
+      color: #fff;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close-terms { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; }
+
+</style>
+
+<script src="https://www.youtube.com/iframe_api"></script>
+</head>
+
+<body>
+
+<header class="main-header">
+<div class="header-container">
+<a href="/">
+<img src="img/logo4.jpg" class="logo-img">
+</a>
+
+<div class="socials">
+<img src="img/Facebook.png">
+<img src="img/Instagra.png">
+<img src="img/YouTube.png">
+<img src="img/TikTok.png">
+</div>
+
+</div>
+</header>
+
+<section class="hero">
+<div class="hero-content">
+<h1 id="hero-title"></h1>
+<p id="hero-subtitle"></p>
+</div>
+</section>
+
+<section class="section">
+<h2 id="section-title"></h2>
+<div class="cards" id="cards"></div>
+</section>
+
+<div id="modals"></div>
+
+<div id="termsModal">
+  <div id="termsContent">
+    <span class="close-terms">&times;</span>
+    <p id="termsText"></p>
+  </div>
+</div>
+
+<footer class="main-footer">
+  <div class="footer-links">
+    <a id="terms-link" href="javascript:void(0)"></a> |
+    <span>virvik@gmail.com</span> |
+    <span>+5491130162083</span>
+  </div>
+</footer>
+
+<script>
+
+/* idioma */
+
+const isSpanish = false;
+document.documentElement.lang = "en";
+
+const TEXTS={
+es:{
+heroTitle:"Descubrí Argentina",
+heroSubtitle:"Experiencias únicas pensadas para nuestros huéspedes",
+sectionTitle:"Destinos destacados",
+seeMore:"Ver más",
+videoBtn:"Ver video de la experiencia ↓",
+wap:"Reservar ahora",
+terms: "Términos y condiciones",
+termsText: "Este es el texto legal de prueba para ArgentinaGo."
+},
+en:{
+heroTitle:"Discover Argentina",
+heroSubtitle:"Unique experiences thought for our visitors",
+sectionTitle:"Featured destinations",
+seeMore:"See more",
+videoBtn:"Watch experience video ↓",
+wap:"Book now",
+terms: "Terms and conditions",
+termsText: "This is the test legal text for ArgentinaGo."
+}
+};
+
+const lang=isSpanish?"es":"en";
+
+document.getElementById("hero-title").textContent=TEXTS[lang].heroTitle;
+document.getElementById("hero-subtitle").textContent=TEXTS[lang].heroSubtitle;
+document.getElementById("section-title").textContent=TEXTS[lang].sectionTitle;
+document.getElementById("terms-link").textContent = TEXTS[lang].terms;
+document.getElementById("termsText").textContent = TEXTS[lang].termsText;
+
+
+/* hero */
+
+const heroImages=["img/vino.jpeg","img/prueba2.jpeg","img/carru4.jpeg"];
+let heroIndex=0;
+const hero=document.querySelector(".hero");
+
+setInterval(()=>{
+heroIndex=(heroIndex+1)%heroImages.length;
+hero.style.backgroundImage=`url('${heroImages[heroIndex]}')`;
+},4000);
+
+
+/* API */
+
+const API_URL="https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
+const IMG_BASE="https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
+
+let players={};
+
+fetch(API_URL)
+.then(res=>res.json())
+.then(data=>{
+
+const cards=document.getElementById("cards");
+const modals=document.getElementById("modals");
+
+const filtered=data.filter(f=>isSpanish?f["Idioma"]==="Es":f["Idioma"]==="En");
+
+filtered.forEach((fila,index)=>{
+
+const modalId=`modal_${index}`;
+
+const card=document.createElement("div");
+card.className="card";
+card.innerHTML=`
+<img src="${IMG_BASE+fila["Imagen"]}">
+<h3>${fila["Título"]}</h3>
+<p>${fila["Descripción"]||""}</p>
+<button onclick="abrirModal('${modalId}',${index})">${TEXTS[lang].seeMore}</button>
+`;
+cards.appendChild(card);
+
+/* imagenes modal */
+
+const cols=["Imagen_modal","Imagen3","Imagen4","Imagen5","Imagen6"];
+let fotos=[];
+cols.forEach(c=>{if(fila[c])fotos.push(fila[c].trim())});
+if(fotos.length===0)fotos.push(fila["Imagen"]);
+
+const items=fotos.map((f,i)=>`
+<div class="carousel-item ${i===0?'active':''}">
+<img src="${IMG_BASE+f}">
+</div>
+`).join("");
+
+const modal=document.createElement("div");
+modal.className="modal";
+modal.id=modalId;
+
+modal.innerHTML=`
+
+<span class="close-modal-x" onclick="cerrarModal('${modalId}',${index})">&times;</span>
+
+<div class="modal-scroll-container">
+
+<div class="carousel-wrapper" onclick="nextSlide('${modalId}')">
+${items}
+<input type="hidden" class="idx" value="0">
+<input type="hidden" class="count" value="${fotos.length}">
+</div>
+
+<div class="text-container">
+<h2>${fila["Título"]}</h2>
+<p>${fila["Descripción_modal"]||fila["Descripción"]}</p>
+<div class="video-anchor-btn" onclick="scrollToVideo('${modalId}')">${TEXTS[lang].videoBtn}</div>
+</div>
+
+<section class="modal-section-video" id="video-sec-${modalId}">
+<div class="video-wrapper">
+<div id="player-${index}"></div>
+</div>
+
+<a href="https://wa.me/5491130162083" target="_blank" class="whatsapp-btn">
+${TEXTS[lang].wap}
+</a>
+
+</section>
+
+</div>
+`;
+
+modals.appendChild(modal);
+
+players[index]={yt:fila["Youtube"],inst:null};
+
+});
+
+});
+
+
+/* modal */
+
+function abrirModal(id,idx){
+document.getElementById(id).style.display="block";
+document.body.style.overflow="hidden";
+initYT(idx);
+}
+
+function cerrarModal(id,idx){
+document.getElementById(id).style.display="none";
+document.body.style.overflow="";
+if(players[idx].inst)players[idx].inst.pauseVideo();
+}
+
+
+/* carousel */
+
+function nextSlide(modalId,dir=1){
+
+const wrapper=document.querySelector(`#${modalId} .carousel-wrapper`);
+const items=wrapper.querySelectorAll('.carousel-item');
+
+const idxInput=wrapper.querySelector('.idx');
+const count=parseInt(wrapper.querySelector('.count').value);
+
+let current=parseInt(idxInput.value);
+
+items[current].classList.remove('active');
+
+current=(current+dir+count)%count;
+
+items[current].classList.add('active');
+
+idxInput.value=current;
+}
+
+
+/* scroll video */
+
+function scrollToVideo(modalId){
+document.getElementById(`video-sec-${modalId}`).scrollIntoView({behavior:'smooth'});
+}
+
+
+/* youtube */
+
+function initYT(idx){
+
+if(players[idx].inst){players[idx].inst.playVideo();return;}
+
+players[idx].inst=new YT.Player(`player-${idx}`,{
+height:'100%',
+width:'100%',
+videoId:players[idx].yt,
+playerVars:{autoplay:1,mute:1,loop:1,playsinline:1}
+});
+
+}
+
+function onYouTubeIframeAPIReady(){}
+
+  // Eventos de cierre y Términos
+const termsModal = document.getElementById("termsModal");
+const termsLink = document.getElementById("terms-link");
+const closeTerms = document.querySelector(".close-terms");
+
+termsLink.onclick = () => {
+  termsModal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+};
+
+closeTerms.onclick = () => {
+  termsModal.style.display = "none";
+  document.body.style.overflow = "";
+};
+
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("close")) {
+    e.target.closest(".modal").style.display = "none";
+    document.body.style.overflow = "";
+  }
+  if (e.target === termsModal || e.target.classList.contains("modal")) {
+    termsModal.style.display = "none";
+    if(e.target.classList.contains("modal")) e.target.style.display = "none";
+    document.body.style.overflow = "";
+  }
+});
+
+</script>
+
+</body>
+</html>
