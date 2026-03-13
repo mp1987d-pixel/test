@@ -261,6 +261,30 @@ padding:20px;
 
 .footer-links a{color:#fff;text-decoration:none;}
 
+/* Modal términos */
+    #termsModal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #termsContent {
+      background: #000;
+      color: #fff;
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      border-radius: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close-terms { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; }
+
 </style>
 
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -298,11 +322,19 @@ padding:20px;
 
 <div id="modals"></div>
 
-<footer class="main-footer">
-<div class="footer-links">
-<span>virvik@gmail.com</span> |
-<span>+5491130162083</span>
+<div id="termsModal">
+  <div id="termsContent">
+    <span class="close-terms">&times;</span>
+    <p id="termsText"></p>
+  </div>
 </div>
+
+<footer class="main-footer">
+  <div class="footer-links">
+    <a id="terms-link" href="javascript:void(0)"></a> |
+    <span>virvik@gmail.com</span> |
+    <span>+5491130162083</span>
+  </div>
 </footer>
 
 <script>
@@ -319,7 +351,9 @@ heroSubtitle:"Experiencias únicas pensadas para nuestros huéspedes",
 sectionTitle:"Destinos destacados",
 seeMore:"Ver más",
 videoBtn:"Ver video de la experiencia ↓",
-wap:"Reservar ahora"
+wap:"Reservar ahora",
+terms: "Términos y condiciones",
+termsText: "Este es el texto legal de prueba para ArgentinaGo."
 },
 en:{
 heroTitle:"Discover Argentina",
@@ -327,7 +361,9 @@ heroSubtitle:"Unique experiences thought for our visitors",
 sectionTitle:"Featured destinations",
 seeMore:"See more",
 videoBtn:"Watch experience video ↓",
-wap:"Book now"
+wap:"Book now",
+terms: "Terms and conditions",
+termsText: "This is the test legal text for ArgentinaGo."
 }
 };
 
@@ -336,6 +372,8 @@ const lang=isSpanish?"es":"en";
 document.getElementById("hero-title").textContent=TEXTS[lang].heroTitle;
 document.getElementById("hero-subtitle").textContent=TEXTS[lang].heroSubtitle;
 document.getElementById("section-title").textContent=TEXTS[lang].sectionTitle;
+document.getElementById("terms-link").textContent = TEXTS[lang].terms;
+document.getElementById("termsText").textContent = TEXTS[lang].termsText;
 
 
 /* hero */
@@ -498,6 +536,33 @@ playerVars:{autoplay:1,mute:1,loop:1,playsinline:1}
 }
 
 function onYouTubeIframeAPIReady(){}
+
+  // Eventos de cierre y Términos
+const termsModal = document.getElementById("termsModal");
+const termsLink = document.getElementById("terms-link");
+const closeTerms = document.querySelector(".close-terms");
+
+termsLink.onclick = () => {
+  termsModal.style.display = "flex";
+  document.body.style.overflow = "hidden";
+};
+
+closeTerms.onclick = () => {
+  termsModal.style.display = "none";
+  document.body.style.overflow = "";
+};
+
+document.addEventListener("click", e => {
+  if (e.target.classList.contains("close")) {
+    e.target.closest(".modal").style.display = "none";
+    document.body.style.overflow = "";
+  }
+  if (e.target === termsModal || e.target.classList.contains("modal")) {
+    termsModal.style.display = "none";
+    if(e.target.classList.contains("modal")) e.target.style.display = "none";
+    document.body.style.overflow = "";
+  }
+});
 
 </script>
 
