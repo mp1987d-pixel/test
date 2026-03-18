@@ -574,37 +574,14 @@ document.getElementById(`video-sec-${modalId}`).scrollIntoView({behavior:'smooth
 
 /* youtube */
 function initYT(idx){
-
-const playerData = players[idx];
-
-if(playerData.inst){
-playerData.inst.playVideo();
-return;
-}
-
-playerData.inst = new YT.Player(`player-${idx}`,{
+if(players[idx].inst){players[idx].inst.playVideo();return;}
+players[idx].inst=new YT.Player(`player-${idx}`,{
 height:'100%',
 width:'100%',
-videoId: playerData.videos[0],
-playerVars:{
-autoplay:1,
-mute:1,
-playsinline:1
-},
-events:{
-onStateChange:function(e){
-
-if(e.data === YT.PlayerState.ENDED){
-
-playerData.current = (playerData.current + 1) % playerData.videos.length;
-
-playerData.inst.loadVideoById(playerData.videos[playerData.current]);
-}
-}
-}
+videoId:players[idx].yt,
+playerVars:{autoplay:1,mute:1,loop:1,playsinline:1}
 });
 }
-
 function onYouTubeIframeAPIReady(){}
 
 /* términos */
