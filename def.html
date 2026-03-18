@@ -475,7 +475,7 @@ if(Math.abs(touchStartX-endX)>50){
 nextSlide(modalId,touchStartX>endX?1:-1);
 stopAutoplay(modalId);
 clearTimeout(window[`t_${modalId}`]);
-window[`t_${modalId}`]=setTimeout(()=>startAutoplay(modalId),30000);
+window[`t_${modalId}`]=setTimeout(()=>startAutoplay(modalId),10000);
 }
 }
 
