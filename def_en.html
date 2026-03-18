@@ -323,7 +323,7 @@ line-height:1.7;
 
 /* idioma */
 const browserLang=navigator.language||navigator.userLanguage;
-const isSpanish=false;
+const isSpanish=browserLang.toLowerCase().startsWith("es");
 
 const TEXTS={
 es:{heroTitle:"Descubrí Argentina",heroSubtitle:"Experiencias únicas pensadas para nuestros huéspedes",sectionTitle:"Destinos destacados",seeMore:"Ver más",videoBtn:"Ver video de la experiencia ↓",wap:"Reservar ahora",terms:"Términos y condiciones",termsText: `Términos y Condiciones para Paquetes Turísticos<br><br>
@@ -414,7 +414,7 @@ These Terms and Conditions govern the sale of tour packages offered by Argentina
 - It is important that the client reads and understands these Terms and Conditions before booking a tour package.`}
 };
 
-const lang=en;
+const lang=isSpanish?"es":"en";
 
 document.getElementById("hero-title").textContent=TEXTS[lang].heroTitle;
 document.getElementById("hero-subtitle").textContent=TEXTS[lang].heroSubtitle;
