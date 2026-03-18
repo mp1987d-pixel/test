@@ -119,7 +119,6 @@ object-fit:cover;
 }
 
 .card h3,.card p{padding:0 15px;}
-
 .card p{flex-grow:1;}
 
 .card button{
@@ -262,29 +261,12 @@ padding:20px;
 .footer-links a{color:#fff;text-decoration:none;}
 
 /* Modal términos */
-    #termsModal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #termsContent {
-      background: #000;
-      color: #fff;
-      padding: 40px;
-      max-width: 600px;
-      width: 90%;
-      border-radius: 10px;
-      text-align: center;
-      position: relative;
-    }
-
-    .close-terms { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; }
-
+#termsModal .text-container{
+max-width:800px;
+margin:auto;
+text-align:left;
+line-height:1.7;
+}
 </style>
 
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -294,9 +276,7 @@ padding:20px;
 
 <header class="main-header">
 <div class="header-container">
-<a href="/">
-<img src="img/logo4.jpg" class="logo-img">
-</a>
+<a href="/"><img src="img/logo4.jpg" class="logo-img"></a>
 
 <div class="socials">
 <img src="img/Facebook.png">
@@ -304,7 +284,6 @@ padding:20px;
 <img src="img/YouTube.png">
 <img src="img/TikTok.png">
 </div>
-
 </div>
 </header>
 
@@ -322,62 +301,128 @@ padding:20px;
 
 <div id="modals"></div>
 
-<div id="termsModal">
-  <div id="termsContent">
-    <span class="close-terms">&times;</span>
-    <p id="termsText"></p>
+<div id="termsModal" class="modal">
+  <span class="close-modal-x" id="closeTerms">&times;</span>
+
+  <div class="modal-scroll-container">
+    <div class="text-container" style="background:#000;color:#fff;">
+      <p id="termsText"></p>
+    </div>
   </div>
 </div>
 
 <footer class="main-footer">
-  <div class="footer-links">
-    <a id="terms-link" href="javascript:void(0)"></a> |
-    <span>virvik@gmail.com</span> |
-    <span>+5491130162083</span>
-  </div>
+<div class="footer-links">
+<a id="terms-link" href="javascript:void(0)"></a> |
+<span>virvik@gmail.com</span> |
+<span>+5491130162083</span>
+</div>
 </footer>
 
 <script>
 
 /* idioma */
-
-const isSpanish = false;
-document.documentElement.lang = "en";
+const browserLang=navigator.language||navigator.userLanguage;
+const isSpanish=false;
 
 const TEXTS={
-es:{
-heroTitle:"Descubrí Argentina",
-heroSubtitle:"Experiencias únicas pensadas para nuestros huéspedes",
-sectionTitle:"Destinos destacados",
-seeMore:"Ver más",
-videoBtn:"Ver video de la experiencia ↓",
-wap:"Reservar ahora",
-terms: "Términos y condiciones",
-termsText: "Este es el texto legal de prueba para ArgentinaGo."
-},
-en:{
-heroTitle:"Discover Argentina",
-heroSubtitle:"Unique experiences thought for our visitors",
-sectionTitle:"Featured destinations",
-seeMore:"See more",
-videoBtn:"Watch experience video ↓",
-wap:"Book now",
-terms: "Terms and conditions",
-termsText: "This is the test legal text for ArgentinaGo."
-}
+es:{heroTitle:"Descubrí Argentina",heroSubtitle:"Experiencias únicas pensadas para nuestros huéspedes",sectionTitle:"Destinos destacados",seeMore:"Ver más",videoBtn:"Ver video de la experiencia ↓",wap:"Reservar ahora",terms:"Términos y condiciones",termsText: `Términos y Condiciones para Paquetes Turísticos<br><br>
+
+<b>1. Introducción</b><br>
+Estos Términos y Condiciones regulan la venta de paquetes turísticos ofrecidos por Argentina Go (en adelante, "la agencia"). Al contratar un paquete turístico con la agencia, usted acepta estar sujeto a estos Términos y Condiciones.<br><br>
+
+<b>2. Definiciones</b><br>
+- Paquete turístico: un conjunto de servicios turísticos que incluyen transporte, alojamiento y otros servicios relacionados con el viaje.<br>
+- Cliente: cualquier persona que contrate un paquete turístico con la agencia.<br><br>
+
+<b>3. Reserva y pago</b><br>
+- La reserva de un paquete turístico se considera confirmada cuando la agencia recibe el pago correspondiente.<br>
+- Los precios de los paquetes turísticos están sujetos a cambio justificado por razones ajenas a la agencia.<br>
+- El pago total del paquete turístico debe realizarse en la fecha indicada por la agencia.<br><br>
+
+<b>4. Cancelación y modificación</b><br>
+- La cancelación o modificación de un paquete turístico puede estar sujeta a penalizaciones y gastos adicionales.<br>
+- La agencia se reserva el derecho de cancelar un paquete turístico en caso de fuerza mayor o circunstancias imprevisibles.<br><br>
+
+<b>5. Responsabilidad</b><br>
+- La agencia no se responsabiliza de:<br>
+&nbsp;&nbsp;• Daños o pérdidas causados por la negligencia o culpa del cliente.<br>
+&nbsp;&nbsp;• Daños o pérdidas causados por terceros, como proveedores de servicios turísticos.<br>
+&nbsp;&nbsp;• Circunstancias imprevisibles o fuerza mayor que afecten el viaje.<br><br>
+
+<b>6. Documentación</b><br>
+- El cliente es responsable de obtener los documentos necesarios para viajar, como pasaporte, visado y seguro de viaje.<br>
+- La agencia no se responsabiliza de la falta de documentación o de la denegación de entrada en un país.<br><br>
+
+<b>7. Seguro de viaje</b><br>
+- Se recomienda que el cliente contrate un seguro de viaje que cubra gastos médicos, cancelación de viaje y otros riesgos relacionados con el viaje.<br><br>
+
+<b>8. Ley aplicable</b><br>
+- Estos Términos y Condiciones se rigen por las leyes de Argentina.<br>
+- Cualquier disputa o controversia que surja en relación con estos Términos y Condiciones será resuelta por las partes.<br><br>
+
+<b>9. Contacto</b><br>
+- Si tiene alguna pregunta o inquietud sobre estos Términos y Condiciones, por favor contáctenos.<br><br>
+
+<b>Última actualización:</b> 18/03/2026<br><br>
+
+<b>Información adicional</b><br>
+- La agencia se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento sin previo aviso.<br>
+- Es importante que el cliente lea y comprenda estos Términos y Condiciones antes de contratar un paquete turístico con la agencia.<br><br>
+
+Recuerde que es importante adaptar estos Términos y Condiciones a las necesidades específicas de su agencia de viajes y consultar con un abogado si tiene alguna duda o inquietud.`},
+en:{heroTitle:"Discover Argentina",heroSubtitle:"Unique experiences thought for our visitors",sectionTitle:"Featured destinations",seeMore:"See more",videoBtn:"Watch experience video ↓",wap:"Book now",terms:"Terms and conditions",termsText: `Terms and Conditions for Tour Packages<br><br>
+
+<b>1. Introduction</b><br>
+These Terms and Conditions govern the sale of tour packages offered by Argentina Go. By booking a tour package with the agency, you agree to be bound by these Terms and Conditions.<br><br>
+
+<b>2. Definitions</b><br>
+- Tour Package: a set of travel services that includes transportation, accommodation, transfers and other travel-related services.<br>
+- Client: any person who books a tour package with the agency.<br><br>
+
+<b>3. Booking and Payment</b><br>
+- A tour package booking is considered confirmed when the agency receives the corresponding payment.<br>
+- Tour package prices are subject to change without notice.<br>
+- Full payment for the tour package must be made by the date indicated by the agency.<br><br>
+
+<b>4. Cancellation and Modification</b><br>
+- Cancellation or modification of a tour package may be subject to penalties and additional charges.<br>
+- The agency reserves the right to cancel a tour package in the event of force majeure or unforeseen circumstances.<br><br>
+
+<b>5. Liability</b><br>
+- The agency is not liable for:<br>
+&nbsp;&nbsp;• Damages or losses caused by the client's negligence or fault.<br>
+&nbsp;&nbsp;• Damages or losses caused by third parties, such as tour service providers.<br>
+&nbsp;&nbsp;• Unforeseen circumstances or force majeure affecting the trip.<br><br>
+
+<b>6. Documentation</b><br>
+- The client is responsible for obtaining the necessary travel documents, such as a passport, visa, and travel insurance.<br>
+- The agency is not liable for lack of documentation or denied entry to a country.<br><br>
+
+<b>7. Travel Insurance</b><br>
+- It is recommended that the client purchase travel insurance that covers medical expenses, trip cancellation, and other travel-related risks.<br><br>
+
+<b>8. Applicable Law</b><br>
+- These Terms and Conditions are governed by the laws of Argentina.<br>
+- Any dispute or controversy arising in connection with these Terms and Conditions shall be resolved in Argentina.<br><br>
+
+<b>9. Contact</b><br>
+- If you have any questions or concerns about these Terms and Conditions, please contact us at info@argentinago.net.<br><br>
+
+<b>Additional Information</b><br>
+- The agency reserves the right to modify these Terms and Conditions at any time without prior notice.<br>
+- It is important that the client reads and understands these Terms and Conditions before booking a tour package.`}
 };
 
-const lang=isSpanish?"es":"en";
+const lang="en";
 
 document.getElementById("hero-title").textContent=TEXTS[lang].heroTitle;
 document.getElementById("hero-subtitle").textContent=TEXTS[lang].heroSubtitle;
 document.getElementById("section-title").textContent=TEXTS[lang].sectionTitle;
-document.getElementById("terms-link").textContent = TEXTS[lang].terms;
-document.getElementById("termsText").textContent = TEXTS[lang].termsText;
-
+document.getElementById("terms-link").textContent=TEXTS[lang].terms;
+document.getElementById("termsText").innerHTML = TEXTS[lang].termsText;
 
 /* hero */
-
 const heroImages=["img/vino.jpeg","img/prueba2.jpeg","img/carru4.jpeg"];
 let heroIndex=0;
 const hero=document.querySelector(".hero");
@@ -387,13 +432,13 @@ heroIndex=(heroIndex+1)%heroImages.length;
 hero.style.backgroundImage=`url('${heroImages[heroIndex]}')`;
 },4000);
 
-
 /* API */
-
 const API_URL="https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
 const IMG_BASE="https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
 
 let players={};
+let carouselIntervals={};
+let touchStartX=0;
 
 fetch(API_URL)
 .then(res=>res.json())
@@ -418,8 +463,6 @@ card.innerHTML=`
 `;
 cards.appendChild(card);
 
-/* imagenes modal */
-
 const cols=["Imagen_modal","Imagen3","Imagen4","Imagen5","Imagen6"];
 let fotos=[];
 cols.forEach(c=>{if(fila[c])fotos.push(fila[c].trim())});
@@ -436,12 +479,15 @@ modal.className="modal";
 modal.id=modalId;
 
 modal.innerHTML=`
-
 <span class="close-modal-x" onclick="cerrarModal('${modalId}',${index})">&times;</span>
 
 <div class="modal-scroll-container">
 
-<div class="carousel-wrapper" onclick="nextSlide('${modalId}')">
+<div class="carousel-wrapper"
+ontouchstart="handleTouchStart(event)"
+ontouchend="handleTouchEnd(event,'${modalId}')"
+onclick="nextSlide('${modalId}')">
+
 ${items}
 <input type="hidden" class="idx" value="0">
 <input type="hidden" class="count" value="${fotos.length}">
@@ -463,7 +509,6 @@ ${TEXTS[lang].wap}
 </a>
 
 </section>
-
 </div>
 `;
 
@@ -472,96 +517,94 @@ modals.appendChild(modal);
 players[index]={yt:fila["Youtube"],inst:null};
 
 });
-
 });
 
+/* carousel */
+function nextSlide(modalId,dir=1){
+const wrapper=document.querySelector(`#${modalId} .carousel-wrapper`);
+const items=wrapper.querySelectorAll('.carousel-item');
+const idxInput=wrapper.querySelector('.idx');
+const count=parseInt(wrapper.querySelector('.count').value);
+
+let current=parseInt(idxInput.value);
+items[current].classList.remove('active');
+current=(current+dir+count)%count;
+items[current].classList.add('active');
+idxInput.value=current;
+}
+
+function handleTouchStart(e){touchStartX=e.changedTouches[0].screenX;}
+function handleTouchEnd(e,modalId){
+let endX=e.changedTouches[0].screenX;
+if(Math.abs(touchStartX-endX)>50){
+nextSlide(modalId,touchStartX>endX?1:-1);
+stopAutoplay(modalId);
+clearTimeout(window[`t_${modalId}`]);
+window[`t_${modalId}`]=setTimeout(()=>startAutoplay(modalId),10000);
+}
+}
+
+function startAutoplay(modalId){
+stopAutoplay(modalId);
+carouselIntervals[modalId]=setInterval(()=>nextSlide(modalId),3500);
+}
+function stopAutoplay(modalId){
+clearInterval(carouselIntervals[modalId]);
+}
 
 /* modal */
-
 function abrirModal(id,idx){
 document.getElementById(id).style.display="block";
 document.body.style.overflow="hidden";
+startAutoplay(id);
 initYT(idx);
 }
 
 function cerrarModal(id,idx){
 document.getElementById(id).style.display="none";
 document.body.style.overflow="";
+stopAutoplay(id);
 if(players[idx].inst)players[idx].inst.pauseVideo();
 }
 
-
-/* carousel */
-
-function nextSlide(modalId,dir=1){
-
-const wrapper=document.querySelector(`#${modalId} .carousel-wrapper`);
-const items=wrapper.querySelectorAll('.carousel-item');
-
-const idxInput=wrapper.querySelector('.idx');
-const count=parseInt(wrapper.querySelector('.count').value);
-
-let current=parseInt(idxInput.value);
-
-items[current].classList.remove('active');
-
-current=(current+dir+count)%count;
-
-items[current].classList.add('active');
-
-idxInput.value=current;
-}
-
-
 /* scroll video */
-
 function scrollToVideo(modalId){
 document.getElementById(`video-sec-${modalId}`).scrollIntoView({behavior:'smooth'});
 }
 
-
 /* youtube */
-
 function initYT(idx){
-
 if(players[idx].inst){players[idx].inst.playVideo();return;}
-
 players[idx].inst=new YT.Player(`player-${idx}`,{
 height:'100%',
 width:'100%',
 videoId:players[idx].yt,
 playerVars:{autoplay:1,mute:1,loop:1,playsinline:1}
 });
-
 }
-
 function onYouTubeIframeAPIReady(){}
 
-  // Eventos de cierre y Términos
-const termsModal = document.getElementById("termsModal");
-const termsLink = document.getElementById("terms-link");
-const closeTerms = document.querySelector(".close-terms");
+/* términos */
+const termsModal=document.getElementById("termsModal");
+const termsLink=document.getElementById("terms-link");
+const closeTerms=document.getElementById("closeTerms");
 
-termsLink.onclick = () => {
-  termsModal.style.display = "flex";
-  document.body.style.overflow = "hidden";
+termsLink.onclick=()=>{
+termsModal.style.display="block";
+document.body.style.overflow="hidden";
+termsModal.querySelector(".modal-scroll-container").scrollTop = 0;
 };
 
-closeTerms.onclick = () => {
-  termsModal.style.display = "none";
-  document.body.style.overflow = "";
+closeTerms.onclick=()=>{
+termsModal.style.display="none";
+document.body.style.overflow="";
 };
 
-document.addEventListener("click", e => {
-  if (e.target.classList.contains("close")) {
-    e.target.closest(".modal").style.display = "none";
-    document.body.style.overflow = "";
-  }
-  if (e.target === termsModal || e.target.classList.contains("modal")) {
-    termsModal.style.display = "none";
-    if(e.target.classList.contains("modal")) e.target.style.display = "none";
-    document.body.style.overflow = "";
-  }
+document.addEventListener("click",e=>{
+if(e.target===termsModal){
+termsModal.style.display="none";
+document.body.style.overflow="";
+}
 });
 
 </script>
