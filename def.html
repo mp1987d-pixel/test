@@ -261,33 +261,11 @@ padding:20px;
 .footer-links a{color:#fff;text-decoration:none;}
 
 /* Modal términos */
-#termsModal {
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.9);
-z-index:2000;
-align-items:center;
-justify-content:center;
-}
-
-#termsContent {
-background:#000;
-color:#fff;
-padding:40px;
-max-width:600px;
-width:90%;
-border-radius:10px;
-text-align:center;
-position:relative;
-}
-
-.close-terms {
-position:absolute;
-top:15px;
-right:20px;
-font-size:28px;
-cursor:pointer;
+#termsModal .text-container{
+max-width:800px;
+margin:auto;
+text-align:left;
+line-height:1.7;
 }
 </style>
 
@@ -323,11 +301,14 @@ cursor:pointer;
 
 <div id="modals"></div>
 
-<div id="termsModal">
-<div id="termsContent">
-<span class="close-terms">&times;</span>
-<p id="termsText"></p>
-</div>
+<div id="termsModal" class="modal">
+  <span class="close-modal-x" id="closeTerms">&times;</span>
+
+  <div class="modal-scroll-container">
+    <div class="text-container" style="background:#000;color:#fff;">
+      <p id="termsText"></p>
+    </div>
+  </div>
 </div>
 
 <footer class="main-footer">
@@ -606,11 +587,12 @@ function onYouTubeIframeAPIReady(){}
 /* términos */
 const termsModal=document.getElementById("termsModal");
 const termsLink=document.getElementById("terms-link");
-const closeTerms=document.querySelector(".close-terms");
+const closeTerms=document.getElementById("closeTerms");
 
 termsLink.onclick=()=>{
-termsModal.style.display="flex";
+termsModal.style.display="block";
 document.body.style.overflow="hidden";
+termsModal.querySelector(".modal-scroll-container").scrollTop = 0;
 };
 
 closeTerms.onclick=()=>{
