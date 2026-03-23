@@ -1,444 +1,641 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>ArgentinaGo</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>ArgentinaGo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <style>
-    * { box-sizing: border-box; }
+<style>
+*{box-sizing:border-box;}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #0b1d3a;
-      background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.08) 0%, transparent 30%),
-        radial-gradient(circle at 70% 50%, rgba(255,255,255,0.06) 0%, transparent 30%),
-        radial-gradient(circle at 40% 80%, rgba(255,255,255,0.07) 0%, transparent 30%);
-      background-size: 250px 250px, 300px 300px, 200px 200px;
-      background-repeat: repeat;
-      background-attachment: scroll;
-      background-blend-mode: overlay;
-    }
-
-    .main-header {
-      background: #000000;
-      padding: 0;
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .header-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .logo-img {
-      width: 25%;
-      height: auto;
-      display: block;
-      object-fit: cover;
-    }
-
-    .socials {
-      position: absolute;
-      top: 50%;
-      right: 15px;
-      transform: translateY(-50%);
-      display: flex;
-      gap: 12px;
-      background: rgba(0, 0, 0, 0.55);
-      padding: 8px 12px;
-      border-radius: 30px;
-      backdrop-filter: blur(6px);
-      z-index: 20;
-    }
-
-    .socials a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .socials img {
-      width: 28px;
-      height: 28px;
-      object-fit: contain;
-      transition: transform 0.2s ease;
-    }
-
-    .socials img:hover { transform: scale(1.15); }
-
-    @media (max-width: 600px) {
-      .socials { top: 50%; right: 10px; transform: translateY(-50%); padding: 6px 10px; gap: 10px; }
-      .socials img { width: 26px; height: 26px; }
-      .logo-img { width: 50%; }
-    }
-
-    .hero {
-      width: 100%;
-      height: 70vh;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: background-image 1s ease-in-out;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-image: url('img/vino.jpeg');
-    }
-
-    .hero-content {
-      background: trasparent;
-      padding: 30px 40px;
-      border-radius: 10px;
-      text-align: center;
-      color: #fff;
-    }
-
-    .section {
-  max-width: 1200px;
-  margin: 40px auto;
-  padding: 40px;
-  background: linear-gradient(135deg, #1f3a2e 0%, #2f4f3a 50%, #1b2e24 100%);
-  border-radius: 28px;
+body{
+margin:0;
+font-family:Arial,sans-serif;
+background-color:#0b1d3a;
+background-image:
+radial-gradient(circle at 20% 30%,rgba(255,255,255,0.08)0%,transparent 30%),
+radial-gradient(circle at 70% 50%,rgba(255,255,255,0.06)0%,transparent 30%),
+radial-gradient(circle at 40% 80%,rgba(255,255,255,0.07)0%,transparent 30%);
+background-size:250px 250px,300px 300px,200px 200px;
+background-repeat:repeat;
+background-blend-mode:overlay;
 }
 
-    .section h2 { 
-  text-align: center; 
-  margin-bottom: 40px; 
-  color: #ffffff; 
+.main-header{
+background:#000;
+width:100%;
+position:relative;
+overflow:hidden;
 }
 
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-    }
-
-    .card {
-  width: 300px;
-  height: 400px;
-  background: #fff;
-  border-radius: 10px;
-  overflow: hidden; /* Esto es clave para que el botón se "corte" en las esquinas */
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  text-align: center;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
+.header-container{
+width:100%;
+display:flex;
+flex-direction:column;
 }
 
-.card h3, .card p {
-  padding: 0 15px; /* Agregamos padding al texto ya que la tarjeta no tendrá */
+.logo-img{
+width:25%;
+height:auto;
+display:block;
+object-fit:cover;
 }
 
-.card p {
-  flex-grow: 1; /* Esto empuja el botón siempre hacia el fondo */
-  margin-bottom: 0;
+.socials{
+position:absolute;
+top:50%;
+right:15px;
+transform:translateY(-50%);
+display:flex;
+gap:12px;
+background:rgba(0,0,0,0.55);
+padding:8px 12px;
+border-radius:30px;
+backdrop-filter:blur(6px);
 }
 
-.card button {
-  width: 100%;       /* Ocupa todo el ancho */
-  margin: 0;         /* Sin márgenes para que pegue al borde */
-  padding: 15px 0;   /* Más alto para que se vea mejor */
-  border: none;
-  background: #0077cc;
-  color: #fff;
-  border-radius: 0;  /* El 'overflow: hidden' de la card le dará la forma curva */
-  cursor: pointer;
-  font-weight: bold;
+.socials img{
+width:28px;
+height:28px;
+transition:.2s;
 }
-    .card img {
-  width: 100%;
-  height: 200px;      /* Altura fija idéntica para todas */
-  object-fit: cover;   /* Recorta y centra la imagen automáticamente */
-  display: block;      /* Elimina espacios fantasma abajo */
+.socials img:hover{transform:scale(1.15);}
+
+.hero{
+width:100%;
+height:70vh;
+background-size:cover;
+background-position:center;
+display:flex;
+align-items:center;
+justify-content:center;
+background-image:url('img/vino.jpeg');
+transition:background-image 1s;
 }
 
-    /* MODALES - CORRECCIÓN DE ESCALA Y DESBORDE */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      inset: 0;
-      background: rgba(0,0,0,0.85);
-      overflow-y: auto; /* Permite scroll si el contenido es largo */
-      padding: 20px;
-    }
-
-    .modal-content {
-      background: #fff;
-      margin: 20px auto;
-      padding: 30px;
-      border-radius: 16px;
-      max-width: 800px;
-      width: 100%;
-      text-align: center;
-      position: relative; /* Para posicionar la X de cierre */
-    }
-
-    /* CORRECCIÓN DE IMAGEN: evita que se salga del modal */
-    .modal-content img {
-      width: 100%;
-      max-width: 100%;
-      max-height: 60vh;    /* Limita el alto al 60% de la pantalla */
-      object-fit: contain; /* Ajusta la imagen sin recortarla */
-      border-radius: 8px;
-      margin-bottom: 20px;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    /* Ajuste de videos para que no se desborden */
-    .modal-content iframe {
-      width: 100%;
-      max-width: 100%;
-      border-radius: 8px;
-      margin-top: 15px;
-    }
-
-    .close {
-  position: sticky; /* Se queda fija mientras haces scroll */
-  top: 0;           /* Se pega al borde superior del modal-content */
-  right: 0;
-  float: right;     /* La empuja a la derecha */
-  font-size: 32px;
-  font-weight: bold;
-  color: #333;
-  cursor: pointer;
-  background: white; /* Evita que el texto de abajo se transparente al pasar */
-  padding: 5px 10px;
-  border-radius: 50%;
-  line-height: 1;
-  z-index: 100;     /* Asegura que esté por encima de imágenes y videos */
+.hero-content{
+background:transparent;
+padding:30px 40px;
+text-align:center;
+color:#fff;
 }
-    .whatsapp-btn {
-      display: inline-block;
-      padding: 12px 25px;
-      background: #25D366;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 8px;
-      margin-top: 15px;
-    }
 
-    .main-footer {
-      background: #111;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-    }
+.section{
+max-width:1200px;
+margin:40px auto;
+padding:40px;
+background:linear-gradient(135deg,#1f3a2e 0%,#2f4f3a 50%,#1b2e24 100%);
+border-radius:28px;
+}
 
-    .footer-links a { color: #fff; text-decoration: none; cursor: pointer; }
+.section h2{
+text-align:center;
+margin-bottom:40px;
+color:#fff;
+}
 
-    /* Modal términos */
-    #termsModal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.9);
-      z-index: 2000;
-      align-items: center;
-      justify-content: center;
-    }
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:25px;
+}
 
-    #termsContent {
-      background: #000;
-      color: #fff;
-      padding: 40px;
-      max-width: 600px;
-      width: 90%;
-      border-radius: 10px;
-      text-align: center;
-      position: relative;
-    }
+.card{
+width:300px;
+height:400px;
+background:#fff;
+border-radius:10px;
+overflow:hidden;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+text-align:center;
+display:flex;
+flex-direction:column;
+}
 
-    .close-terms { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; }
-  </style>
+.card img{
+width:100%;
+height:200px;
+object-fit:cover;
+}
+
+.card h3,.card p{padding:0 15px;}
+.card p{flex-grow:1;}
+
+.card button{
+width:100%;
+padding:15px 0;
+border:none;
+background:#0077cc;
+color:#fff;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+z-index:2000;
+inset:0;
+background:#fff;
+}
+
+.modal-scroll-container{
+height:100%;
+overflow-y:scroll;
+scroll-behavior:smooth;
+scrollbar-width:none;
+}
+.modal-scroll-container::-webkit-scrollbar{display:none;}
+
+.carousel-wrapper{
+width:100%;
+height:75vh;
+background:#000;
+position:relative;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+}
+
+.carousel-item{
+position:absolute;
+inset:0;
+opacity:0;
+display:flex;
+align-items:center;
+justify-content:center;
+transition:opacity .3s;
+}
+.carousel-item.active{opacity:1;}
+
+.carousel-item img{
+max-width:100%;
+max-height:100%;
+object-fit:contain;
+}
+
+.text-container{
+padding:40px 25px 80px;
+background:#fff;
+text-align:center;
+}
+
+.text-container h2{
+font-size:32px;
+margin-bottom:20px;
+}
+
+.text-container p{
+font-size:18px;
+line-height:1.8;
+max-width:800px;
+margin:auto;
+}
+
+.video-anchor-btn{
+margin-top:20px;
+display:inline-block;
+padding:12px 25px;
+border:2px solid #0077cc;
+color:#0077cc;
+cursor:pointer;
+border-radius:5px;
+font-weight:bold;
+}
+
+.modal-section-video{
+height:100vh;
+background:#000;
+position:relative;
+}
+
+.video-wrapper{
+position:absolute;
+inset:0;
+}
+
+.video-wrapper iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+.close-modal-x{
+position:absolute;
+top:20px;
+right:20px;
+background:rgba(0,0,0,.5);
+width:45px;
+height:45px;
+border-radius:50%;
+text-align:center;
+line-height:45px;
+font-size:24px;
+cursor:pointer;
+color:#fff;
+z-index:2100;
+}
+
+.whatsapp-btn{
+position:absolute;
+bottom:40px;
+left:50%;
+transform:translateX(-50%);
+background:#25D366;
+color:#fff;
+padding:15px 30px;
+border-radius:50px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.main-footer{
+background:#111;
+color:#fff;
+text-align:center;
+padding:20px;
+}
+
+.footer-links a{color:#fff;text-decoration:none;}
+
+/* Modal términos */
+#termsModal .text-container{
+max-width:800px;
+margin:auto;
+text-align:left;
+line-height:1.7;
+}
+</style>
+
+<script src="https://www.youtube.com/iframe_api"></script>
 </head>
 
 <body>
 
 <header class="main-header">
   <div class="header-container">
-    <a href="/" class="logo-link">
-      <img src="img/logo4.jpg" alt="ArgentinaGo" class="logo-img">
+
+    <a href="#">
+      <img src="img/logo4.jpg" class="logo-img">
     </a>
+
     <div class="socials">
-      <a href="#" target="_blank"><img src="img/Facebook.png" alt="Facebook"></a>
-      <a href="#" target="_blank"><img src="img/Instagra.png" alt="Instagram"></a>
-      <a href="#" target="_blank"><img src="img/YouTube.png" alt="YouTube"></a>
-      <a href="#" target="_blank"><img src="img/TikTok.png" alt="TikTok"></a>
+      <a href="https://www.facebook.com/ARGENTINAGO30" target="_blank">
+        <img src="img/Facebook.png">
+      </a>
+
+      <a href="https://www.instagram.com/argentinago30/" target="_blank">
+        <img src="img/Instagra.png">
+      </a>
+
+      <a href="https://www.youtube.com/@ArgentinaGoTurismo" target="_blank">
+        <img src="img/YouTube.png">
+      </a>
+
+      <a href="https://www.tiktok.com/@argentina.go4" target="_blank">
+        <img src="img/TikTok.png">
+      </a>
     </div>
+
   </div>
 </header>
 
 <section class="hero">
-  <div class="hero-content">
-    <h1 id="hero-title"></h1>
-    <p id="hero-subtitle"></p>
-  </div>
+<div class="hero-content">
+<h1 id="hero-title"></h1>
+<p id="hero-subtitle"></p>
+</div>
 </section>
 
 <section class="section">
-  <h2 id="section-title"></h2>
-  <div class="cards" id="cards"></div>
+<h2 id="section-title"></h2>
+<div class="cards" id="cards"></div>
 </section>
 
 <div id="modals"></div>
 
-<div id="termsModal">
-  <div id="termsContent">
-    <span class="close-terms">&times;</span>
-    <p id="termsText"></p>
+<div id="termsModal" class="modal">
+  <span class="close-modal-x" id="closeTerms">&times;</span>
+
+  <div class="modal-scroll-container">
+    <div class="text-container" style="background:#000;color:#fff;">
+      <p id="termsText"></p>
+    </div>
   </div>
 </div>
 
 <footer class="main-footer">
-  <div class="footer-links">
-    <a id="terms-link" href="javascript:void(0)"></a> |
-    <span>virvik@gmail.com</span> |
-    <span>+5491130162083</span>
-  </div>
+<div class="footer-links">
+<a id="terms-link" href="javascript:void(0)"></a> |
+<span>reservas@argentinago.net</span> |
+<span>+5491167130778</span>
+</div>
 </footer>
 
 <script>
-/* ================= DETECCION IDIOMA ================= */
-const browserLang = navigator.language || navigator.userLanguage;
-const isSpanish = browserLang.toLowerCase().startsWith("es");
-document.documentElement.lang = isSpanish ? "es" : "en";
 
-const TEXTS = {
-  es: {
-    heroTitle: "Descubrí Argentina",
-    heroSubtitle: "Experiencias únicas pensadas para nuestros huéspedes",
-    sectionTitle: "Destinos destacados",
-    terms: "Términos y condiciones",
-    termsText: "Este es el texto legal de prueba para ArgentinaGo."
-  },
-  en: {
-    heroTitle: "Discover Argentina",
-    heroSubtitle: "Unique experiences thought for our visitors",
-    sectionTitle: "Featured destinations",
-    terms: "Terms and conditions",
-    termsText: "This is the test legal text for ArgentinaGo."
-  }
+/* idioma */
+const browserLang=navigator.language||navigator.userLanguage;
+const isSpanish=browserLang.toLowerCase().startsWith("es");
+
+const TEXTS={
+es:{heroTitle:"Descubrí Argentina",heroSubtitle:"Experiencias únicas pensadas para nuestros huéspedes",sectionTitle:"Destinos destacados",seeMore:"Ver más",videoBtn:"Ver video de la experiencia ↓",wap:"Reservar ahora",terms:"Términos y condiciones",termsText: `Términos y Condiciones para Paquetes Turísticos<br><br>
+
+<b>1. Introducción</b><br>
+Estos Términos y Condiciones regulan la venta de paquetes turísticos ofrecidos por Argentina Go (en adelante, "la agencia"). Al contratar un paquete turístico con la agencia, usted acepta estar sujeto a estos Términos y Condiciones.<br><br>
+
+<b>2. Definiciones</b><br>
+- Paquete turístico: un conjunto de servicios turísticos que incluyen transporte, alojamiento y otros servicios relacionados con el viaje.<br>
+- Cliente: cualquier persona que contrate un paquete turístico con la agencia.<br><br>
+
+<b>3. Reserva y pago</b><br>
+- La reserva de un paquete turístico se considera confirmada cuando la agencia recibe el pago correspondiente.<br>
+- Los precios de los paquetes turísticos están sujetos a cambio justificado por razones ajenas a la agencia.<br>
+- El pago total del paquete turístico debe realizarse en la fecha indicada por la agencia.<br><br>
+
+<b>4. Cancelación y modificación</b><br>
+- La cancelación o modificación de un paquete turístico puede estar sujeta a penalizaciones y gastos adicionales.<br>
+- La agencia se reserva el derecho de cancelar un paquete turístico en caso de fuerza mayor o circunstancias imprevisibles.<br><br>
+
+<b>5. Responsabilidad</b><br>
+- La agencia no se responsabiliza de:<br>
+&nbsp;&nbsp;• Daños o pérdidas causados por la negligencia o culpa del cliente.<br>
+&nbsp;&nbsp;• Daños o pérdidas causados por terceros, como proveedores de servicios turísticos.<br>
+&nbsp;&nbsp;• Circunstancias imprevisibles o fuerza mayor que afecten el viaje.<br><br>
+
+<b>6. Documentación</b><br>
+- El cliente es responsable de obtener los documentos necesarios para viajar, como pasaporte, visado y seguro de viaje.<br>
+- La agencia no se responsabiliza de la falta de documentación o de la denegación de entrada en un país.<br><br>
+
+<b>7. Seguro de viaje</b><br>
+- Se recomienda que el cliente contrate un seguro de viaje que cubra gastos médicos, cancelación de viaje y otros riesgos relacionados con el viaje.<br><br>
+
+<b>8. Ley aplicable</b><br>
+- Estos Términos y Condiciones se rigen por las leyes de Argentina.<br>
+- Cualquier disputa o controversia que surja en relación con estos Términos y Condiciones será resuelta por las partes.<br><br>
+
+<b>9. Contacto</b><br>
+- Si tiene alguna pregunta o inquietud sobre estos Términos y Condiciones, por favor contáctenos.<br><br>
+
+<b>Última actualización:</b> 18/03/2026<br><br>
+
+<b>Información adicional</b><br>
+- La agencia se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento sin previo aviso.<br>
+- Es importante que el cliente lea y comprenda estos Términos y Condiciones antes de contratar un paquete turístico con la agencia.<br><br>
+
+Recuerde que es importante adaptar estos Términos y Condiciones a las necesidades específicas de su agencia de viajes y consultar con un abogado si tiene alguna duda o inquietud.`},
+en:{heroTitle:"Discover Argentina",heroSubtitle:"Unique experiences thought for our visitors",sectionTitle:"Featured destinations",seeMore:"See more",videoBtn:"Watch experience video ↓",wap:"Book now",terms:"Terms and conditions",termsText: `Terms and Conditions for Tour Packages<br><br>
+
+<b>1. Introduction</b><br>
+These Terms and Conditions govern the sale of tour packages offered by Argentina Go. By booking a tour package with the agency, you agree to be bound by these Terms and Conditions.<br><br>
+
+<b>2. Definitions</b><br>
+- Tour Package: a set of travel services that includes transportation, accommodation, transfers and other travel-related services.<br>
+- Client: any person who books a tour package with the agency.<br><br>
+
+<b>3. Booking and Payment</b><br>
+- A tour package booking is considered confirmed when the agency receives the corresponding payment.<br>
+- Tour package prices are subject to change without notice.<br>
+- Full payment for the tour package must be made by the date indicated by the agency.<br><br>
+
+<b>4. Cancellation and Modification</b><br>
+- Cancellation or modification of a tour package may be subject to penalties and additional charges.<br>
+- The agency reserves the right to cancel a tour package in the event of force majeure or unforeseen circumstances.<br><br>
+
+<b>5. Liability</b><br>
+- The agency is not liable for:<br>
+&nbsp;&nbsp;• Damages or losses caused by the client's negligence or fault.<br>
+&nbsp;&nbsp;• Damages or losses caused by third parties, such as tour service providers.<br>
+&nbsp;&nbsp;• Unforeseen circumstances or force majeure affecting the trip.<br><br>
+
+<b>6. Documentation</b><br>
+- The client is responsible for obtaining the necessary travel documents, such as a passport, visa, and travel insurance.<br>
+- The agency is not liable for lack of documentation or denied entry to a country.<br><br>
+
+<b>7. Travel Insurance</b><br>
+- It is recommended that the client purchase travel insurance that covers medical expenses, trip cancellation, and other travel-related risks.<br><br>
+
+<b>8. Applicable Law</b><br>
+- These Terms and Conditions are governed by the laws of Argentina.<br>
+- Any dispute or controversy arising in connection with these Terms and Conditions shall be resolved in Argentina.<br><br>
+
+<b>9. Contact</b><br>
+- If you have any questions or concerns about these Terms and Conditions, please contact us at info@argentinago.net.<br><br>
+
+<b>Additional Information</b><br>
+- The agency reserves the right to modify these Terms and Conditions at any time without prior notice.<br>
+- It is important that the client reads and understands these Terms and Conditions before booking a tour package.`}
 };
 
-const langKey = isSpanish ? "es" : "en";
+const lang=isSpanish?"es":"en";
 
-// Rellenar textos (Ahora sí encontrará los IDs)
-document.getElementById("hero-title").textContent = TEXTS[langKey].heroTitle;
-document.getElementById("hero-subtitle").textContent = TEXTS[langKey].heroSubtitle;
-document.getElementById("section-title").textContent = TEXTS[langKey].sectionTitle;
-document.getElementById("terms-link").textContent = TEXTS[langKey].terms;
-document.getElementById("termsText").textContent = TEXTS[langKey].termsText;
+document.getElementById("hero-title").textContent=TEXTS[lang].heroTitle;
+document.getElementById("hero-subtitle").textContent=TEXTS[lang].heroSubtitle;
+document.getElementById("section-title").textContent=TEXTS[lang].sectionTitle;
+document.getElementById("terms-link").textContent=TEXTS[lang].terms;
+document.getElementById("termsText").innerHTML = TEXTS[lang].termsText;
 
-/* ================= HERO CARRUSEL ================= */
-const heroImages = ["img/vino.jpeg", "img/prueba2.jpeg", "img/carru4.jpeg"];
-let heroIndex = 0;
-const heroSection = document.querySelector(".hero");
+/* hero */
+const heroImages=["img/vino.jpeg","img/prueba2.jpeg","img/carru4.jpeg"];
+let heroIndex=0;
+const hero=document.querySelector(".hero");
 
-setInterval(() => {
-  heroIndex = (heroIndex + 1) % heroImages.length;
-  heroSection.style.backgroundImage = `url('${heroImages[heroIndex]}')`;
-}, 4000);
+setInterval(()=>{
+heroIndex=(heroIndex+1)%heroImages.length;
+hero.style.backgroundImage=`url('${heroImages[heroIndex]}')`;
+},4000);
 
-/* ================= CARGA DE DATOS API ================= */
-const API_URL = "https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
-const IMG_BASE = "https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
-const YT_BASE = "https://www.youtube.com/embed/";
+/* API */
+const API_URL="https://script.google.com/macros/s/AKfycbyBtRe25ZSD5jlv7eJ8ExlwDYHpKuA01RK8ToAMA3HuvMklOMDDRuU6wiBRKXkm0fhDOw/exec";
+const IMG_BASE="https://raw.githubusercontent.com/mp1987d-pixel/test/main/img/";
+
+let players={};
+let carouselIntervals={};
+let touchStartX=0;
 
 fetch(API_URL)
-  .then(res => res.json())
-  .then(data => {
-    const cardsContainer = document.getElementById("cards");
-    const modalsContainer = document.getElementById("modals");
+.then(res=>res.json())
+.then(data=>{
 
-    const filteredData = data.filter(fila => isSpanish ? fila["Idioma"] === "Es" : fila["Idioma"] === "En");
+const cards=document.getElementById("cards");
+const modals=document.getElementById("modals");
 
-    filteredData.forEach((fila, index) => {
-      if (!fila["Título"] || !fila["Imagen"]) return;
+const filtered=data.filter(f=>isSpanish?f["Idioma"]==="Es":f["Idioma"]==="En");
 
-      const modalId = `modal_${index}`;
-      const imgSrc = IMG_BASE + fila["Imagen"];
-      const img2Src = IMG_BASE + (fila["Imagen_modal"] || fila["Imagen"]);
-      const youtubeSrc = fila["Youtube"] ? YT_BASE + fila["Youtube"] : "";
+filtered.forEach((fila,index)=>{
 
-      const card = document.createElement("div");
-      card.className = "card";
-      card.innerHTML = `
-        <img src="${imgSrc}" alt="${fila["Título"]}">
-        <h3>${fila["Título"]}</h3>
-        <p>${fila["Descripción"] || ""}</p>
-        <button class="open-modal" data-modal="${modalId}">
-          ${isSpanish ? "Ver más" : "See more"}
-        </button>
-      `;
-      cardsContainer.appendChild(card);
+const modalId=`modal_${index}`;
 
-      const modal = document.createElement("div");
-      modal.className = "modal";
-      modal.id = modalId;
-      modal.innerHTML = `
-        <div class="modal-content">
-          <span class="close">&times;</span>
-          <h2>${fila["Título"]}</h2>
-          <img src="${img2Src}" alt="${fila["Título"]}">
-          <p>${fila["Descripción_modal"] || ""}</p>
-          ${youtubeSrc ? `<iframe src="${youtubeSrc}" width="100%" height="315" frameborder="0" allowfullscreen></iframe>` : ""}
-          <a href="https://wa.me/5491130162083" target="_blank" class="whatsapp-btn">
-            ${isSpanish ? "Contactar por WhatsApp" : "Contact via WhatsApp"}
-          </a>
-        </div>
-      `;
-      modalsContainer.appendChild(modal);
-    });
+const card=document.createElement("div");
+card.className="card";
+card.innerHTML=`
+<img src="${IMG_BASE+fila["Imagen"]}">
+<h3>${fila["Título"]}</h3>
+<p>${fila["Descripción"]||""}</p>
+<button onclick="abrirModal('${modalId}',${index})">${TEXTS[lang].seeMore}</button>
+`;
+cards.appendChild(card);
 
-    activarModales();
-  });
+const cols=["Imagen_modal","Imagen3","Imagen4","Imagen5","Imagen6"];
+let fotos=[];
+cols.forEach(c=>{if(fila[c])fotos.push(fila[c].trim())});
+if(fotos.length===0)fotos.push(fila["Imagen"]);
 
-function activarModales() {
-  document.querySelectorAll(".open-modal").forEach(btn => {
-    btn.onclick = () => {
-      document.getElementById(btn.dataset.modal).style.display = "block";
-      document.body.style.overflow = "hidden";
-    };
-  });
+const items=fotos.map((f,i)=>`
+<div class="carousel-item ${i===0?'active':''}">
+<img src="${IMG_BASE+f}">
+</div>
+`).join("");
+
+const modal=document.createElement("div");
+modal.className="modal";
+modal.id=modalId;
+
+modal.innerHTML=`
+<span class="close-modal-x" onclick="cerrarModal('${modalId}',${index})">&times;</span>
+
+<div class="modal-scroll-container">
+
+<div class="carousel-wrapper"
+ontouchstart="handleTouchStart(event)"
+ontouchend="handleTouchEnd(event,'${modalId}')"
+onclick="nextSlide('${modalId}')">
+
+${items}
+<input type="hidden" class="idx" value="0">
+<input type="hidden" class="count" value="${fotos.length}">
+</div>
+
+<div class="text-container">
+<h2>${fila["Título"]}</h2>
+<p>${fila["Descripción_modal"]||fila["Descripción"]}</p>
+<div class="video-anchor-btn" onclick="scrollToVideo('${modalId}')">${TEXTS[lang].videoBtn}</div>
+</div>
+
+<section class="modal-section-video" id="video-sec-${modalId}">
+<div class="video-wrapper">
+<div id="player-${index}"></div>
+</div>
+
+<a href="https://wa.me/5491167130778" target="_blank" class="whatsapp-btn">
+${TEXTS[lang].wap}
+</a>
+
+</section>
+</div>
+`;
+
+modals.appendChild(modal);
+
+players[index] = { 
+  yt: fila["Youtube"], 
+  pl: fila["Youtube2"] ? `${fila["Youtube"]},${fila["Youtube2"]}` : fila["Youtube"], 
+  inst: null 
+};
+
+});
+});
+
+/* carousel */
+function nextSlide(modalId,dir=1){
+const wrapper=document.querySelector(`#${modalId} .carousel-wrapper`);
+const items=wrapper.querySelectorAll('.carousel-item');
+const idxInput=wrapper.querySelector('.idx');
+const count=parseInt(wrapper.querySelector('.count').value);
+
+let current=parseInt(idxInput.value);
+items[current].classList.remove('active');
+current=(current+dir+count)%count;
+items[current].classList.add('active');
+idxInput.value=current;
 }
 
-// Eventos de cierre y Términos
-const termsModal = document.getElementById("termsModal");
-const termsLink = document.getElementById("terms-link");
-const closeTerms = document.querySelector(".close-terms");
+function handleTouchStart(e){touchStartX=e.changedTouches[0].screenX;}
+function handleTouchEnd(e,modalId){
+let endX=e.changedTouches[0].screenX;
+if(Math.abs(touchStartX-endX)>50){
+nextSlide(modalId,touchStartX>endX?1:-1);
+stopAutoplay(modalId);
+clearTimeout(window[`t_${modalId}`]);
+window[`t_${modalId}`]=setTimeout(()=>startAutoplay(modalId),10000);
+}
+}
 
-termsLink.onclick = () => {
-  termsModal.style.display = "flex";
-  document.body.style.overflow = "hidden";
+function startAutoplay(modalId){
+stopAutoplay(modalId);
+carouselIntervals[modalId]=setInterval(()=>nextSlide(modalId),3500);
+}
+function stopAutoplay(modalId){
+clearInterval(carouselIntervals[modalId]);
+}
+
+/* modal */
+function abrirModal(id,idx){
+document.getElementById(id).style.display="block";
+document.body.style.overflow="hidden";
+startAutoplay(id);
+initYT(idx);
+}
+
+function cerrarModal(id,idx){
+document.getElementById(id).style.display="none";
+document.body.style.overflow="";
+stopAutoplay(id);
+if(players[idx].inst)players[idx].inst.pauseVideo();
+document.querySelector(`#${id} .modal-scroll-container`).scrollTop = 0;
+}
+
+/* scroll video */
+function scrollToVideo(modalId){
+document.getElementById(`video-sec-${modalId}`).scrollIntoView({behavior:'smooth'});
+}
+
+/* youtube */
+function initYT(idx) {
+    if (players[idx].inst) { 
+        players[idx].inst.playVideo(); 
+        return; 
+    }
+    players[idx].inst = new YT.Player(`player-${idx}`, {
+        height: '100%',
+        width: '100%',
+        videoId: players[idx].yt,
+        playerVars: { 
+            autoplay: 1, 
+            mute: 1, 
+            loop: 1, 
+            playlist: players[idx].pl, // <-- ESTA ES LA CLAVE
+            playsinline: 1 
+        }
+    });
+}
+function onYouTubeIframeAPIReady(){}
+
+/* términos */
+const termsModal=document.getElementById("termsModal");
+const termsLink=document.getElementById("terms-link");
+const closeTerms=document.getElementById("closeTerms");
+
+termsLink.onclick=()=>{
+termsModal.style.display="block";
+document.body.style.overflow="hidden";
+termsModal.querySelector(".modal-scroll-container").scrollTop = 0;
 };
 
-closeTerms.onclick = () => {
-  termsModal.style.display = "none";
-  document.body.style.overflow = "";
+closeTerms.onclick=()=>{
+termsModal.style.display="none";
+document.body.style.overflow="";
 };
 
-document.addEventListener("click", e => {
-  if (e.target.classList.contains("close")) {
-    e.target.closest(".modal").style.display = "none";
-    document.body.style.overflow = "";
-  }
-  if (e.target === termsModal || e.target.classList.contains("modal")) {
-    termsModal.style.display = "none";
-    if(e.target.classList.contains("modal")) e.target.style.display = "none";
-    document.body.style.overflow = "";
-  }
+document.addEventListener("click",e=>{
+if(e.target===termsModal){
+termsModal.style.display="none";
+document.body.style.overflow="";
+}
 });
+
 </script>
 
 </body>
